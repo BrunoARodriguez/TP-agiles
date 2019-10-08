@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<persistence xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
+             http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+             version="2.0" xmlns="http://java.sun.com/xml/ns/persistence">
+    <persistence-unit name="persistencia">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <class>LogicaDeNegocios.Entidades.Contribuyente</class>
+        <class>LogicaDeNegocios.Entidades.Titular</class>
+        <class>LogicaDeNegocios.Entidades.Licencia</class>
+        <class>LogicaDeNegocios.Entidades.Resources.CostoLicencia</class>
+        <class>LogicaDeNegocios.Entidades.CambioEstadoLicencia</class>
+        <class>LogicaDeNegocios.Entidades.Usuario</class>
+        <properties>
+            <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/tp_agiles_db?serverTimezone=UTC"	/>
+            <property name="javax.persistence.jdbc.user" value="root" />
+            <property name="javax.persistence.jdbc.password" value="root" />
+
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>
+
+            <property name="hibernate.connection_poolsize" value="1"/>
+
+            <property name="hibernate.hbm2ddl.auto" value="create-drop" />
+            <property name="hibernate.c3p0.testConnectionOnCheckout" value="true" />
+            <property name="connection.provider_class" value="org.hibernate.connection.C3P0ConnectionProvider" />
+
+        </properties>
+    </persistence-unit>
+</persistence>
