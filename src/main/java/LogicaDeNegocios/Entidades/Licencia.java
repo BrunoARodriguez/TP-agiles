@@ -24,6 +24,15 @@ public class Licencia {
     public Licencia() {
     }
 
+    public Licencia(Titular titularLicencia, LocalDateTime fechaAltaLicencia, LocalDateTime fechaVencimientoLicencia, ArrayList<ClaseLicencia> claseLicencias, String observacionesLicencia, ArrayList<CambioEstadoLicencia> cambioEstadoLicencias) {
+        this.titularLicencia = titularLicencia;
+        this.fechaAltaLicencia = fechaAltaLicencia;
+        this.fechaVencimientoLicencia = fechaVencimientoLicencia;
+        this.claseLicencias = claseLicencias;
+        this.observacionesLicencia = observacionesLicencia;
+        this.cambioEstadoLicencias = cambioEstadoLicencias;
+    }
+
     @Id
     @Column(name = "ID_LICENCIA")
     public Long getIdLicencia() {

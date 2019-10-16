@@ -20,8 +20,7 @@ public class CambioEstadoLicencia {
     public CambioEstadoLicencia() {
     }
 
-    public CambioEstadoLicencia(Long idCambioEstado, Long codigoAnterior, Long codigoNuevo, EstadoLicencia estadoAnterior, EstadoLicencia estadoNuevo, LocalDateTime fechaHoraCambio, Usuario responsableCambio, String observaciones, Licencia licencia) {
-        this.idCambioEstado = idCambioEstado;
+    public CambioEstadoLicencia(Long codigoAnterior, Long codigoNuevo, EstadoLicencia estadoAnterior, EstadoLicencia estadoNuevo, LocalDateTime fechaHoraCambio, Usuario responsableCambio, String observaciones, Licencia licencia) {
         this.codigoAnterior = codigoAnterior;
         this.codigoNuevo = codigoNuevo;
         this.estadoAnterior = estadoAnterior;
