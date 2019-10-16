@@ -20,6 +20,10 @@ public class Titular implements Serializable{
     public Titular() {
     }
 
+    public  Titular(TitularDAO titular){
+this.contribuyente=titular.getCon;
+
+    }
     public Titular(Contribuyente contribuyente, ArrayList<Licencia> licencias, String observaciones, Boolean donante, TipoSangre tipoSangre) {
         this.contribuyente = contribuyente;
         this.licencias = licencias;
