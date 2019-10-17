@@ -8,15 +8,17 @@ import java.util.ArrayList;
 import java.util.Timer;
 
 public abstract class GestorTitular {
+
 //TODO ver que hacemos con el retorno de este metodo: Boolean vs Titular
     public static Boolean validarTitularExistente(Long dni) {
         Titular titular = GestorBD.buscarTitular(dni);
-if(titular!=null){
-    return true;
-}
-else{
-    return false;
-}
+
+        if(titular!=null){
+            return true;
+        }
+        else{
+            return false;
+        }
 
     }
 
