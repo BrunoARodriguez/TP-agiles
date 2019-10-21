@@ -1,5 +1,6 @@
 package LogicaDeNegocios.Entidades;
 
+import LogicaDeNegocios.DTOs.TitularDTO;
 import LogicaDeNegocios.Enumerations.TipoSangre;
 
 import javax.persistence.*;
@@ -19,10 +20,7 @@ public class Titular implements Serializable{
 
     public Titular() {
     }
-//TODO ver este constructor
-    public  Titular(TitularDAO titular){
-        this.contribuyente=titular.getCon;
-    }
+
     public Titular(Contribuyente contribuyente, ArrayList<Licencia> licencias, String observaciones, Boolean donante, TipoSangre tipoSangre) {
         this.contribuyente = contribuyente;
         this.licencias = licencias;
