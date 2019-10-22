@@ -17,7 +17,7 @@ public class Interfaz_Imprimir_Licencia {
     private JTextField tf_desde;
     private JTextField tf_hasta;
     private JTable table_resultados;
-    private JButton cancelarButton;
+    private JButton volverButton;
     private JButton buscarButton;
     private JButton imprimirButton;
 }
