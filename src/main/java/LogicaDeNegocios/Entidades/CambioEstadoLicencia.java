@@ -32,6 +32,8 @@ public class CambioEstadoLicencia {
     }
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cambioEstado_seq")
+    @SequenceGenerator(name = "cambioEstado_seq", sequenceName = "cambioEstado_seq", initialValue = 1, allocationSize = 1)
     @Column(name = "ID_CAMBIO_ESTADO")
     public Long getIdCambioEstado() {
         return idCambioEstado;

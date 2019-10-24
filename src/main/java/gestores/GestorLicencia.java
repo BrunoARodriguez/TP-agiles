@@ -20,6 +20,7 @@ public abstract class GestorLicencia {
                     Licencia licencia = new Licencia(titular, LocalDateTime.now(), GestorLicencia.calcularVigencia(titular.getContribuyente().getFechaNacimientoContribuyente(), licenciaDTO.getClaseLicencias(), titular.getLicencias().isEmpty()), licenciaDTO.getClaseLicencias(), licenciaDTO.getObservacionesLicencia(), new ArrayList<CambioEstadoLicencia>());
                     CambioEstadoLicencia cambioEstadoLicencia = new CambioEstadoLicencia(null, licencia.getIdLicencia(), null, EstadoLicencia.VIGENTE, LocalDateTime.now(), GestorUsuario.getUsuario(), licencia.getObservacionesLicencia(), licencia);
                     licencia.getCambioEstadoLicencias().add(cambioEstadoLicencia);
+                    titular.getLicencias().add(licencia);
                     if (GestorBD.guardarLicencia(licencia)) {
                         //Exito prro
                         return 0;
@@ -70,8 +71,7 @@ public abstract class GestorLicencia {
         } else {
             sumadorAñoVigencia += 1;
         }
-
-        LocalDateTime localDateTime = LocalDateTime.of(fechaActual.getYear() + sumadorAñoVigencia, fechaNacimiento.getMonth(), fechaNacimiento.getDayOfMonth(), 0, 0, 0);
+        LocalDateTime localDateTime = LocalDateTime.of(fechaActual.getYear() + sumadorAñoVigencia, fechaNacimiento.getMonth(), fechaNacimiento.getDayOfMonth()+1, 0, 0, 0);
 
         return localDateTime;
 

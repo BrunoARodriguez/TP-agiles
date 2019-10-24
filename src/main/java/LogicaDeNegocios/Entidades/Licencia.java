@@ -1,9 +1,14 @@
 package LogicaDeNegocios.Entidades;
 
 import LogicaDeNegocios.Enumerations.ClaseLicencia;
-import org.hibernate.annotations.Type;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
+import javax.persistence.OrderBy;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -17,9 +22,9 @@ public class Licencia {
     private Titular titularLicencia;
     private LocalDateTime fechaAltaLicencia;
     private LocalDateTime fechaVencimientoLicencia;
-    private ArrayList<ClaseLicencia> claseLicencias;
+    private List<ClaseLicencia> claseLicencias;
     private String observacionesLicencia;
-    private ArrayList<CambioEstadoLicencia> cambioEstadoLicencias;
+    private List<CambioEstadoLicencia> cambioEstadoLicencias;
 
     public Licencia() {
     }
@@ -34,6 +39,8 @@ public class Licencia {
     }
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "licencia_seq")
+    @SequenceGenerator(name = "licencia_seq", sequenceName = "licencia_seq", initialValue = 1, allocationSize = 1)
     @Column(name = "ID_LICENCIA")
     public Long getIdLicencia() {
         return idLicencia;
@@ -43,7 +50,7 @@ public class Licencia {
         this.idLicencia = idLicencia;
     }
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "DNI_TITULAR", nullable = false, foreignKey = @ForeignKey(name = "FK_licencia_titular"))
     public Titular getTitularLicencia() {
         return titularLicencia;
@@ -77,7 +84,7 @@ public class Licencia {
         return claseLicencias;
     }
 
-    public void setClaseLicencias(ArrayList<ClaseLicencia> claseLicencias) {
+    public void setClaseLicencias(List<ClaseLicencia> claseLicencias) {
         this.claseLicencias = claseLicencias;
     }
 
@@ -90,13 +97,13 @@ public class Licencia {
         this.observacionesLicencia = observacionesLicencia;
     }
 
-    @OneToMany(mappedBy = "codigoAnterior", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "licencia", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @OrderBy("idCambioEstado ASC")
     public List<CambioEstadoLicencia> getCambioEstadoLicencias() {
         return cambioEstadoLicencias;
     }
 
-    public void setCambioEstadoLicencias(ArrayList<CambioEstadoLicencia> cambioEstadoLicencias) {
+    public void setCambioEstadoLicencias(List<CambioEstadoLicencia> cambioEstadoLicencias) {
         this.cambioEstadoLicencias = cambioEstadoLicencias;
     }
 }

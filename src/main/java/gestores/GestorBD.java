@@ -21,6 +21,11 @@ public abstract class GestorBD {
             manager.getTransaction().begin();
             titular = manager.find(Titular.class, dni);
             manager.getTransaction().commit();
+            titular.getLicencias().size();
+            for(Licencia l : titular.getLicencias()){
+                l.getClaseLicencias().size();
+                l.getCambioEstadoLicencias().size();
+            }
             manager.close();
             return titular;
         } catch (Exception e) {
@@ -48,8 +53,12 @@ public abstract class GestorBD {
         try {
             EntityManager manager = emf.createEntityManager();
             manager.getTransaction().begin();
-            manager.merge(titular);
-            manager.persist(titular);
+            if(manager.find(Titular.class, titular.getContribuyente().getNroDocumento())!=null){
+                titular = manager.merge(titular);
+            }
+            else{
+                manager.persist(titular);
+            }
             manager.getTransaction().commit();
             manager.close();
             return true;
@@ -63,8 +72,12 @@ public abstract class GestorBD {
         try {
             EntityManager manager = emf.createEntityManager();
             manager.getTransaction().begin();
-            manager.merge(licencia);
-            manager.persist(licencia);
+            if(licencia.getIdLicencia()== null || manager.find(Licencia.class, licencia.getIdLicencia())!=null){
+                licencia = manager.merge(licencia);
+            }
+            else{
+                manager.persist(licencia);
+            }
             manager.getTransaction().commit();
             manager.close();
             return true;
