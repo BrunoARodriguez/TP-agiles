@@ -2,7 +2,7 @@ package Interfaces;
 
 import javax.swing.*;
 
-public class Interfaz_Emitir_Licencia2 {
+public class Interfaz_Emitir_Licencia2 extends JPanel{
 
     private JTextField textField1;
     private JTextField textField2;
@@ -23,5 +23,11 @@ public class Interfaz_Emitir_Licencia2 {
     private JTextField DDMMAATextField1;
     private JButton confirmarButton;
     private JButton cancelarButton;
-    private JPanel panel1;
+    private JPanel rootPane;
+
+    public JPanel getPane(){
+        return rootPane;
+    }
+
+
 }

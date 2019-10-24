@@ -4,8 +4,8 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
-public class Interfaz_Renovar_Licencia extends JFrame {
-    private JPanel panel1;
+public class Interfaz_Renovar_Licencia   {
+    private JPanel rootPane;
     private JTextField tf_dni;
     private JTextField tf_nombre;
     private JTextField tf_apellido;
@@ -24,6 +24,10 @@ public class Interfaz_Renovar_Licencia extends JFrame {
     private JButton renovarButton;
     private JScrollPane scrollPane;
 
+    public JPanel getPane(){
+        return rootPane;
+    }
+
     public Interfaz_Renovar_Licencia() {
         String[] columns = {"DNI titular","Nombre titular", "Apellido titular", "Clase(s)", "Fecha Alta" };
         Object[][] data = {{}};
@@ -33,15 +37,15 @@ public class Interfaz_Renovar_Licencia extends JFrame {
         table_resultados= new JTable(tableModel);
         scrollPane.setViewportView(table_resultados);
 
-        setContentPane(panel1);
+/*        setContentPane(panel1);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         pack();
         setLocationRelativeTo(null);
-        setVisible(true);
+        setVisible(true);*/
 
     }
 
-    public static void main(String[] args) {
-        new Interfaz_Renovar_Licencia();
-    }
+//    public static void main(String[] args) {
+//        new Interfaz_Renovar_Licencia();
+//    }
 }

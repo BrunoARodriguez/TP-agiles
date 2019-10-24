@@ -12,8 +12,12 @@ public class Interfaz_Alta_Titular {
     private JTextArea XXXXXXXXXTextArea;
     private JButton confirmarButton;
     private JButton cancelarButton;
-    private JPanel panel1;
+    private JPanel rootPane;
     private JButton buscarDatosButton;
     private JComboBox comboBox2;
     private JCheckBox esDonanteCheckBox;
+
+    public JPanel getPane(){
+        return rootPane;
+    }
 }
