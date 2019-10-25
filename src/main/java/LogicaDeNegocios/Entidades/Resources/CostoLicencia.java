@@ -11,7 +11,7 @@ public class CostoLicencia {
 
     private Atributos atributos;
     private Float costoLicencia;
-    private static final Double COSTO_ADMINISTRATIVO = 8.0;
+    private static final Float COSTO_ADMINISTRATIVO = 8.0F;
 
     public CostoLicencia() {
     }
@@ -32,7 +32,7 @@ public class CostoLicencia {
 
     @Column(name = "COSTO_LICENCIA")
     public Float getCostoLicencia() {
-        return costoLicencia;
+        return costoLicencia+COSTO_ADMINISTRATIVO;
     }
 
     public void setCostoLicencia(Float costoLicencia) {

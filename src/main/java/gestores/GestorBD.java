@@ -2,6 +2,7 @@ package gestores;
 
 import LogicaDeNegocios.Entidades.Contribuyente;
 import LogicaDeNegocios.Entidades.Licencia;
+import LogicaDeNegocios.Entidades.Resources.CostoLicencia;
 import LogicaDeNegocios.Entidades.Titular;
 
 import javax.persistence.EntityManager;
@@ -86,4 +87,19 @@ public abstract class GestorBD {
             return false;
         }
     }//cierra guardarLicencia
+
+    public static CostoLicencia buscarCosto(String name, Integer vigencia) {
+        try {
+            EntityManager manager = emf.createEntityManager();
+            CostoLicencia costo;
+            manager.getTransaction().begin();
+            costo = manager.find(CostoLicencia.class);
+            manager.getTransaction().commit();
+            manager.close();
+            return costo;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }
