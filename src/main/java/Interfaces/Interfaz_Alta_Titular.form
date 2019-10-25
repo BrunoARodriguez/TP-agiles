@@ -88,6 +88,7 @@
             </constraints>
             <properties>
               <columns value="1"/>
+              <editable value="false"/>
             </properties>
           </component>
           <component id="a310f" class="javax.swing.JLabel">
@@ -106,7 +107,9 @@
                 <preferred-size width="200" height="24"/>
               </grid>
             </constraints>
-            <properties/>
+            <properties>
+              <editable value="false"/>
+            </properties>
           </component>
           <component id="4e878" class="javax.swing.JLabel">
             <constraints>
@@ -134,7 +137,9 @@
                 <preferred-size width="200" height="24"/>
               </grid>
             </constraints>
-            <properties/>
+            <properties>
+              <editable value="false"/>
+            </properties>
           </component>
           <component id="a0949" class="javax.swing.JTextField" binding="tfFDeNac">
             <constraints>
@@ -142,7 +147,9 @@
                 <preferred-size width="200" height="24"/>
               </grid>
             </constraints>
-            <properties/>
+            <properties>
+              <editable value="false"/>
+            </properties>
           </component>
         </children>
       </grid>
