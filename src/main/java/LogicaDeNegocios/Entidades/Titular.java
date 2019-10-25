@@ -1,6 +1,9 @@
 package LogicaDeNegocios.Entidades;
 
+import LogicaDeNegocios.DTOs.TitularDTO;
 import LogicaDeNegocios.Enumerations.TipoSangre;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -12,7 +15,7 @@ import java.util.List;
 public class Titular implements Serializable{
 
     private Contribuyente contribuyente;
-    private ArrayList<Licencia> licencias;
+    private List<Licencia> licencias;
     private String observaciones;
     private Boolean donante;
     private TipoSangre tipoSangre;
@@ -20,7 +23,7 @@ public class Titular implements Serializable{
     public Titular() {
     }
 
-    public Titular(Contribuyente contribuyente, ArrayList<Licencia> licencias, String observaciones, Boolean donante, TipoSangre tipoSangre) {
+    public Titular(Contribuyente contribuyente, List<Licencia> licencias, String observaciones, Boolean donante, TipoSangre tipoSangre) {
         this.contribuyente = contribuyente;
         this.licencias = licencias;
         this.observaciones = observaciones;
@@ -29,7 +32,7 @@ public class Titular implements Serializable{
     }
 
     @Id
-    @OneToOne
+    @ManyToOne(targetEntity = Contribuyente.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "Contribuyente", nullable = false, foreignKey = @ForeignKey(name = "FK_titular_contribuyente"))
     public Contribuyente getContribuyente() {
         return contribuyente;
@@ -39,13 +42,14 @@ public class Titular implements Serializable{
         this.contribuyente = contribuyente;
     }
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     @CollectionTable(name = "TITULAR_LICENCIAS")
     public List<Licencia> getLicencias() {
         return licencias;
     }
 
-    public void setLicencias(ArrayList<Licencia> licencias) {
+    public void setLicencias(List<Licencia> licencias) {
         this.licencias = licencias;
     }
 

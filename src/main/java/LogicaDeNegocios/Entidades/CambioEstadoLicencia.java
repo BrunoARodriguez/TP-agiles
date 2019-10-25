@@ -20,8 +20,7 @@ public class CambioEstadoLicencia {
     public CambioEstadoLicencia() {
     }
 
-    public CambioEstadoLicencia(Long idCambioEstado, Long codigoAnterior, Long codigoNuevo, EstadoLicencia estadoAnterior, EstadoLicencia estadoNuevo, LocalDateTime fechaHoraCambio, Usuario responsableCambio, String observaciones, Licencia licencia) {
-        this.idCambioEstado = idCambioEstado;
+    public CambioEstadoLicencia(Long codigoAnterior, Long codigoNuevo, EstadoLicencia estadoAnterior, EstadoLicencia estadoNuevo, LocalDateTime fechaHoraCambio, Usuario responsableCambio, String observaciones, Licencia licencia) {
         this.codigoAnterior = codigoAnterior;
         this.codigoNuevo = codigoNuevo;
         this.estadoAnterior = estadoAnterior;
@@ -33,6 +32,8 @@ public class CambioEstadoLicencia {
     }
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cambioEstado_seq")
+    @SequenceGenerator(name = "cambioEstado_seq", sequenceName = "cambioEstado_seq", initialValue = 1, allocationSize = 1)
     @Column(name = "ID_CAMBIO_ESTADO")
     public Long getIdCambioEstado() {
         return idCambioEstado;
