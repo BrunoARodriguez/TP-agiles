@@ -3,10 +3,10 @@ package gestores;
 import LogicaDeNegocios.DTOs.LicenciaDTO;
 import LogicaDeNegocios.Entidades.CambioEstadoLicencia;
 import LogicaDeNegocios.Entidades.Licencia;
+import LogicaDeNegocios.Entidades.Resources.CostoLicencia;
 import LogicaDeNegocios.Entidades.Titular;
 import LogicaDeNegocios.Enumerations.ClaseLicencia;
 import LogicaDeNegocios.Enumerations.EstadoLicencia;
-import jdk.vm.ci.meta.Local;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ public abstract class GestorLicencia {
                     titular.getLicencias().add(licencia);
                     if (GestorBD.guardarLicencia(licencia)) {
                         //Exito prro
-                        calcularCostoLicencia(licencia.getFechaAltaLicencia(),licencia.getFechaVencimientoLicencia(),licencia.getClaseLicencias());
+                        Float costoLicencia = calcularCostoLicencia(licencia.getFechaAltaLicencia(), licencia.getFechaVencimientoLicencia(), licencia.getClaseLicencias());
                         return 0;
                     } else {
                         //Error al guardar
@@ -74,7 +74,7 @@ public abstract class GestorLicencia {
         } else {
             sumadorAñoVigencia += 1;
         }
-        LocalDateTime localDateTime = LocalDateTime.of(fechaActual.getYear() + sumadorAñoVigencia, fechaNacimiento.getMonth(), fechaNacimiento.getDayOfMonth()+1, 0, 0, 0);
+        LocalDateTime localDateTime = LocalDateTime.of(fechaActual.getYear() + sumadorAñoVigencia, fechaNacimiento.getMonth(), fechaNacimiento.getDayOfMonth() + 1, 0, 0, 0);
 
         return localDateTime;
 
@@ -91,13 +91,15 @@ public abstract class GestorLicencia {
     }//cierra calcularAñoFechaVigencia
 
     //para el costo de la licencia
-public  static  Float calcularCostoLicencia(LocalDateTime fechaAlta, LocalDateTime fechaVencimiento, List<ClaseLicencia> clases) {
-        Float costo=0F;
-Integer vigencia=fechaVencimiento.getYear() - fechaAlta.getYear();
-for (ClaseLicencia cl: clases){
-costo +=GestorBD.buscarCosto(cl.getName(),vigencia).getCostoLicencia();
-}
-    return costo;
-}
+    public static Float calcularCostoLicencia(LocalDateTime fechaAlta, LocalDateTime fechaVencimiento, List<ClaseLicencia> clases) {
+        Float costo = 0F;
+        Integer vigencia = fechaVencimiento.getYear() - fechaAlta.getYear();
+        for (ClaseLicencia cl : clases) {
+            CostoLicencia ct = new CostoLicencia(cl, vigencia);
+            costo += GestorBD.buscarCosto(ct).getCostoLicencia();
+        }
+        costo += CostoLicencia.COSTO_ADMINISTRATIVO;
+        return costo;
+    }//cierra calcularCostoLicencia
 }
 

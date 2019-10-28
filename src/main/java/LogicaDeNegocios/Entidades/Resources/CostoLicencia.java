@@ -11,7 +11,7 @@ public class CostoLicencia {
 
     private Atributos atributos;
     private Float costoLicencia;
-    private static final Float COSTO_ADMINISTRATIVO = 8.0F;
+    public static final Float COSTO_ADMINISTRATIVO = 8.0F;
 
     public CostoLicencia() {
     }
@@ -19,6 +19,10 @@ public class CostoLicencia {
     public CostoLicencia(ClaseLicencia claseLicencia, Integer vigenciaLicencia, Float costoLicencia) {
         this.atributos = new Atributos(claseLicencia,vigenciaLicencia);
         this.costoLicencia = costoLicencia;
+    }
+
+    public CostoLicencia(ClaseLicencia claseLicencia, Integer vigenciaLicencia) {
+        this.atributos = new Atributos(claseLicencia,vigenciaLicencia);
     }
 
     @EmbeddedId
@@ -32,7 +36,7 @@ public class CostoLicencia {
 
     @Column(name = "COSTO_LICENCIA")
     public Float getCostoLicencia() {
-        return costoLicencia+COSTO_ADMINISTRATIVO;
+        return costoLicencia;
     }
 
     public void setCostoLicencia(Float costoLicencia) {
@@ -40,7 +44,7 @@ public class CostoLicencia {
     }
 
     @Embeddable
-    private static class Atributos implements Serializable{
+    public static class Atributos implements Serializable{
         private ClaseLicencia claseLicencia;
         private Integer vigenciaLicencia;
 
