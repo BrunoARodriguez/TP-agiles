@@ -1,13 +1,13 @@
 package LogicaDeNegocios.Enumerations;
 
 public enum ClaseLicencia {
-    CLASE_A("Clase A"),
-    CLASE_B("Clase B"),
-    CLASE_C("Clase C"),
-    CLASE_D("Clase D"),
-    CLASE_E("Clase E"),
-    CLASE_F("Clase F"),
-    CLASE_G("Clase G");
+    CLASE_A("CLASE_A"),
+    CLASE_B("CLASE_B"),
+    CLASE_C("CLASE_C"),
+    CLASE_D("CLASE_D"),
+    CLASE_E("CLASE_E"),
+    CLASE_F("CLASE_F"),
+    CLASE_G("CLASE_G");
 
     private String name;
 

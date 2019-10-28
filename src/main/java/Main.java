@@ -1,5 +1,6 @@
 import LogicaDeNegocios.DTOs.LicenciaDTO;
 import LogicaDeNegocios.DTOs.TitularDTO;
+import LogicaDeNegocios.Entidades.Licencia;
 import LogicaDeNegocios.Entidades.Titular;
 import LogicaDeNegocios.Entidades.Usuario;
 import LogicaDeNegocios.Enumerations.ClaseLicencia;
