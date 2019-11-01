@@ -1,5 +1,6 @@
 package gestores;
 
+import LogicaDeNegocios.DTOs.ContribuyenteDTO;
 import LogicaDeNegocios.DTOs.TitularDTO;
 import LogicaDeNegocios.Entidades.Contribuyente;
 import LogicaDeNegocios.Entidades.Licencia;
@@ -19,6 +20,19 @@ public abstract class GestorTitular {
             return false;
         }
     }//cierra validarTitularExistente
+
+    public static ContribuyenteDTO buscarContribuyente(ContribuyenteDTO contribuyenteDTO) {
+        Contribuyente contribuyente = GestorBD.buscarContribuyente(contribuyenteDTO.getNroDocumento());
+        if (contribuyente == null) {
+            return null;
+        } else {
+            contribuyenteDTO.setApellido(contribuyente.getApellidoContribuyente());
+            contribuyenteDTO.setNombre(contribuyente.getNombreContribuyente());
+            contribuyenteDTO.setFechaDeNacimiento(contribuyente.getFechaNacimientoContribuyente());
+            contribuyenteDTO.setDomicilio(contribuyente.getDomicilioContribuyente());
+            return contribuyenteDTO;
+        }
+    } //cierra buscarContribuyente
 
     public static int crearTitular(TitularDTO titularDTO) {
         Contribuyente contribuyente = GestorBD.buscarContribuyente(titularDTO.getDni());
