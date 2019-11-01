@@ -37,13 +37,18 @@ public abstract class GestorTitular {
     public static int crearTitular(TitularDTO titularDTO) {
         Contribuyente contribuyente = GestorBD.buscarContribuyente(titularDTO.getDni());
         if (contribuyente != null) {
-            Titular titular = new Titular(contribuyente, new ArrayList<Licencia>(), titularDTO.getObservaciones(), titularDTO.getDonante(), titularDTO.getTipoSangre());
-            if (GestorBD.guardarTitular(titular)) {
-                //Exitos prro
-                return 0;
+            if(buscarTitular(titularDTO.getDni())==null){
+                Titular titular = new Titular(contribuyente, new ArrayList<Licencia>(), titularDTO.getObservaciones(), titularDTO.getDonante(), titularDTO.getTipoSangre());
+                if (GestorBD.guardarTitular(titular)) {
+                    //Exitos prro
+                    return 0;
+                } else {
+                    //Error al guardar el titular
+                    return -2;
+                }
             } else {
-                //Error al guardar el titular
-                return -2;
+              //Titular ya existe con este documento.
+              return -3;
             }
         } else {
             //Contribuyente no encontrado en base de datos
