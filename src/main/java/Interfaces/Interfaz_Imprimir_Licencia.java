@@ -3,6 +3,8 @@ package Interfaces;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class Interfaz_Imprimir_Licencia {
     private JPanel rootPane;
@@ -29,7 +31,7 @@ public class Interfaz_Imprimir_Licencia {
         return rootPane;
     }
 
-    public Interfaz_Imprimir_Licencia() {
+    public Interfaz_Imprimir_Licencia(final MainFrame frame) {
         String[] columns = {"DNI titular","Nombre titular", "Apellido titular", "Clase(s)", "Fecha Alta" };
         Object[][] data = {{}};
 
@@ -37,5 +39,13 @@ public class Interfaz_Imprimir_Licencia {
         tableModel = new DefaultTableModel(columns,0);
         table_resultados= new JTable(tableModel);
         scrollPane.setViewportView(table_resultados);
+
+
+        volverButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                frame.backPreviousPane();
+            }
+        });
     }
 }

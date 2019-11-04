@@ -3,6 +3,8 @@ package Interfaces;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class Interfaz_Licencias_Expiradas {
     private JPanel rootPane;
@@ -29,7 +31,7 @@ public class Interfaz_Licencias_Expiradas {
         return rootPane;
     }
 
-    public Interfaz_Licencias_Expiradas() {
+    public Interfaz_Licencias_Expiradas(final MainFrame frame) {
         String[] columns = {"DNI titular","Nombre titular", "Apellido titular", "Clase(s)", "Fecha Alta","Estado licencia" };
         Object[][] data = {{}};
 
@@ -37,5 +39,13 @@ public class Interfaz_Licencias_Expiradas {
         tableModel = new DefaultTableModel(columns,2);
         table_resultados= new JTable(tableModel);
         scrollPane.setViewportView(table_resultados);
+
+
+        volverButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                frame.backPreviousPane();
+            }
+        });
     }
 }

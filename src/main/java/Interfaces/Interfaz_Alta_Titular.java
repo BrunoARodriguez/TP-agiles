@@ -24,7 +24,7 @@ public class Interfaz_Alta_Titular {
     private JButton buscarDatosButton;
     private JCheckBox esDonanteCheckBox;
 
-    public Interfaz_Alta_Titular() {
+    public Interfaz_Alta_Titular( final MainFrame frame ) {
 
         TipoSangre[] tipoSangre = TipoSangre.values();
         for(TipoSangre t : tipoSangre){
@@ -93,7 +93,7 @@ public class Interfaz_Alta_Titular {
         cancelarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-
+                frame.backPreviousPane();
             }
         });
 

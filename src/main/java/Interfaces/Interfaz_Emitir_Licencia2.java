@@ -35,7 +35,7 @@ public class Interfaz_Emitir_Licencia2 extends JPanel{
     private JButton buttonCancelar;
     private JPanel rootPane;
 
-    public Interfaz_Emitir_Licencia2() {
+    public Interfaz_Emitir_Licencia2(final MainFrame frame) {
 
         if (!(GestorTitular.titularAux == null)) {
             TitularDTO titular = new TitularDTO();
@@ -101,7 +101,16 @@ titular.setDonante(GestorTitular.titularAux.getDonante());
 
             }
         });
+
+        buttonCancelar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                frame.backPreviousPane();
+            }
+        });
     }
+
+
 
     public JPanel getPane(){
         return rootPane;
