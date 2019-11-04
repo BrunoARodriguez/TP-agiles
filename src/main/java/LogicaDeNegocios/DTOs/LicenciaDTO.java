@@ -14,8 +14,10 @@ public class LicenciaDTO {
     private LocalDateTime fechaVencimientoLicencia;
     private ArrayList<ClaseLicencia> claseLicencias;
     private String observacionesLicencia;
+    private Boolean esDonante;
 
     public LicenciaDTO() {
+        claseLicencias = new ArrayList<ClaseLicencia>();
     }
 
     public LicenciaDTO(Long idLicencia, Long dni, LocalDateTime fechaAltaLicencia, LocalDateTime fechaVencimientoLicencia, ArrayList<ClaseLicencia> claseLicencias, String observacionesLicencia) {
@@ -73,5 +75,21 @@ public class LicenciaDTO {
 
     public void setObservacionesLicencia(String observacionesLicencia) {
         this.observacionesLicencia = observacionesLicencia;
+    }
+
+    public Long getDni() {
+        return dni;
+    }
+
+    public void setDni(Long dni) {
+        this.dni = dni;
+    }
+
+    public Boolean getEsDonante() {
+        return esDonante;
+    }
+
+    public void setEsDonante(Boolean esDonante) {
+        this.esDonante = esDonante;
     }
 }

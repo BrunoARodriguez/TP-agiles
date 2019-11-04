@@ -15,17 +15,18 @@ import java.util.List;
 public abstract class GestorLicencia {
 
     public static int crearLicencia(LicenciaDTO licenciaDTO) {
-        if (GestorTitular.validarTitularExistente(licenciaDTO.getDNI())) {
-            Titular titular = GestorTitular.buscarTitular(licenciaDTO.getDNI());//TODO ver si usamos Gestor DB directamente o pasamos por gestor titular
+
+            Titular titular=GestorTitular.titularAux;
             if (titular != null) {
                 if (!licenciaDTO.getClaseLicencias().isEmpty()) {
-                    Licencia licencia = new Licencia(titular, LocalDateTime.now(), GestorLicencia.calcularVigencia(titular.getContribuyente().getFechaNacimientoContribuyente(), licenciaDTO.getClaseLicencias(), titular.getLicencias().isEmpty()), licenciaDTO.getClaseLicencias(), licenciaDTO.getObservacionesLicencia(), new ArrayList<CambioEstadoLicencia>());
+                    Licencia licencia = new Licencia(titular, licenciaDTO.getFechaAltaLicencia(), GestorLicencia.calcularVigencia(titular.getContribuyente().getFechaNacimientoContribuyente(), licenciaDTO.getClaseLicencias(), titular.getLicencias().isEmpty()), licenciaDTO.getClaseLicencias(), licenciaDTO.getObservacionesLicencia(), new ArrayList<CambioEstadoLicencia>());
                     CambioEstadoLicencia cambioEstadoLicencia = new CambioEstadoLicencia(null, licencia.getIdLicencia(), null, EstadoLicencia.VIGENTE, LocalDateTime.now(), GestorUsuario.getUsuario(), licencia.getObservacionesLicencia(), licencia);
                     licencia.getCambioEstadoLicencias().add(cambioEstadoLicencia);
                     titular.getLicencias().add(licencia);
-                    if (GestorBD.guardarLicencia(licencia)) {
+                    if (GestorBD.guardarLicencia(licencia) && GestorBD.guardarTitular(titular)) {
                         //Exito prro
                         Float costoLicencia = calcularCostoLicencia(licencia.getFechaAltaLicencia(), licencia.getFechaVencimientoLicencia(), licencia.getClaseLicencias());
+                        //TODO Agregar costoLicencia a clase Comprobante
                         return 0;
                     } else {
                         //Error al guardar
@@ -39,10 +40,7 @@ public abstract class GestorLicencia {
                 //Error en la base de datos
                 return -4;
             }
-        } else {
-            //Titular no encontrado en base de datos.
-            return -1;
-        }
+
     }//cierra crearLicencia
 
     public static LocalDateTime calcularVigencia(LocalDateTime fechaNacimiento, List<ClaseLicencia> clasesLicencia, Boolean tieneLicencias) {

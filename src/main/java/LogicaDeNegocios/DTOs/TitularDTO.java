@@ -1,9 +1,11 @@
 package LogicaDeNegocios.DTOs;
 
+import LogicaDeNegocios.Entidades.Contribuyente;
 import LogicaDeNegocios.Enumerations.TipoSangre;
 
 public class TitularDTO {
     private Long dni;
+    private ContribuyenteDTO contribuyente;
     private String observaciones;
     private Boolean donante;
     private TipoSangre tipoSangre;
@@ -48,5 +50,13 @@ public class TitularDTO {
 
     public void setTipoSangre(TipoSangre tipoSangre) {
         this.tipoSangre = tipoSangre;
+    }
+
+    public ContribuyenteDTO getContribuyente() {
+        return contribuyente;
+    }
+
+    public void setContribuyente(ContribuyenteDTO contribuyente) {
+        this.contribuyente = contribuyente;
     }
 }

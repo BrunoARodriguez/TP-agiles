@@ -3,28 +3,32 @@
   <grid id="27dc6" binding="rootPane" layout-manager="GridLayoutManager" row-count="12" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
-      <xy x="146" y="58" width="492" height="408"/>
+      <xy x="146" y="58" width="493" height="408"/>
     </constraints>
     <properties>
       <font/>
     </properties>
     <border type="none" title=""/>
     <children>
-      <component id="ab366" class="javax.swing.JTextField" binding="textField2" default-binding="true">
+      <component id="ab366" class="javax.swing.JTextField" binding="txt_apellido">
         <constraints>
           <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
             <preferred-size width="200" height="24"/>
           </grid>
         </constraints>
-        <properties/>
+        <properties>
+          <editable value="false"/>
+        </properties>
       </component>
-      <component id="a0949" class="javax.swing.JTextField" binding="textField4" default-binding="true">
+      <component id="a0949" class="javax.swing.JTextField" binding="txt_fecha_nacimiento">
         <constraints>
           <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
             <preferred-size width="200" height="24"/>
           </grid>
         </constraints>
-        <properties/>
+        <properties>
+          <editable value="false"/>
+        </properties>
       </component>
       <component id="4e878" class="javax.swing.JLabel">
         <constraints>
@@ -141,43 +145,43 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="4dab4" class="javax.swing.JCheckBox" binding="aCheckBox" default-binding="true">
+          <component id="4dab4" class="javax.swing.JCheckBox" binding="checkBoxA">
             <constraints/>
             <properties>
               <text value="A"/>
             </properties>
           </component>
-          <component id="325fd" class="javax.swing.JCheckBox" binding="bCheckBox" default-binding="true">
+          <component id="325fd" class="javax.swing.JCheckBox" binding="checkBoxB">
             <constraints/>
             <properties>
               <text value="B"/>
             </properties>
           </component>
-          <component id="f60b" class="javax.swing.JCheckBox" binding="cCheckBox" default-binding="true">
+          <component id="f60b" class="javax.swing.JCheckBox" binding="checkBoxC">
             <constraints/>
             <properties>
               <text value="C"/>
             </properties>
           </component>
-          <component id="b1c6e" class="javax.swing.JCheckBox" binding="dCheckBox" default-binding="true">
+          <component id="b1c6e" class="javax.swing.JCheckBox" binding="checkBoxD">
             <constraints/>
             <properties>
               <text value="D"/>
             </properties>
           </component>
-          <component id="20733" class="javax.swing.JCheckBox" binding="eCheckBox" default-binding="true">
+          <component id="20733" class="javax.swing.JCheckBox" binding="checkBoxE">
             <constraints/>
             <properties>
               <text value="E"/>
             </properties>
           </component>
-          <component id="ebdbe" class="javax.swing.JCheckBox" binding="fCheckBox" default-binding="true">
+          <component id="ebdbe" class="javax.swing.JCheckBox" binding="checkBoxF">
             <constraints/>
             <properties>
               <text value="F"/>
             </properties>
           </component>
-          <component id="75634" class="javax.swing.JCheckBox" binding="gCheckBox" default-binding="true">
+          <component id="75634" class="javax.swing.JCheckBox" binding="checkBoxG">
             <constraints/>
             <properties>
               <text value="G"/>
@@ -231,7 +235,7 @@
           </component>
         </children>
       </grid>
-      <component id="ed47e" class="javax.swing.JTextArea" binding="XXXXXXXXXTextArea" default-binding="true">
+      <component id="ed47e" class="javax.swing.JTextArea" binding="txt_observaciones">
         <constraints>
           <grid row="9" column="1" row-span="1" col-span="2" vsize-policy="6" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="50"/>
@@ -249,7 +253,7 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="a7cf" class="javax.swing.JButton" binding="confirmarButton" default-binding="true">
+          <component id="a7cf" class="javax.swing.JButton" binding="buttonAceptar">
             <constraints>
               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -257,7 +261,7 @@
               <text value="Confirmar"/>
             </properties>
           </component>
-          <component id="a7e84" class="javax.swing.JButton" binding="cancelarButton" default-binding="true">
+          <component id="a7e84" class="javax.swing.JButton" binding="buttonCancelar">
             <constraints>
               <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -277,7 +281,7 @@
           </hspacer>
         </children>
       </grid>
-      <component id="6c3f8" class="javax.swing.JTextField" binding="textField3" default-binding="true">
+      <component id="6c3f8" class="javax.swing.JTextField" binding="txt_nombre">
         <constraints>
           <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
             <preferred-size width="200" height="24"/>
@@ -285,9 +289,10 @@
         </constraints>
         <properties>
           <columns value="1"/>
+          <editable value="false"/>
         </properties>
       </component>
-      <component id="10e9" class="javax.swing.JTextField" binding="textField1" default-binding="true">
+      <component id="10e9" class="javax.swing.JTextField" binding="txt_dni">
         <constraints>
           <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
             <preferred-size width="200" height="24"/>
@@ -295,16 +300,19 @@
         </constraints>
         <properties>
           <columns value="5"/>
-          <editable value="true"/>
+          <editable value="false"/>
+          <enabled value="true"/>
         </properties>
       </component>
-      <component id="abe8b" class="javax.swing.JTextField" binding="textField5" default-binding="true">
+      <component id="abe8b" class="javax.swing.JTextField" binding="txt_domocilio">
         <constraints>
           <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
             <preferred-size width="200" height="24"/>
           </grid>
         </constraints>
-        <properties/>
+        <properties>
+          <editable value="false"/>
+        </properties>
       </component>
       <grid id="1376d" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="0" left="0" bottom="0" right="0"/>
