@@ -85,7 +85,7 @@ public class Interfaz_Alta_Titular {
                     case 0: System.out.println("Titular creado con exito.");break;
                     case -1: System.out.println("Contribuyente no encontrado en la base de datos.");break;
                     case -2: System.out.println("Error guardando titular en base de datos.");break;
-                    case -3: System.out.println("Titular ya existe con este documeto."); break;
+                    case -3: System.out.println("Titular ya existe con este documento."); break;
                 }
             }
         });
@@ -93,7 +93,10 @@ public class Interfaz_Alta_Titular {
         cancelarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                frame.backPreviousPane();
+                JDialogCancelar c = new JDialogCancelar(frame);
+                if(c.fueCancelado()) {
+                    frame.backPreviousPane();
+                }
             }
         });
 

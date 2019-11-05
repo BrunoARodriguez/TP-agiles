@@ -43,7 +43,10 @@ public class Interfaz_Renovar_Licencia   {
         volverButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                frame.backPreviousPane();
+                JDialogCancelar c = new JDialogCancelar(frame);
+                if(c.fueCancelado()) {
+                    frame.backPreviousPane();
+                }
             }
         });
 
