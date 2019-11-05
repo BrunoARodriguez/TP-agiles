@@ -2,6 +2,7 @@ package Interfaces;
 
 import LogicaDeNegocios.DTOs.ContribuyenteDTO;
 import LogicaDeNegocios.DTOs.TitularDTO;
+import LogicaDeNegocios.Entidades.Contribuyente;
 import LogicaDeNegocios.Enumerations.TipoSangre;
 import gestores.GestorTitular;
 
@@ -81,12 +82,12 @@ public class Interfaz_Alta_Titular {
                         titularDTO.setTipoSangre(t);
                     }
                 }
-                switch (GestorTitular.crearTitular(titularDTO)){
-                    case 0: System.out.println("Titular creado con exito.");break;
-                    case -1: System.out.println("Contribuyente no encontrado en la base de datos.");break;
-                    case -2: System.out.println("Error guardando titular en base de datos.");break;
-                    case -3: System.out.println("Titular ya existe con este documento."); break;
-                }
+                ContribuyenteDTO contribuyenteDTO = new ContribuyenteDTO();
+                contribuyenteDTO.setNroDocumento(titularDTO.getDni());
+                titularDTO.setContribuyente(GestorTitular.buscarContribuyente(contribuyenteDTO));
+                titularDTO.setTieneLicencias(false);
+                GestorTitular.titularAux = titularDTO;
+                frame.cambiarPanel(MainFrame.PANE_EMITIR_LICENCIA);
             }
         });
 
@@ -95,6 +96,7 @@ public class Interfaz_Alta_Titular {
             public void actionPerformed(ActionEvent actionEvent) {
                 JDialogCancelar c = new JDialogCancelar(frame);
                 if(c.fueCancelado()) {
+                    GestorTitular.titularAux=null;
                     frame.backPreviousPane();
                 }
             }

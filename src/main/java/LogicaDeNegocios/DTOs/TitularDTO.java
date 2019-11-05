@@ -9,6 +9,7 @@ public class TitularDTO {
     private String observaciones;
     private Boolean donante;
     private TipoSangre tipoSangre;
+    private Boolean tieneLicencias;
 
     public TitularDTO() {
     }
@@ -58,5 +59,13 @@ public class TitularDTO {
 
     public void setContribuyente(ContribuyenteDTO contribuyente) {
         this.contribuyente = contribuyente;
+    }
+
+    public Boolean getTieneLicencias() {
+        return tieneLicencias;
+    }
+
+    public void setTieneLicencias(Boolean tieneLicencias) {
+        this.tieneLicencias = tieneLicencias;
     }
 }

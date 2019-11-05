@@ -16,10 +16,10 @@ public abstract class GestorLicencia {
 
     public static int crearLicencia(LicenciaDTO licenciaDTO) {
 
-            Titular titular=GestorTitular.titularAux;
+            Titular titular=null;
             if (titular != null) {
                 if (!licenciaDTO.getClaseLicencias().isEmpty()) {
-                    Licencia licencia = new Licencia(titular, licenciaDTO.getFechaAltaLicencia(), GestorLicencia.calcularVigencia(titular.getContribuyente().getFechaNacimientoContribuyente(), licenciaDTO.getClaseLicencias(), titular.getLicencias().isEmpty()), licenciaDTO.getClaseLicencias(), licenciaDTO.getObservacionesLicencia(), new ArrayList<CambioEstadoLicencia>());
+                    Licencia licencia = new Licencia(titular, licenciaDTO.getFechaAltaLicencia(), GestorLicencia.calcularVigencia(titular.getContribuyente().getFechaNacimientoContribuyente(), titular.getLicencias().isEmpty()), licenciaDTO.getClaseLicencias(), licenciaDTO.getObservacionesLicencia(), new ArrayList<CambioEstadoLicencia>());
                     CambioEstadoLicencia cambioEstadoLicencia = new CambioEstadoLicencia(null, licencia.getIdLicencia(), null, EstadoLicencia.VIGENTE, LocalDateTime.now(), GestorUsuario.getUsuario(), licencia.getObservacionesLicencia(), licencia);
                     licencia.getCambioEstadoLicencias().add(cambioEstadoLicencia);
                     titular.getLicencias().add(licencia);
@@ -43,7 +43,7 @@ public abstract class GestorLicencia {
 
     }//cierra crearLicencia
 
-    public static LocalDateTime calcularVigencia(LocalDateTime fechaNacimiento, List<ClaseLicencia> clasesLicencia, Boolean tieneLicencias) {
+    public static LocalDateTime calcularVigencia(LocalDateTime fechaNacimiento, Boolean tieneLicencias) {
 
         LocalDateTime fechaActual = LocalDateTime.now();
 

@@ -10,6 +10,8 @@ import gestores.GestorTitular;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.time.LocalDateTime;
 
 public class Interfaz_Emitir_Licencia2 extends JPanel{
@@ -20,7 +22,6 @@ public class Interfaz_Emitir_Licencia2 extends JPanel{
     private JTextField txt_fecha_nacimiento;
     private JTextField txt_domocilio;
     private JCheckBox esDonanteCheckBox;
-    private JComboBox comboBox1;
     private JTextArea txt_observaciones;
     private JCheckBox checkBoxA;
     private JCheckBox checkBoxB;
@@ -34,30 +35,38 @@ public class Interfaz_Emitir_Licencia2 extends JPanel{
     private JButton buttonAceptar;
     private JButton buttonCancelar;
     private JPanel rootPane;
+    private JTextField tfTipoSangre;
 
     public Interfaz_Emitir_Licencia2(final MainFrame frame) {
 
-        if (!(GestorTitular.titularAux == null)) {
-            TitularDTO titular = new TitularDTO();
-            ContribuyenteDTO contribuyente = new ContribuyenteDTO();
-            contribuyente.setNroDocumento(GestorTitular.titularAux.getContribuyente().getNroDocumento());
-            contribuyente.setNombre(GestorTitular.titularAux.getContribuyente().getNombreContribuyente());
-            contribuyente.setApellido(GestorTitular.titularAux.getContribuyente().getApellidoContribuyente());
-            contribuyente.setDomicilio(GestorTitular.titularAux.getContribuyente().getDomicilioContribuyente());
-            contribuyente.setFechaDeNacimiento(GestorTitular.titularAux.getContribuyente().getFechaNacimientoContribuyente());
-titular.setContribuyente(contribuyente);
-titular.setTipoSangre(GestorTitular.titularAux.getTipoSangre());
-titular.setObservaciones(GestorTitular.titularAux.getObservaciones());
-titular.setDonante(GestorTitular.titularAux.getDonante());
-            txt_dni.setText(titular.getContribuyente().getNroDocumento().toString());
-        txt_nombre.setText(titular.getContribuyente().getNombre());
-        txt_apellido.setText(titular.getContribuyente().getApellido());
-        txt_domocilio.setText(titular.getContribuyente().getDomicilio());
-        txt_observaciones.setText(titular.getObservaciones());
-        txt_fecha_nacimiento.setText(titular.getContribuyente().getFechaDeNacimiento().toString());
-        esDonanteCheckBox.setSelected(titular.getDonante());
-
+        if(GestorTitular.titularAux!=null){
+            txt_dni.setEditable(false);
         }
+
+        cargar();
+
+        DDMMAATextField.setText(LocalDateTime.now().toString());
+
+        txt_dni.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent focusEvent) {
+
+            }
+
+            @Override
+            public void focusLost(FocusEvent focusEvent) {
+                try{
+                    GestorTitular.buscarTitularDTO(Long.valueOf(txt_dni.getText()));
+                }catch(Exception e){
+                    e.printStackTrace();
+                    //TODO cambiar esto por ventana emergente
+                    txt_dni.setText("Documento invalido!");
+                    GestorTitular.titularAux = null;
+                }
+                cargar();
+            }
+        });
+
 
         buttonAceptar.addActionListener(new ActionListener() {
             @Override
@@ -114,6 +123,34 @@ titular.setDonante(GestorTitular.titularAux.getDonante());
         });
     }
 
+
+    public void cargar(){
+        if (GestorTitular.titularAux!=null) {
+            txt_dni.setText(GestorTitular.titularAux.getContribuyente().getNroDocumento().toString());
+            txt_nombre.setText(GestorTitular.titularAux.getContribuyente().getNombre());
+            txt_apellido.setText(GestorTitular.titularAux.getContribuyente().getApellido());
+            txt_domocilio.setText(GestorTitular.titularAux.getContribuyente().getDomicilio());
+            txt_fecha_nacimiento.setText(GestorTitular.titularAux.getContribuyente().getFechaDeNacimiento().toString());
+            esDonanteCheckBox.setSelected(GestorTitular.titularAux.getDonante());
+            tfTipoSangre.setText(GestorTitular.titularAux.getTipoSangre().getName());
+            if(GestorTitular.titularAux.getTieneLicencias()){
+                DDMMAATextField1.setText(GestorLicencia.calcularVigencia(GestorTitular.titularAux.getContribuyente().getFechaDeNacimiento(), false).toString());
+            }
+            else{
+                DDMMAATextField1.setText("");
+            }
+        }
+        else{
+            txt_dni.setText("");
+            txt_nombre.setText("");
+            txt_apellido.setText("");
+            txt_domocilio.setText("");
+            txt_fecha_nacimiento.setText("");
+            esDonanteCheckBox.setSelected(false);
+            tfTipoSangre.setText("");
+            DDMMAATextField1.setText("");
+        }
+    }
 
 
     public JPanel getPane(){
