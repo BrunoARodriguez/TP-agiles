@@ -16,30 +16,31 @@ public abstract class GestorLicencia {
 
     public static int crearLicencia(LicenciaDTO licenciaDTO) {
 
-            Titular titular=null;
-            if (titular != null) {
-                if (!licenciaDTO.getClaseLicencias().isEmpty()) {
-                    Licencia licencia = new Licencia(titular, licenciaDTO.getFechaAltaLicencia(), GestorLicencia.calcularVigencia(titular.getContribuyente().getFechaNacimientoContribuyente(), titular.getLicencias().isEmpty()), licenciaDTO.getClaseLicencias(), licenciaDTO.getObservacionesLicencia(), new ArrayList<CambioEstadoLicencia>());
-                    CambioEstadoLicencia cambioEstadoLicencia = new CambioEstadoLicencia(null, licencia.getIdLicencia(), null, EstadoLicencia.VIGENTE, LocalDateTime.now(), GestorUsuario.getUsuario(), licencia.getObservacionesLicencia(), licencia);
-                    licencia.getCambioEstadoLicencias().add(cambioEstadoLicencia);
-                    titular.getLicencias().add(licencia);
-                    if (GestorBD.guardarLicencia(licencia) && GestorBD.guardarTitular(titular)) {
-                        //Exito prro
-                        Float costoLicencia = calcularCostoLicencia(licencia.getFechaAltaLicencia(), licencia.getFechaVencimientoLicencia(), licencia.getClaseLicencias());
-                        //TODO Agregar costoLicencia a clase Comprobante
-                        return 0;
-                    } else {
-                        //Error al guardar
-                        return -2;
-                    }
-                } else {
-                    //No se seleccionaron clases de licencia
-                    return -3;
+        Titular titular = GestorTitular.buscarTitular(GestorTitular.titularAux.getDni());
+        Licencia licencia = new Licencia(titular, licenciaDTO.getFechaAltaLicencia(), licenciaDTO.getFechaVencimientoLicencia(), licenciaDTO.getClaseLicencias(), licenciaDTO.getObservacionesLicencia(), new ArrayList<CambioEstadoLicencia>());
+        CambioEstadoLicencia cambioEstadoLicencia = new CambioEstadoLicencia(null, licencia.getIdLicencia(), null, EstadoLicencia.VIGENTE, LocalDateTime.now(), GestorUsuario.getUsuario(), licencia.getObservacionesLicencia(), licencia);
+        licencia.getCambioEstadoLicencias().add(cambioEstadoLicencia);
+        titular.getLicencias().add(licencia);
+        if (GestorBD.guardarLicencia(licencia)) {
+            Float costoLicencia = calcularCostoLicencia(licencia.getFechaAltaLicencia(), licencia.getFechaVencimientoLicencia(), licencia.getClaseLicencias());
+            System.out.println("Costo de licencia: "+costoLicencia.toString());
+            //TODO Agregar costoLicencia a clase Comprobante
+            //Exito perro
+            return 0;
+        } else {
+            if(!GestorTitular.titularAux.getTieneLicencias()){
+                int i = 0;
+                while(!GestorBD.borrarTitular(GestorTitular.titularAux.getDni()) && i<20){
+                    System.out.println("Error borrando: "+i);
+                    i++;
                 }
-            } else {
-                //Error en la base de datos
-                return -4;
+                if(i<20){
+                    System.out.println("Titular borrado.");
+                }
             }
+            //Error al guardar
+            return -2;
+        }
 
     }//cierra crearLicencia
 
@@ -72,7 +73,7 @@ public abstract class GestorLicencia {
         } else {
             sumadorAñoVigencia += 1;
         }
-        LocalDateTime localDateTime = LocalDateTime.of(fechaActual.getYear() + sumadorAñoVigencia, fechaNacimiento.getMonth(), fechaNacimiento.getDayOfMonth() + 1, 0, 0, 0);
+        LocalDateTime localDateTime = LocalDateTime.of(fechaActual.getYear() + sumadorAñoVigencia, fechaNacimiento.getMonth(), fechaNacimiento.getDayOfMonth(), 0, 0, 0);
 
         return localDateTime;
 
@@ -92,6 +93,7 @@ public abstract class GestorLicencia {
     public static Float calcularCostoLicencia(LocalDateTime fechaAlta, LocalDateTime fechaVencimiento, List<ClaseLicencia> clases) {
         Float costo = 0F;
         Integer vigencia = fechaVencimiento.getYear() - fechaAlta.getYear();
+        vigencia -= calcularAñoFechaVigencia(fechaAlta.getMonthValue(), fechaVencimiento.getMonthValue());
         for (ClaseLicencia cl : clases) {
             CostoLicencia ct = new CostoLicencia(cl, vigencia);
             costo += GestorBD.buscarCosto(ct).getCostoLicencia();

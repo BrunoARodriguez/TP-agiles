@@ -14,7 +14,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.time.LocalDateTime;
 
-public class Interfaz_Emitir_Licencia2 extends JPanel{
+public class Interfaz_Emitir_Licencia2 extends JPanel {
 
     private JTextField txt_dni;
     private JTextField txt_apellido;
@@ -39,7 +39,7 @@ public class Interfaz_Emitir_Licencia2 extends JPanel{
 
     public Interfaz_Emitir_Licencia2(final MainFrame frame) {
 
-        if(GestorTitular.titularAux!=null){
+        if (GestorTitular.titularAux != null) {
             txt_dni.setEditable(false);
         }
 
@@ -55,12 +55,13 @@ public class Interfaz_Emitir_Licencia2 extends JPanel{
 
             @Override
             public void focusLost(FocusEvent focusEvent) {
-                try{
+                try {
                     GestorTitular.buscarTitularDTO(Long.valueOf(txt_dni.getText()));
-                }catch(Exception e){
-                    e.printStackTrace();
+                } catch (Exception e) {
                     //TODO cambiar esto por ventana emergente
-                    txt_dni.setText("Documento invalido!");
+                    System.out.println("Error parseando documento.");
+                    e.printStackTrace();
+                    txt_dni.setText("");
                     GestorTitular.titularAux = null;
                 }
                 cargar();
@@ -72,7 +73,6 @@ public class Interfaz_Emitir_Licencia2 extends JPanel{
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 LicenciaDTO licenciaDTO = new LicenciaDTO();
-                licenciaDTO.setDNI(Long.parseLong(txt_dni.getText().toString()));
                 if (checkBoxA.isSelected()) {
                     licenciaDTO.getClaseLicencias().add(ClaseLicencia.CLASE_A);
                 }
@@ -94,20 +94,43 @@ public class Interfaz_Emitir_Licencia2 extends JPanel{
                 if (checkBoxG.isSelected()) {
                     licenciaDTO.getClaseLicencias().add(ClaseLicencia.CLASE_G);
                 }
-                licenciaDTO.setObservacionesLicencia(txt_observaciones.getText().toString());
+                licenciaDTO.setObservacionesLicencia(txt_observaciones.getText());
                 licenciaDTO.setFechaAltaLicencia(LocalDateTime.now());
-                switch (GestorLicencia.crearLicencia(licenciaDTO)) {
-                    case 0:
-                        System.out.println("Exito");
-                        break;
-                    case -2:
-                        System.out.println("Error al guardar");
-                        break;
-                    case -3:
-                        System.out.println("Error en la base de datos");
-                        break;
+                //TODO hacer cuadro de dialogo de error.
+                if (GestorTitular.titularAux != null && !licenciaDTO.getClaseLicencias().isEmpty() && !txt_observaciones.getText().isEmpty()) {
+                    licenciaDTO.setFechaVencimientoLicencia(LocalDateTime.parse(DDMMAATextField1.getText()));
+                    licenciaDTO.setDNI(Long.parseLong(txt_dni.getText()));
+                    switch (GestorTitular.crearTitular(GestorTitular.titularAux)) {
+                        case 0:
+                            System.out.println("Titular creado");
+                            switch (GestorLicencia.crearLicencia(licenciaDTO)) {
+                                case 0:
+                                    System.out.println("Exito");
+                                    break;
+                                case -2:
+                                    System.out.println("Error al guardar en BD");
+                                    break;
+                            }
+                            break;
+                        case -3:
+                            System.out.println("Titular ya existia");
+                            switch (GestorLicencia.crearLicencia(licenciaDTO)) {
+                                case 0:
+                                    System.out.println("Exito");
+                                    break;
+                                case -2:
+                                    System.out.println("Error al guardar en BD");
+                                    break;
+                            }
+                            break;
+                        case -1:
+                            System.out.println("Documento Incorrecto");
+                            break;
+                        case -2:
+                            System.out.println("Error en base de datos guardando titular.");
+                            break;
+                    }
                 }
-
             }
         });
 
@@ -116,7 +139,8 @@ public class Interfaz_Emitir_Licencia2 extends JPanel{
             public void actionPerformed(ActionEvent actionEvent) {
 
                 JDialogCancelar c = new JDialogCancelar(frame);
-                if(c.fueCancelado()) {
+                if (c.fueCancelado()) {
+                    GestorTitular.titularAux=null;
                     frame.backPreviousPane();
                 }
             }
@@ -124,8 +148,8 @@ public class Interfaz_Emitir_Licencia2 extends JPanel{
     }
 
 
-    public void cargar(){
-        if (GestorTitular.titularAux!=null) {
+    public void cargar() {
+        if (GestorTitular.titularAux != null) {
             txt_dni.setText(GestorTitular.titularAux.getContribuyente().getNroDocumento().toString());
             txt_nombre.setText(GestorTitular.titularAux.getContribuyente().getNombre());
             txt_apellido.setText(GestorTitular.titularAux.getContribuyente().getApellido());
@@ -133,14 +157,13 @@ public class Interfaz_Emitir_Licencia2 extends JPanel{
             txt_fecha_nacimiento.setText(GestorTitular.titularAux.getContribuyente().getFechaDeNacimiento().toString());
             esDonanteCheckBox.setSelected(GestorTitular.titularAux.getDonante());
             tfTipoSangre.setText(GestorTitular.titularAux.getTipoSangre().getName());
-            if(GestorTitular.titularAux.getTieneLicencias()){
+            if (GestorTitular.titularAux.getTieneLicencias()) {
                 DDMMAATextField1.setText(GestorLicencia.calcularVigencia(GestorTitular.titularAux.getContribuyente().getFechaDeNacimiento(), false).toString());
+            } else {
+                DDMMAATextField1.setText(GestorLicencia.calcularVigencia(GestorTitular.titularAux.getContribuyente().getFechaDeNacimiento(), true).toString());
             }
-            else{
-                DDMMAATextField1.setText("");
-            }
-        }
-        else{
+        } else {
+            txt_dni.setEditable(true);
             txt_dni.setText("");
             txt_nombre.setText("");
             txt_apellido.setText("");
@@ -153,10 +176,9 @@ public class Interfaz_Emitir_Licencia2 extends JPanel{
     }
 
 
-    public JPanel getPane(){
+    public JPanel getPane() {
         return rootPane;
     }
-
 
 
 }

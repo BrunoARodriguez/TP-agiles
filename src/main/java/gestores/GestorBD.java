@@ -104,4 +104,19 @@ public abstract class GestorBD {
             return null;
         }
     }
+
+    public static Boolean borrarTitular(Long dni){
+        Titular titular;
+        try{
+            EntityManager manager = emf.createEntityManager();
+            manager.getTransaction().begin();
+            titular = manager.find(Titular.class, dni);
+            manager.remove(titular);
+            manager.getTransaction().commit();
+            manager.close();
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
 }

@@ -38,15 +38,19 @@ public abstract class GestorTitular {
     public static int crearTitular(TitularDTO titularDTO) {
         Contribuyente contribuyente = GestorBD.buscarContribuyente(titularDTO.getDni());
         if (contribuyente != null) {
-            if(buscarTitular(titularDTO.getDni())==null){
+            if (buscarTitular(titularDTO.getDni()) == null) {
                 Titular titular = new Titular(contribuyente, new ArrayList<Licencia>(), titularDTO.getObservaciones(), titularDTO.getDonante(), titularDTO.getTipoSangre());
-                //GestorTitular.titularAux=titular;
-                //Exitos prro
+                if (GestorBD.guardarTitular(titular)) {
+                    //Exitos prro
                     return 0;
-
-        } else {
-              //Titular ya existe con este documento.
-              return -3;
+                }
+                else{
+                    //Error en base de datos.
+                    return -2;
+                }
+            } else {
+                //Titular ya existe con este documento.
+                return -3;
             }
         } else {
             //Contribuyente no encontrado en base de datos
@@ -60,9 +64,10 @@ public abstract class GestorTitular {
 
     public static void buscarTitularDTO(Long dni) {
         Titular titular = buscarTitular(dni);
-        if(titular!=null){
+        if (titular != null) {
             titularAux = new TitularDTO();
             ContribuyenteDTO contribuyenteDTO = new ContribuyenteDTO();
+            contribuyenteDTO.setNombre(titular.getContribuyente().getNombreContribuyente());
             contribuyenteDTO.setNroDocumento(titular.getContribuyente().getNroDocumento());
             contribuyenteDTO.setDomicilio(titular.getContribuyente().getDomicilioContribuyente());
             contribuyenteDTO.setFechaDeNacimiento(titular.getContribuyente().getFechaNacimientoContribuyente());
@@ -73,9 +78,8 @@ public abstract class GestorTitular {
             titularAux.setObservaciones(titular.getObservaciones());
             titularAux.setTipoSangre(titular.getTipoSangre());
             titularAux.setTieneLicencias(titular.getLicencias().isEmpty());
-        }
-        else{
-            titularAux=null;
+        } else {
+            titularAux = null;
         }
         return;
     }//cierra buscarTitular
