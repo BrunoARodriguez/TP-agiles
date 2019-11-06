@@ -48,7 +48,7 @@ public class Test_Licencia {
         LocalDateTime fechaPrueba2_18 = LocalDateTime.of(2015,Month.JANUARY, 10,0,0,0);
         LocalDateTime fechaPrueba3_18 = LocalDateTime.of(2015,Month.MARCH,10,0,0,0);
 
-        LocalDateTime result1 = GestorLicencia.calcularVigencia(fechaPrueba1_18,false);
+        /*LocalDateTime result1 = GestorLicencia.calcularVigencia(fechaPrueba1_18,false);
         LocalDateTime result2 = GestorLicencia.calcularVigencia(fechaPrueba1_18,false);
         LocalDateTime result3 = GestorLicencia.calcularVigencia(fechaPrueba1_18,false);
         LocalDateTime result4 = GestorLicencia.calcularVigencia(fechaPrueba1_18,false);
@@ -60,7 +60,7 @@ public class Test_Licencia {
 
 
 
-        Assert.assertEquals(resultadoAsertado1_18,result1);
+        Assert.assertEquals(resultadoAsertado1_18,result1);*/
 
 
     }

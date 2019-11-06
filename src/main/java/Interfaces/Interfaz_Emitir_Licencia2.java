@@ -160,11 +160,11 @@ public class Interfaz_Emitir_Licencia2 extends JPanel {
             if(GestorTitular.titularAux.getTieneLicencias()) {
                 DDMMAATextField1.setText(GestorLicencia.calcularVigencia(GestorTitular.titularAux.getContribuyente().getFechaDeNacimiento(), false, LocalDateTime.parse(DDMMAATextField.getText())).toString());
             }else{
-                DDMMAATextField1.setText("");
+                DDMMAATextField1.setText(GestorLicencia.calcularVigencia(GestorTitular.titularAux.getContribuyente().getFechaDeNacimiento(), true, LocalDateTime.parse(DDMMAATextField.getText())).toString());
             }
         }
         else{
-
+            GestorTitular.titularAux=null;
             txt_dni.setText("");
             txt_nombre.setText("");
             txt_apellido.setText("");
