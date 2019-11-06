@@ -51,7 +51,7 @@ public class Test_Licencia {
         LocalDateTime resultadoAsertado3_18 = LocalDateTime.of(2018,Month.JANUARY,15,0,0,0);
         LocalDateTime resultadoAsertado4_18 = LocalDateTime.of(2019,Month.JANUARY,15,0,0,0);
 
-        LocalDateTime result = GestorLicencia.calcularVigencia(fechaNacimiento,fechaPrueba1_18)
+        //LocalDateTime result = GestorLicencia.calcularVigencia(fechaNacimiento,fechaPrueba1_18);
     }
 
 
