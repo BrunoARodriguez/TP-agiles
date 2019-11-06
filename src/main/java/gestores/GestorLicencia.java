@@ -52,9 +52,7 @@ public abstract class GestorLicencia {
 
     }//cierra crearLicencia
 
-    public static LocalDateTime calcularVigencia(LocalDateTime fechaNacimiento, Boolean tieneLicencias) {
-
-        LocalDateTime fechaActual = LocalDateTime.now();
+    public static LocalDateTime calcularVigencia(LocalDateTime fechaNacimiento, Boolean tieneLicencias, LocalDateTime fechaActual) {
 
         Integer edad = fechaActual.getYear() - fechaNacimiento.getYear();
 
