@@ -19,7 +19,7 @@ public abstract class GestorLicencia {
             Titular titular=null;
             if (titular != null) {
                 if (!licenciaDTO.getClaseLicencias().isEmpty()) {
-                    Licencia licencia = new Licencia(titular, licenciaDTO.getFechaAltaLicencia(), GestorLicencia.calcularVigencia(titular.getContribuyente().getFechaNacimientoContribuyente(), titular.getLicencias().isEmpty()), licenciaDTO.getClaseLicencias(), licenciaDTO.getObservacionesLicencia(), new ArrayList<CambioEstadoLicencia>());
+                    Licencia licencia = new Licencia(titular, licenciaDTO.getFechaAltaLicencia(), GestorLicencia.calcularVigencia(titular.getContribuyente().getFechaNacimientoContribuyente(), titular.getLicencias().isEmpty(), licenciaDTO.getFechaAltaLicencia()), licenciaDTO.getClaseLicencias(), licenciaDTO.getObservacionesLicencia(), new ArrayList<CambioEstadoLicencia>());
                     CambioEstadoLicencia cambioEstadoLicencia = new CambioEstadoLicencia(null, licencia.getIdLicencia(), null, EstadoLicencia.VIGENTE, LocalDateTime.now(), GestorUsuario.getUsuario(), licencia.getObservacionesLicencia(), licencia);
                     licencia.getCambioEstadoLicencias().add(cambioEstadoLicencia);
                     titular.getLicencias().add(licencia);
