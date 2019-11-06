@@ -206,6 +206,7 @@
             </constraints>
             <properties>
               <columns value="20"/>
+              <editable value="false"/>
               <text value=""/>
             </properties>
           </component>
@@ -223,6 +224,7 @@
             </constraints>
             <properties>
               <columns value="20"/>
+              <editable value="false"/>
               <text value=""/>
             </properties>
           </component>

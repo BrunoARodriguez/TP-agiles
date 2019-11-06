@@ -45,7 +45,9 @@ public class Interfaz_Alta_Titular {
 
                     //TODO refactorizar el mensaje de error, a debatir con el gurpo la mejor opcion
                     if (contribuyenteDTO == null) {
-                        tfNumeroDocumento.setText("Documento no encontrado");
+                        //TODO cambiar por ventana emergente
+                        System.out.println("Titular no encontrado");
+                        tfNumeroDocumento.setText("");
                         tfApellido.setText("");
                         tfNombre.setText("");
                         //TODO refactorizar el formateo de fecha de nacimiento
@@ -55,12 +57,14 @@ public class Interfaz_Alta_Titular {
                         tfApellido.setText(contribuyenteDTO.getApellido());
                         tfNombre.setText(contribuyenteDTO.getNombre());
                         //TODO refactorizar el formateo de fecha de nacimiento
-                        tfFDeNac.setText(contribuyenteDTO.getFechaDeNacimiento().getDayOfMonth()+1 + "/" + contribuyenteDTO.getFechaDeNacimiento().getMonthValue() + "/" + contribuyenteDTO.getFechaDeNacimiento().getYear());
+                        tfFDeNac.setText(contribuyenteDTO.getFechaDeNacimiento().toString());
                         tfDomicilio.setText(contribuyenteDTO.getDomicilio());
                     }
                 }
                 else{
-                    tfNumeroDocumento.setText("Documento no encontrado");
+                    //TODO cambiar por ventana emergente.
+                    System.out.println("Titular no encontrado");
+                    tfNumeroDocumento.setText("");
                     tfApellido.setText("");
                     tfNombre.setText("");
                     //TODO refactorizar el formateo de fecha de nacimiento
@@ -87,7 +91,13 @@ public class Interfaz_Alta_Titular {
                 titularDTO.setContribuyente(GestorTitular.buscarContribuyente(contribuyenteDTO));
                 titularDTO.setTieneLicencias(false);
                 GestorTitular.titularAux = titularDTO;
-                frame.cambiarPanel(MainFrame.PANE_EMITIR_LICENCIA);
+                if(GestorTitular.validarTitularExistente(titularDTO.getDni())){
+                    //TODO hacer de esto una ventana emergente.
+                    System.out.println("Ya existe titular.");
+                }
+                else{
+                    frame.cambiarPanel(MainFrame.PANE_EMITIR_LICENCIA);
+                }
             }
         });
 
@@ -101,8 +111,6 @@ public class Interfaz_Alta_Titular {
                 }
             }
         });
-
-        taObservaciones.setToolTipText("Escribi algo wey");
     }
 
     public JPanel getPane(){
