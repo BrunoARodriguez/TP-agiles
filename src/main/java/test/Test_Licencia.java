@@ -96,7 +96,6 @@ public class Test_Licencia {
         Assert.assertEquals(fechaEsperada1,result5);
         Assert.assertEquals(fechaEsperada2,result6);
 
-
     }
 
 
