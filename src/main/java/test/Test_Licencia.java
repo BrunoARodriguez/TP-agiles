@@ -42,31 +42,23 @@ public class Test_Licencia {
     @Test
     public void calcularViegncia1() {
 
-        LocalDateTime fechaPrueba1_18 = LocalDateTime.of(2001,Month.JULY,25,0,0,0);
+        LocalDateTime fechaNacimiento_18 = LocalDateTime.of(1997,Month.JULY,25,0,0,0);
 
-        LocalDateTime resultadoAsertado1_18 = LocalDateTime.of(2020,Month.JANUARY,15,0,0,0);
-        LocalDateTime resultadoAsertado2_18 = LocalDateTime.of(2022,Month.JANUARY,15,0,0,0);
+        LocalDateTime fechaPrueba1_18 = LocalDateTime.of(2015,Month.JULY,25,0,0,0);
+        LocalDateTime fechaPrueba2_18 = LocalDateTime.of(2015,Month.JANUARY, 10,0,0,0);
+        LocalDateTime fechaPrueba3_18 = LocalDateTime.of(2015,Month.MARCH,10,0,0,0);
 
         LocalDateTime result1 = GestorLicencia.calcularVigencia(fechaPrueba1_18,false);
+        LocalDateTime result2 = GestorLicencia.calcularVigencia(fechaPrueba1_18,false);
+        LocalDateTime result3 = GestorLicencia.calcularVigencia(fechaPrueba1_18,false);
+        LocalDateTime result4 = GestorLicencia.calcularVigencia(fechaPrueba1_18,false);
+        LocalDateTime result4 = GestorLicencia.calcularVigencia(fechaPrueba1_18,false);
+        LocalDateTime result5 = GestorLicencia.calcularVigencia(fechaPrueba1_18,false);
+        LocalDateTime result3 = GestorLicencia.calcularVigencia(fechaPrueba1_18,false);
+        LocalDateTime result7 = GestorLicencia.calcularVigencia(fechaPrueba1_18,false);
+        LocalDateTime result1 = GestorLicencia.calcularVigencia(fechaPrueba1_18,false);
 
-        Assert.assertEquals(resultadoAsertado1_18,result1);
 
-        LocalDateTime result2 = GestorLicencia.calcularVigencia(fechaPrueba1_18,true);
-
-        Assert.assertEquals(resultadoAsertado2_18,result2);
-
-
-    }
-
-    @Test
-    public void calcularViegncia2() {
-
-        LocalDateTime fechaPrueba1_25 = LocalDateTime.of(1994,Month.JULY,25,0,0,0);
-
-        LocalDateTime resultadoAsertado1_18 = LocalDateTime.of(20,Month.JANUARY,15,0,0,0);
-        LocalDateTime resultadoAsertado2_18 = LocalDateTime.of(2022,Month.JANUARY,15,0,0,0);
-
-        LocalDateTime result1 = GestorLicencia.calcularVigencia(fechaPrueba1_25,false);
 
         Assert.assertEquals(resultadoAsertado1_18,result1);
 
