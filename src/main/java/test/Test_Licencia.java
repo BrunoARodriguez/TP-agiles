@@ -1,10 +1,12 @@
 package test;
 
 import gestores.GestorLicencia;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
 import java.time.Month;
+
 
 public class Test_Licencia {
 
@@ -40,18 +42,27 @@ public class Test_Licencia {
     @Test
     public void calcularViegncia1() {
 
-        LocalDateTime fechaNacimiento = LocalDateTime.of(1997, Month.JANUARY, 15,0,0,0);
+        LocalDateTime fechaNacimiento_18 = LocalDateTime.of(1997,Month.JULY,25,0,0,0);
 
         LocalDateTime fechaPrueba1_18 = LocalDateTime.of(2015,Month.JULY,25,0,0,0);
         LocalDateTime fechaPrueba2_18 = LocalDateTime.of(2015,Month.JANUARY, 10,0,0,0);
         LocalDateTime fechaPrueba3_18 = LocalDateTime.of(2015,Month.MARCH,10,0,0,0);
 
-        LocalDateTime resultadoAsertado1_18 = LocalDateTime.of(2016,Month.JANUARY,15,0,0,0);
-        LocalDateTime resultadoAsertado2_18 = LocalDateTime.of(2017,Month.JANUARY,15,0,0,0);
-        LocalDateTime resultadoAsertado3_18 = LocalDateTime.of(2018,Month.JANUARY,15,0,0,0);
-        LocalDateTime resultadoAsertado4_18 = LocalDateTime.of(2019,Month.JANUARY,15,0,0,0);
+        LocalDateTime result1 = GestorLicencia.calcularVigencia(fechaPrueba1_18,false);
+        LocalDateTime result2 = GestorLicencia.calcularVigencia(fechaPrueba1_18,false);
+        LocalDateTime result3 = GestorLicencia.calcularVigencia(fechaPrueba1_18,false);
+        LocalDateTime result4 = GestorLicencia.calcularVigencia(fechaPrueba1_18,false);
+        LocalDateTime result4 = GestorLicencia.calcularVigencia(fechaPrueba1_18,false);
+        LocalDateTime result5 = GestorLicencia.calcularVigencia(fechaPrueba1_18,false);
+        LocalDateTime result3 = GestorLicencia.calcularVigencia(fechaPrueba1_18,false);
+        LocalDateTime result7 = GestorLicencia.calcularVigencia(fechaPrueba1_18,false);
+        LocalDateTime result1 = GestorLicencia.calcularVigencia(fechaPrueba1_18,false);
 
-        LocalDateTime result = GestorLicencia.calcularVigencia(fechaNacimiento,fechaPrueba1_18)
+
+
+        Assert.assertEquals(resultadoAsertado1_18,result1);
+
+
     }
 
 

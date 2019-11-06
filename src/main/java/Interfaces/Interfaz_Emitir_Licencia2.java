@@ -157,13 +157,14 @@ public class Interfaz_Emitir_Licencia2 extends JPanel {
             txt_fecha_nacimiento.setText(GestorTitular.titularAux.getContribuyente().getFechaDeNacimiento().toString());
             esDonanteCheckBox.setSelected(GestorTitular.titularAux.getDonante());
             tfTipoSangre.setText(GestorTitular.titularAux.getTipoSangre().getName());
-            if (GestorTitular.titularAux.getTieneLicencias()) {
-                DDMMAATextField1.setText(GestorLicencia.calcularVigencia(GestorTitular.titularAux.getContribuyente().getFechaDeNacimiento(), false).toString());
-            } else {
-                DDMMAATextField1.setText(GestorLicencia.calcularVigencia(GestorTitular.titularAux.getContribuyente().getFechaDeNacimiento(), true).toString());
+            if(GestorTitular.titularAux.getTieneLicencias()) {
+                DDMMAATextField1.setText(GestorLicencia.calcularVigencia(GestorTitular.titularAux.getContribuyente().getFechaDeNacimiento(), false, LocalDateTime.parse(DDMMAATextField.getText())).toString());
+            }else{
+                DDMMAATextField1.setText("");
             }
-        } else {
-            txt_dni.setEditable(true);
+        }
+        else{
+
             txt_dni.setText("");
             txt_nombre.setText("");
             txt_apellido.setText("");
