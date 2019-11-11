@@ -57,21 +57,21 @@ public class Interfaz_Emitir_Licencia2 extends JPanel {
 
             @Override
             public void focusLost(FocusEvent focusEvent) {
-                String dniString = txt_dni.getText().toString();
-                if(!dniString.isEmpty()){
-                    GestorTitular.buscarTitularDTO(Long.valueOf(txt_dni.getText()));
-                    if(GestorTitular.titularAux==null){
+                if(txt_dni.isEditable()){
+                    String dniString = txt_dni.getText().toString();
+                    if(!dniString.isEmpty()){
+                        GestorTitular.buscarTitularDTO(Long.valueOf(txt_dni.getText()));
+                        if(GestorTitular.titularAux==null){
+                            JOptionPane.showMessageDialog(frame, "Documento Incorrecto", "Licencia", JOptionPane.ERROR_MESSAGE);
+                        }
+                    }else{
+                        System.out.println("Error parseando documento.");
                         JOptionPane.showMessageDialog(frame, "Documento Incorrecto", "Licencia", JOptionPane.ERROR_MESSAGE);
+                        txt_dni.setText("");
+                        GestorTitular.titularAux = null;
                     }
-                }else{
-
-
-                    System.out.println("Error parseando documento.");
-                    JOptionPane.showMessageDialog(frame, "Documento Incorrecto", "Licencia", JOptionPane.ERROR_MESSAGE);
-                    txt_dni.setText("");
-                    GestorTitular.titularAux = null;
+                    cargar();
                 }
-                cargar();
             }
         });
 
@@ -122,6 +122,9 @@ public class Interfaz_Emitir_Licencia2 extends JPanel {
                                     System.out.println("Error al guardar en BD");
                                     JOptionPane.showMessageDialog(frame, "Error al guardar en BD", "Base de datos", JOptionPane.ERROR_MESSAGE);
                                     break;
+                                case -1:
+                                    System.out.println("No se cumplen los requerimientos para obtener licencias de la clase solicitada");
+                                    break;
                             }
                             break;
                         case -3:
@@ -137,6 +140,9 @@ public class Interfaz_Emitir_Licencia2 extends JPanel {
                                 case -2:
                                     System.out.println("Error al guardar en BD");
                                     JOptionPane.showMessageDialog(frame, "Error al guardar en BD", "Base de datos", JOptionPane.ERROR_MESSAGE);
+                                    break;
+                                case -1:
+                                    System.out.println("No se cumplen los requerimientos para obtener licencias de la clase solicitada");
                                     break;
                             }
                             break;

@@ -86,7 +86,7 @@ public class Interfaz_Alta_Titular {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 TitularDTO titularDTO = new TitularDTO();
-
+                //TODO validar que se haya ingresado un documento valido, con un if y un cuadro de error si esta vacio o no es un numero
                 titularDTO.setDni(Long.valueOf(tfNumeroDocumento.getText()));
 
                 titularDTO.setDonante(esDonanteCheckBox.isSelected());
