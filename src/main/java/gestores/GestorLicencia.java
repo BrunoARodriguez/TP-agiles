@@ -32,8 +32,6 @@ public abstract class GestorLicencia {
             System.out.println(comprobante.toString());
             //Exito perro
 
-
-
             return 0;
         } else {
             if(!GestorTitular.titularAux.getTieneLicencias()){
