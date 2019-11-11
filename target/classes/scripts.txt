@@ -1,3 +1,10 @@
+insert into contribuyente values(12345678,'Brando', 'El Cairo','1868-05-04 04:00:00','DIO');
+insert into contribuyente values(23456789,'Joestar', 'Mansion Joestar','1868-04-04 04:00:00','Jonathan');
+insert into contribuyente values(34567890,'Joestar', 'Algun lugar de USA','1920-09-27 04:00:00','Joseph');
+insert into contribuyente values(45678901,'Kujo', 'Algun lugar de Japon','1989-12-01 04:00:00','Jotaro');
+
+insert into usuario value ('Ematomas', 123, 'OPERADOR');
+
 insert into costo_licencia values  ('CLASE_A', 5, 40.0);
 insert into costo_licencia values  ('CLASE_A', 4, 30.0);
 insert into costo_licencia values  ('CLASE_A', 3, 25.0);
@@ -33,8 +40,9 @@ insert into costo_licencia values  ('CLASE_G', 4, 30.0);
 insert into costo_licencia values  ('CLASE_G', 3, 25.0);
 insert into costo_licencia values  ('CLASE_G', 1, 20.0);
 
-insert into contribuyente values(12345678, 'Brando', 'El Cairo', '1868-05-04', 'DIO');
-insert into contribuyente values(23456789, 'Joestar', 'Inglaterra, Mansion Joestar', '1868-04-04', 'Jonathan');
-insert into contribuyente values(34567890, 'Joestar', 'Nueva York', '1920-09-27', 'Joseph');
-
-insert into usuario values('Ematomas', 123, 'OPERADOR');
+delete from cambioestadolicencia where true;
+delete from clase_licencias where true;
+delete from titular_licencias where true;
+delete from licencia where true;
+delete from titular where true;
+delete from contribuyente where true;
