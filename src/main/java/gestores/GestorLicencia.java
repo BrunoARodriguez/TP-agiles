@@ -164,7 +164,7 @@ public abstract class GestorLicencia {
             for (ClaseLicencia cl : l.getClaseLicencias()) {
                 Period periodo = Period.between(l.getFechaAltaLicencia().toLocalDate(), LocalDateTime.now().toLocalDate());
                 Integer anio = periodo.getYears();
-                if ((cl.equals(ClaseLicencia.CLASE_B) || cl.equals(ClaseLicencia.CLASE_C) || cl.equals(ClaseLicencia.CLASE_D) || cl.equals(ClaseLicencia.CLASE_E)) && anio <= 1) {
+                if ((cl.equals(ClaseLicencia.CLASE_B) || cl.equals(ClaseLicencia.CLASE_C) || cl.equals(ClaseLicencia.CLASE_D) || cl.equals(ClaseLicencia.CLASE_E)) && anio >= 1) {
                     return true;
                 }
             }
