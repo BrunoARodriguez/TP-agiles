@@ -42,7 +42,7 @@ public class Interfaz_Alta_Titular {
             public void actionPerformed(ActionEvent e) {
                 String sNroDocumento = tfNumeroDocumento.getText().toString();
                 Long nroDocumento;
-                if (sNroDocumento != "") {
+                if (!sNroDocumento.isEmpty()) {
                     nroDocumento = Long.valueOf(sNroDocumento);
                     ContribuyenteDTO contribuyenteDTO = new ContribuyenteDTO();
                     contribuyenteDTO.setNroDocumento(nroDocumento);
@@ -50,8 +50,9 @@ public class Interfaz_Alta_Titular {
 
                     //TODO refactorizar el mensaje de error, a debatir con el gurpo la mejor opcion
                     if (contribuyenteDTO == null) {
-                        //TODO cambiar por ventana emergente
+
                         System.out.println("Titular no encontrado");
+                        JOptionPane.showMessageDialog(frame, "Documento Incorrecto", "Titular", JOptionPane.ERROR_MESSAGE);
                         tfNumeroDocumento.setText("");
                         tfApellido.setText("");
                         tfNombre.setText("");
@@ -67,8 +68,10 @@ public class Interfaz_Alta_Titular {
                     }
                 }
                 else{
-                    //TODO cambiar por ventana emergente.
+
                     System.out.println("Titular no encontrado");
+                    JOptionPane.showMessageDialog(frame, "Documento Incorrecto", "Titular", JOptionPane.ERROR_MESSAGE);
+
                     tfNumeroDocumento.setText("");
                     tfApellido.setText("");
                     tfNombre.setText("");
@@ -83,7 +86,9 @@ public class Interfaz_Alta_Titular {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 TitularDTO titularDTO = new TitularDTO();
+
                 titularDTO.setDni(Long.valueOf(tfNumeroDocumento.getText()));
+
                 titularDTO.setDonante(esDonanteCheckBox.isSelected());
                 titularDTO.setObservaciones(taObservaciones.getText());
                 for(TipoSangre t : TipoSangre.values()){
@@ -97,10 +102,13 @@ public class Interfaz_Alta_Titular {
                 titularDTO.setTieneLicencias(false);
                 GestorTitular.titularAux = titularDTO;
                 if(GestorTitular.validarTitularExistente(titularDTO.getDni())){
-                    //TODO hacer de esto una ventana emergente.
+
                     System.out.println("Ya existe titular.");
+                    JOptionPane.showMessageDialog(frame, "Ya existe titular", "Titular", JOptionPane.ERROR_MESSAGE);
+
                 }
                 else{
+                    JOptionPane.showMessageDialog(frame, "Titular creado con exito", "Titular", JOptionPane.INFORMATION_MESSAGE);
                     frame.cambiarPanel(MainFrame.PANE_EMITIR_LICENCIA);
                 }
             }
