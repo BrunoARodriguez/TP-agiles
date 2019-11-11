@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Interfaz_Emitir_Licencia2 extends JPanel {
 
@@ -36,6 +37,7 @@ public class Interfaz_Emitir_Licencia2 extends JPanel {
     private JButton buttonCancelar;
     private JPanel rootPane;
     private JTextField tfTipoSangre;
+    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 
     public Interfaz_Emitir_Licencia2(final MainFrame frame) {
 
@@ -43,9 +45,9 @@ public class Interfaz_Emitir_Licencia2 extends JPanel {
             txt_dni.setEditable(false);
         }
 
-        cargar();
+        DDMMAATextField.setText(dateTimeFormatter.format(LocalDateTime.now()));
 
-        DDMMAATextField.setText(LocalDateTime.now().toString());
+        cargar();
 
         txt_dni.addFocusListener(new FocusListener() {
             @Override
@@ -98,7 +100,7 @@ public class Interfaz_Emitir_Licencia2 extends JPanel {
                 licenciaDTO.setFechaAltaLicencia(LocalDateTime.now());
                 //TODO hacer cuadro de dialogo de error y exito Incliodos los campos incompletos del if.
                 if (GestorTitular.titularAux != null && !licenciaDTO.getClaseLicencias().isEmpty() && !txt_observaciones.getText().isEmpty()) {
-                    licenciaDTO.setFechaVencimientoLicencia(LocalDateTime.parse(DDMMAATextField1.getText()));
+                    licenciaDTO.setFechaVencimientoLicencia(LocalDateTime.parse((DDMMAATextField1.getText()),dateTimeFormatter));
                     licenciaDTO.setDNI(Long.parseLong(txt_dni.getText()));
                     switch (GestorTitular.crearTitular(GestorTitular.titularAux)) {
                         case 0:
@@ -106,6 +108,8 @@ public class Interfaz_Emitir_Licencia2 extends JPanel {
                             switch (GestorLicencia.crearLicencia(licenciaDTO)) {
                                 case 0:
                                     System.out.println("Exito");
+                                    frame.cambiarPanel(MainFrame.PANE_MENU_OPERADOR);
+                                    GestorTitular.titularAux=null;
                                     break;
                                 case -2:
                                     System.out.println("Error al guardar en BD");
@@ -118,6 +122,7 @@ public class Interfaz_Emitir_Licencia2 extends JPanel {
                                 case 0:
                                     System.out.println("Exito");
                                     frame.cambiarPanel(MainFrame.PANE_MENU_OPERADOR);
+                                    GestorTitular.titularAux=null;
                                     break;
                                 case -2:
                                     System.out.println("Error al guardar en BD");
@@ -154,17 +159,18 @@ public class Interfaz_Emitir_Licencia2 extends JPanel {
             txt_nombre.setText(GestorTitular.titularAux.getContribuyente().getNombre());
             txt_apellido.setText(GestorTitular.titularAux.getContribuyente().getApellido());
             txt_domocilio.setText(GestorTitular.titularAux.getContribuyente().getDomicilio());
-            txt_fecha_nacimiento.setText(GestorTitular.titularAux.getContribuyente().getFechaDeNacimiento().toString());
+            txt_fecha_nacimiento.setText(dateTimeFormatter.format(GestorTitular.titularAux.getContribuyente().getFechaDeNacimiento()));
             esDonanteCheckBox.setSelected(GestorTitular.titularAux.getDonante());
             tfTipoSangre.setText(GestorTitular.titularAux.getTipoSangre().getName());
+
             if(GestorTitular.titularAux.getTieneLicencias()) {
-                DDMMAATextField1.setText(GestorLicencia.calcularVigencia(GestorTitular.titularAux.getContribuyente().getFechaDeNacimiento(), false, LocalDateTime.parse(DDMMAATextField.getText())).toString());
+                DDMMAATextField1.setText(dateTimeFormatter.format(GestorLicencia.calcularVigencia(GestorTitular.titularAux.getContribuyente().getFechaDeNacimiento(), false, LocalDateTime.parse((DDMMAATextField.getText()),dateTimeFormatter))));
             }else{
-                DDMMAATextField1.setText(GestorLicencia.calcularVigencia(GestorTitular.titularAux.getContribuyente().getFechaDeNacimiento(), true, LocalDateTime.parse(DDMMAATextField.getText())).toString());
+                DDMMAATextField1.setText(dateTimeFormatter.format(GestorLicencia.calcularVigencia(GestorTitular.titularAux.getContribuyente().getFechaDeNacimiento(), true, LocalDateTime.parse((DDMMAATextField.getText()),dateTimeFormatter))));
             }
         }
         else{
-            GestorTitular.titularAux=null;
+            txt_dni.setEditable(true);
             txt_dni.setText("");
             txt_nombre.setText("");
             txt_apellido.setText("");

@@ -9,7 +9,10 @@ import gestores.GestorTitular;
 import javax.swing.*; import javax.swing.JPanel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 
 public class Interfaz_Alta_Titular {
     private JTextField tfNumeroDocumento;
@@ -26,6 +29,8 @@ public class Interfaz_Alta_Titular {
     private JCheckBox esDonanteCheckBox;
 
     public Interfaz_Alta_Titular( final MainFrame frame ) {
+
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/YYYY");
 
         TipoSangre[] tipoSangre = TipoSangre.values();
         for(TipoSangre t : tipoSangre){
@@ -57,7 +62,7 @@ public class Interfaz_Alta_Titular {
                         tfApellido.setText(contribuyenteDTO.getApellido());
                         tfNombre.setText(contribuyenteDTO.getNombre());
                         //TODO refactorizar el formateo de fecha de nacimiento
-                        tfFDeNac.setText(contribuyenteDTO.getFechaDeNacimiento().toString());
+                        tfFDeNac.setText(dateTimeFormatter.format(contribuyenteDTO.getFechaDeNacimiento()));
                         tfDomicilio.setText(contribuyenteDTO.getDomicilio());
                     }
                 }
@@ -107,7 +112,7 @@ public class Interfaz_Alta_Titular {
                 JDialogCancelar c = new JDialogCancelar(frame);
                 if(c.fueCancelado()) {
                     GestorTitular.titularAux=null;
-                    frame.backPreviousPane();
+                    frame.cambiarPanel(MainFrame.PANE_MENU_OPERADOR);
                 }
             }
         });
