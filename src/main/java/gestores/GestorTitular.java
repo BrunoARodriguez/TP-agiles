@@ -12,7 +12,6 @@ public abstract class GestorTitular {
 
     public static TitularDTO titularAux = null;
 
-    //TODO ver que hacemos con el retorno de este metodo: Boolean vs Titular
     public static Boolean validarTitularExistente(Long dni) {
         Titular titular = GestorBD.buscarTitular(dni);
         if (titular != null) {

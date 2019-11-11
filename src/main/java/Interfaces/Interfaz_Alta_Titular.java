@@ -49,7 +49,6 @@ public class Interfaz_Alta_Titular {
                     contribuyenteDTO.setNroDocumento(nroDocumento);
                     contribuyenteDTO = GestorTitular.buscarContribuyente(contribuyenteDTO);
 
-                    //TODO refactorizar el mensaje de error, a debatir con el gurpo la mejor opcion
                     if (contribuyenteDTO == null) {
 
                         System.out.println("Titular no encontrado");
@@ -57,13 +56,11 @@ public class Interfaz_Alta_Titular {
                         tfNumeroDocumento.setText("");
                         tfApellido.setText("");
                         tfNombre.setText("");
-                        //TODO refactorizar el formateo de fecha de nacimiento
                         tfFDeNac.setText("");
                         tfDomicilio.setText("");
                     } else {
                         tfApellido.setText(contribuyenteDTO.getApellido());
                         tfNombre.setText(contribuyenteDTO.getNombre());
-                        //TODO refactorizar el formateo de fecha de nacimiento
                         tfFDeNac.setText(dateTimeFormatter.format(contribuyenteDTO.getFechaDeNacimiento()));
                         tfDomicilio.setText(contribuyenteDTO.getDomicilio());
                     }
@@ -75,7 +72,6 @@ public class Interfaz_Alta_Titular {
                     tfNumeroDocumento.setText("");
                     tfApellido.setText("");
                     tfNombre.setText("");
-                    //TODO refactorizar el formateo de fecha de nacimiento
                     tfFDeNac.setText("");
                     tfDomicilio.setText("");
                 }

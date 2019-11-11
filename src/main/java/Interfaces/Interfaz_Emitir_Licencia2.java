@@ -103,7 +103,7 @@ public class Interfaz_Emitir_Licencia2 extends JPanel {
                 }
                 licenciaDTO.setObservacionesLicencia(txt_observaciones.getText());
                 licenciaDTO.setFechaAltaLicencia(LocalDateTime.now());
-                //TODO hacer cuadro de dialogo de error y exito incluidos los campos incompletos del if.
+
                 if (GestorTitular.titularAux != null && !licenciaDTO.getClaseLicencias().isEmpty() && !txt_observaciones.getText().isEmpty()) {
                     licenciaDTO.setFechaVencimientoLicencia(LocalDateTime.parse((DDMMAATextField1.getText()),dateTimeFormatter));
                     licenciaDTO.setDNI(Long.parseLong(txt_dni.getText()));
@@ -114,7 +114,7 @@ public class Interfaz_Emitir_Licencia2 extends JPanel {
                             switch (GestorLicencia.crearLicencia(licenciaDTO)) {
                                 case 0:
                                     System.out.println("Exito");
-                                    JOptionPane.showMessageDialog(frame, "Licencia creado con exito", "Operacion Realizada", JOptionPane.INFORMATION_MESSAGE);
+                                    JOptionPane.showMessageDialog(frame, "Licencia creada con exito.", "Operacion Realizada", JOptionPane.INFORMATION_MESSAGE);
                                     frame.cambiarPanel(MainFrame.PANE_MENU_OPERADOR);
                                     GestorTitular.titularAux=null;
                                     break;
@@ -134,7 +134,7 @@ public class Interfaz_Emitir_Licencia2 extends JPanel {
                             switch (GestorLicencia.crearLicencia(licenciaDTO)) {
                                 case 0:
                                     System.out.println("Exito");
-                                    JOptionPane.showMessageDialog(frame, "Licencia creado con exito", "Operacion Realizada", JOptionPane.INFORMATION_MESSAGE);
+                                    JOptionPane.showMessageDialog(frame, "Licencia creada con exito.", "Operacion Realizada", JOptionPane.INFORMATION_MESSAGE);
                                     frame.cambiarPanel(MainFrame.PANE_MENU_OPERADOR);
                                     GestorTitular.titularAux=null;
                                     break;
@@ -157,6 +157,8 @@ public class Interfaz_Emitir_Licencia2 extends JPanel {
                             JOptionPane.showMessageDialog(frame, "Error en base de datos guardando titular.", "Base de datos", JOptionPane.ERROR_MESSAGE);
                             break;
                     }
+                } else {
+                    JOptionPane.showMessageDialog(frame, "Complete los campos requeridos.", "Campos vacios.", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
