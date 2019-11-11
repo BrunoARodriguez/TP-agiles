@@ -6,7 +6,8 @@ import LogicaDeNegocios.Entidades.Contribuyente;
 import LogicaDeNegocios.Enumerations.TipoSangre;
 import gestores.GestorTitular;
 
-import javax.swing.*; import javax.swing.JPanel;
+import javax.swing.*;
+import javax.swing.JPanel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.ZoneId;
@@ -28,12 +29,12 @@ public class Interfaz_Alta_Titular {
     private JButton buscarDatosButton;
     private JCheckBox esDonanteCheckBox;
 
-    public Interfaz_Alta_Titular( final MainFrame frame ) {
+    public Interfaz_Alta_Titular(final MainFrame frame) {
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/YYYY");
 
         TipoSangre[] tipoSangre = TipoSangre.values();
-        for(TipoSangre t : tipoSangre){
+        for (TipoSangre t : tipoSangre) {
             cbTipoSangre.addItem(t.getName());
         }
 
@@ -66,8 +67,7 @@ public class Interfaz_Alta_Titular {
                         tfFDeNac.setText(dateTimeFormatter.format(contribuyenteDTO.getFechaDeNacimiento()));
                         tfDomicilio.setText(contribuyenteDTO.getDomicilio());
                     }
-                }
-                else{
+                } else {
 
                     System.out.println("Titular no encontrado");
                     JOptionPane.showMessageDialog(frame, "Documento Incorrecto", "Titular", JOptionPane.ERROR_MESSAGE);
@@ -86,13 +86,17 @@ public class Interfaz_Alta_Titular {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 TitularDTO titularDTO = new TitularDTO();
-                //TODO validar que se haya ingresado un documento valido, con un if y un cuadro de error si esta vacio o no es un numero
-                titularDTO.setDni(Long.valueOf(tfNumeroDocumento.getText()));
+                try {
+                    titularDTO.setDni(Long.valueOf(tfNumeroDocumento.getText()));
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(frame, "No se cumplen los requerimientos para obtener una licencia de la/s clase/s solicitada/s", "Licencia", JOptionPane.ERROR_MESSAGE);
+                }
+
 
                 titularDTO.setDonante(esDonanteCheckBox.isSelected());
                 titularDTO.setObservaciones(taObservaciones.getText());
-                for(TipoSangre t : TipoSangre.values()){
-                    if(t.getName().equals(cbTipoSangre.getSelectedItem())){
+                for (TipoSangre t : TipoSangre.values()) {
+                    if (t.getName().equals(cbTipoSangre.getSelectedItem())) {
                         titularDTO.setTipoSangre(t);
                     }
                 }
@@ -101,13 +105,12 @@ public class Interfaz_Alta_Titular {
                 titularDTO.setContribuyente(GestorTitular.buscarContribuyente(contribuyenteDTO));
                 titularDTO.setTieneLicencias(false);
                 GestorTitular.titularAux = titularDTO;
-                if(GestorTitular.validarTitularExistente(titularDTO.getDni())){
+                if (GestorTitular.validarTitularExistente(titularDTO.getDni())) {
 
                     System.out.println("Ya existe titular.");
                     JOptionPane.showMessageDialog(frame, "Ya existe titular", "Titular", JOptionPane.ERROR_MESSAGE);
 
-                }
-                else{
+                } else {
                     JOptionPane.showMessageDialog(frame, "Titular creado con exito", "Titular", JOptionPane.INFORMATION_MESSAGE);
                     frame.cambiarPanel(MainFrame.PANE_EMITIR_LICENCIA);
                 }
@@ -118,15 +121,15 @@ public class Interfaz_Alta_Titular {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 JDialogCancelar c = new JDialogCancelar(frame);
-                if(c.fueCancelado()) {
-                    GestorTitular.titularAux=null;
+                if (c.fueCancelado()) {
+                    GestorTitular.titularAux = null;
                     frame.cambiarPanel(MainFrame.PANE_MENU_OPERADOR);
                 }
             }
         });
     }
 
-    public JPanel getPane(){
+    public JPanel getPane() {
         return rootPane;
     }
 }

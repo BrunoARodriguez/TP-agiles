@@ -124,6 +124,7 @@ public class Interfaz_Emitir_Licencia2 extends JPanel {
                                     break;
                                 case -1:
                                     System.out.println("No se cumplen los requerimientos para obtener licencias de la clase solicitada");
+                                    JOptionPane.showMessageDialog(frame, "No se cumplen los requerimientos para obtener licencias de la/s clase/s solicitada/s", "Licencia", JOptionPane.ERROR_MESSAGE);
                                     break;
                             }
                             break;
@@ -143,6 +144,7 @@ public class Interfaz_Emitir_Licencia2 extends JPanel {
                                     break;
                                 case -1:
                                     System.out.println("No se cumplen los requerimientos para obtener licencias de la clase solicitada");
+                                    JOptionPane.showMessageDialog(frame, "No se cumplen los requerimientos para obtener una licencia de la/s clase/s solicitada/s", "Licencia", JOptionPane.ERROR_MESSAGE);
                                     break;
                             }
                             break;
