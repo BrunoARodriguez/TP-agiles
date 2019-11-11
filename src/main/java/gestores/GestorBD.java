@@ -24,6 +24,9 @@ public abstract class GestorBD {
             manager.getTransaction().begin();
             titular = manager.find(Titular.class, dni);
             manager.getTransaction().commit();
+            if(titular==null){
+                return null;
+            }
             titular.getLicencias().size();
             for(Licencia l : titular.getLicencias()){
                 l.getClaseLicencias().size();

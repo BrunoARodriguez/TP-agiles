@@ -57,12 +57,17 @@ public class Interfaz_Emitir_Licencia2 extends JPanel {
 
             @Override
             public void focusLost(FocusEvent focusEvent) {
-                try {
+                String dniString = txt_dni.getText().toString();
+                if(!dniString.isEmpty()){
                     GestorTitular.buscarTitularDTO(Long.valueOf(txt_dni.getText()));
-                } catch (Exception e) {
-                    //TODO cambiar esto por ventana emergente
+                    if(GestorTitular.titularAux==null){
+                        JOptionPane.showMessageDialog(frame, "Documento Incorrecto", "Licencia", JOptionPane.ERROR_MESSAGE);
+                    }
+                }else{
+
+
                     System.out.println("Error parseando documento.");
-                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(frame, "Documento Incorrecto", "Licencia", JOptionPane.ERROR_MESSAGE);
                     txt_dni.setText("");
                     GestorTitular.titularAux = null;
                 }
@@ -98,42 +103,50 @@ public class Interfaz_Emitir_Licencia2 extends JPanel {
                 }
                 licenciaDTO.setObservacionesLicencia(txt_observaciones.getText());
                 licenciaDTO.setFechaAltaLicencia(LocalDateTime.now());
-                //TODO hacer cuadro de dialogo de error y exito Incliodos los campos incompletos del if.
+                //TODO hacer cuadro de dialogo de error y exito incluidos los campos incompletos del if.
                 if (GestorTitular.titularAux != null && !licenciaDTO.getClaseLicencias().isEmpty() && !txt_observaciones.getText().isEmpty()) {
                     licenciaDTO.setFechaVencimientoLicencia(LocalDateTime.parse((DDMMAATextField1.getText()),dateTimeFormatter));
                     licenciaDTO.setDNI(Long.parseLong(txt_dni.getText()));
                     switch (GestorTitular.crearTitular(GestorTitular.titularAux)) {
                         case 0:
                             System.out.println("Titular creado");
+
                             switch (GestorLicencia.crearLicencia(licenciaDTO)) {
                                 case 0:
                                     System.out.println("Exito");
+                                    JOptionPane.showMessageDialog(frame, "Licencia creado con exito", "Operacion Realizada", JOptionPane.INFORMATION_MESSAGE);
                                     frame.cambiarPanel(MainFrame.PANE_MENU_OPERADOR);
                                     GestorTitular.titularAux=null;
                                     break;
                                 case -2:
                                     System.out.println("Error al guardar en BD");
+                                    JOptionPane.showMessageDialog(frame, "Error al guardar en BD", "Base de datos", JOptionPane.ERROR_MESSAGE);
                                     break;
                             }
                             break;
                         case -3:
                             System.out.println("Titular ya existia");
+
                             switch (GestorLicencia.crearLicencia(licenciaDTO)) {
                                 case 0:
                                     System.out.println("Exito");
+                                    JOptionPane.showMessageDialog(frame, "Licencia creado con exito", "Operacion Realizada", JOptionPane.INFORMATION_MESSAGE);
                                     frame.cambiarPanel(MainFrame.PANE_MENU_OPERADOR);
                                     GestorTitular.titularAux=null;
                                     break;
                                 case -2:
                                     System.out.println("Error al guardar en BD");
+                                    JOptionPane.showMessageDialog(frame, "Error al guardar en BD", "Base de datos", JOptionPane.ERROR_MESSAGE);
                                     break;
                             }
                             break;
                         case -1:
                             System.out.println("Documento Incorrecto");
+                            JOptionPane.showMessageDialog(frame, "Documento Incorrecto", "Campo Incorrecto", JOptionPane.ERROR_MESSAGE);
                             break;
                         case -2:
                             System.out.println("Error en base de datos guardando titular.");
+                            JOptionPane.showMessageDialog(frame, "Error en base de datos guardando titular.", "Base de datos", JOptionPane.ERROR_MESSAGE);
                             break;
                     }
                 }
