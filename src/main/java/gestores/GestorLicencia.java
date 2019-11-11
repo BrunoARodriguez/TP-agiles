@@ -122,7 +122,7 @@ public abstract class GestorLicencia {
 
     public static Boolean validarClasesLicencia(List<ClaseLicencia> claseLicencias, Titular titular) {
         LocalDateTime fechaActual = LocalDateTime.now();
-        Period periodo = Period.between(fechaActual.toLocalDate(), titular.getContribuyente().getFechaNacimientoContribuyente().toLocalDate());
+        Period periodo = Period.between(titular.getContribuyente().getFechaNacimientoContribuyente().toLocalDate(), fechaActual.toLocalDate());
         Integer edad = periodo.getYears();
         if (edad <= 17) {
             return false;
@@ -162,7 +162,7 @@ public abstract class GestorLicencia {
     public static Boolean validarLicenciasProfesional(List<Licencia> licencias) {
         for (Licencia l : licencias) {
             for (ClaseLicencia cl : l.getClaseLicencias()) {
-                Period periodo = Period.between(LocalDateTime.now().toLocalDate(), l.getFechaAltaLicencia().toLocalDate());
+                Period periodo = Period.between(l.getFechaAltaLicencia().toLocalDate(), LocalDateTime.now().toLocalDate());
                 Integer anio = periodo.getYears();
                 if ((cl.equals(ClaseLicencia.CLASE_B) || cl.equals(ClaseLicencia.CLASE_C) || cl.equals(ClaseLicencia.CLASE_D) || cl.equals(ClaseLicencia.CLASE_E)) && anio <= 1) {
                     return true;
