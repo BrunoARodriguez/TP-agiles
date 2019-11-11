@@ -41,16 +41,10 @@ public abstract class GestorLicencia {
             Float costoLicencia = calcularCostoLicencia(licencia.getFechaAltaLicencia(), licencia.getFechaVencimientoLicencia(), licencia.getClaseLicencias());
             System.out.println("Costo de licencia: " + costoLicencia.toString());
             //TODO Ver como imprimir el comprobante por pantalla y por pdf.
-
             String observaciones = "Se ha emitido la licencia a nombre de : " + licencia.getTitularLicencia().getContribuyente().getNombreContribuyente() + " " + licencia.getTitularLicencia().getContribuyente().getApellidoContribuyente() + " de la clases : " + licencia.getClaseLicencias().toString();
             Comprobante comprobante = new Comprobante(licenciaDTO.getFechaAltaLicencia(), costoLicencia, licencia, observaciones);
             System.out.println(comprobante.toString());
             //Exito perro
-
-<<<<<<< HEAD
-
-=======
->>>>>>> a5ef0561ef4b553ca489b80d817e5fc832b092ec
             return 0;
         } else {
             if (!GestorTitular.titularAux.getTieneLicencias()) {
