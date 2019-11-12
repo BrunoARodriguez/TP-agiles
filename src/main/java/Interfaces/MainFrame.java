@@ -144,6 +144,10 @@ public class MainFrame extends JFrame {
     this.setLocation((int)width-this.getWidth()/2,(int)height-this.getHeight()/2);
 }
 
+    public MainFrame() {
+
+    }
+
     public void cambiarPanel(int pane){
         previousPane=this.getContentPane();
 
