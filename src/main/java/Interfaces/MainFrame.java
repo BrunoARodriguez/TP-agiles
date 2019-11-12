@@ -165,7 +165,8 @@ public class MainFrame extends JFrame {
                 break;
             }
             case PANE_IMPRIMIR_LICENCIA:{
-                this.setContentPane(new Interfaz_Imprimir_Licencia(this).getPane());
+               // this.setContentPane(new Interfaz_Imprimir_Licencia(this).getPane());
+                this.setContentPane(new LicenciaDeConducir().getPane());
                 break;
             }
             case PANE_RENOVAR_LICENCIAS:{
