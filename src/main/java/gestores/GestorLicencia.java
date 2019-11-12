@@ -2,6 +2,7 @@ package gestores;
 
 import LogicaDeNegocios.DTOs.LicenciaDTO;
 import LogicaDeNegocios.Entidades.CambioEstadoLicencia;
+import LogicaDeNegocios.Entidades.Comprobante;
 import LogicaDeNegocios.Entidades.Licencia;
 import LogicaDeNegocios.Entidades.Resources.CostoLicencia;
 import LogicaDeNegocios.Entidades.Titular;
@@ -9,45 +10,60 @@ import LogicaDeNegocios.Enumerations.ClaseLicencia;
 import LogicaDeNegocios.Enumerations.EstadoLicencia;
 
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class GestorLicencia {
 
     public static int crearLicencia(LicenciaDTO licenciaDTO) {
-        if (GestorTitular.validarTitularExistente(licenciaDTO.getDNI())) {
-            Titular titular = GestorTitular.buscarTitular(licenciaDTO.getDNI());//TODO ver si usamos Gestor DB directamente o pasamos por gestor titular
-            if (titular != null) {
-                if (!licenciaDTO.getClaseLicencias().isEmpty()) {
-                    Licencia licencia = new Licencia(titular, LocalDateTime.now(), GestorLicencia.calcularVigencia(titular.getContribuyente().getFechaNacimientoContribuyente(), licenciaDTO.getClaseLicencias(), titular.getLicencias().isEmpty()), licenciaDTO.getClaseLicencias(), licenciaDTO.getObservacionesLicencia(), new ArrayList<CambioEstadoLicencia>());
-                    CambioEstadoLicencia cambioEstadoLicencia = new CambioEstadoLicencia(null, licencia.getIdLicencia(), null, EstadoLicencia.VIGENTE, LocalDateTime.now(), GestorUsuario.getUsuario(), licencia.getObservacionesLicencia(), licencia);
-                    licencia.getCambioEstadoLicencias().add(cambioEstadoLicencia);
-                    titular.getLicencias().add(licencia);
-                    if (GestorBD.guardarLicencia(licencia)) {
-                        //Exito prro
-                        Float costoLicencia = calcularCostoLicencia(licencia.getFechaAltaLicencia(), licencia.getFechaVencimientoLicencia(), licencia.getClaseLicencias());
-                        return 0;
-                    } else {
-                        //Error al guardar
-                        return -2;
-                    }
-                } else {
-                    //No se seleccionaron clases de licencia
-                    return -3;
+
+        Titular titular = GestorTitular.buscarTitular(GestorTitular.titularAux.getDni());
+        Licencia licencia = new Licencia(titular, licenciaDTO.getFechaAltaLicencia(), licenciaDTO.getFechaVencimientoLicencia(), licenciaDTO.getClaseLicencias(), licenciaDTO.getObservacionesLicencia(), new ArrayList<CambioEstadoLicencia>());
+        CambioEstadoLicencia cambioEstadoLicencia = new CambioEstadoLicencia(null, licencia.getIdLicencia(), null, EstadoLicencia.VIGENTE, LocalDateTime.now(), GestorUsuario.getUsuario(), licencia.getObservacionesLicencia(), licencia);
+        licencia.getCambioEstadoLicencias().add(cambioEstadoLicencia);
+        if (!validarClasesLicencia(licencia.getClaseLicencias(), titular)) {
+            if (!GestorTitular.titularAux.getTieneLicencias()) {
+                int i = 0;
+                while (!GestorBD.borrarTitular(GestorTitular.titularAux.getDni()) && i < 20) {
+                    System.out.println("Error borrando: " + i);
+                    i++;
                 }
-            } else {
-                //Error en la base de datos
-                return -4;
+                if (i < 20) {
+                    System.out.println("Titular borrado.");
+                }
             }
-        } else {
-            //Titular no encontrado en base de datos.
+            // ya tiene licencia de esta(s) clase(s)
             return -1;
         }
+        titular.getLicencias().add(licencia);
+        if (GestorBD.guardarLicencia(licencia)) {
+            Float costoLicencia = calcularCostoLicencia(licencia.getFechaAltaLicencia(), licencia.getFechaVencimientoLicencia(), licencia.getClaseLicencias());
+            System.out.println("Costo de licencia: " + costoLicencia.toString());
+            //TODO Ver como imprimir el comprobante por pantalla y por pdf.
+            String observaciones = "Se ha emitido la licencia a nombre de : " + licencia.getTitularLicencia().getContribuyente().getNombreContribuyente() + " " + licencia.getTitularLicencia().getContribuyente().getApellidoContribuyente() + " de la clases : " + licencia.getClaseLicencias().toString();
+            Comprobante comprobante = new Comprobante(licenciaDTO.getFechaAltaLicencia(), costoLicencia, licencia, observaciones);
+            System.out.println(comprobante.toString());
+            //Exito perro
+            return 0;
+        } else {
+            if (!GestorTitular.titularAux.getTieneLicencias()) {
+                int i = 0;
+                while (!GestorBD.borrarTitular(GestorTitular.titularAux.getDni()) && i < 20) {
+                    System.out.println("Error borrando: " + i);
+                    i++;
+                }
+                if (i < 20) {
+                    System.out.println("Titular borrado.");
+                }
+            }
+            //Error al guardar
+            return -2;
+        }
+
     }//cierra crearLicencia
 
-    public static LocalDateTime calcularVigencia(LocalDateTime fechaNacimiento, List<ClaseLicencia> clasesLicencia, Boolean tieneLicencias) {
-
-        LocalDateTime fechaActual = LocalDateTime.now();
+    public static LocalDateTime calcularVigencia(LocalDateTime fechaNacimiento, Boolean tieneLicencias, LocalDateTime fechaActual) {
 
         Integer edad = fechaActual.getYear() - fechaNacimiento.getYear();
 
@@ -74,7 +90,7 @@ public abstract class GestorLicencia {
         } else {
             sumadorAñoVigencia += 1;
         }
-        LocalDateTime localDateTime = LocalDateTime.of(fechaActual.getYear() + sumadorAñoVigencia, fechaNacimiento.getMonth(), fechaNacimiento.getDayOfMonth() + 1, 0, 0, 0);
+        LocalDateTime localDateTime = LocalDateTime.of(fechaActual.getYear() + sumadorAñoVigencia, fechaNacimiento.getMonth(), fechaNacimiento.getDayOfMonth(), 0, 0, 0);
 
         return localDateTime;
 
@@ -94,6 +110,7 @@ public abstract class GestorLicencia {
     public static Float calcularCostoLicencia(LocalDateTime fechaAlta, LocalDateTime fechaVencimiento, List<ClaseLicencia> clases) {
         Float costo = 0F;
         Integer vigencia = fechaVencimiento.getYear() - fechaAlta.getYear();
+        vigencia -= calcularAñoFechaVigencia(fechaAlta.getMonthValue(), fechaVencimiento.getMonthValue());
         for (ClaseLicencia cl : clases) {
             CostoLicencia ct = new CostoLicencia(cl, vigencia);
             costo += GestorBD.buscarCosto(ct).getCostoLicencia();
@@ -101,5 +118,59 @@ public abstract class GestorLicencia {
         costo += CostoLicencia.COSTO_ADMINISTRATIVO;
         return costo;
     }//cierra calcularCostoLicencia
+
+
+    public static Boolean validarClasesLicencia(List<ClaseLicencia> claseLicencias, Titular titular) {
+        LocalDateTime fechaActual = LocalDateTime.now();
+        Period periodo = Period.between(titular.getContribuyente().getFechaNacimientoContribuyente().toLocalDate(), fechaActual.toLocalDate());
+        Integer edad = periodo.getYears();
+        if (edad <= 17) {
+            return false;
+        } else {
+            for (ClaseLicencia cl : claseLicencias) {
+                if (validarExisteLicencia(cl, titular.getLicencias())) {
+                    if ((cl.equals(ClaseLicencia.CLASE_C) || cl.equals(ClaseLicencia.CLASE_D) || cl.equals(ClaseLicencia.CLASE_E))) {
+                        if (!validarLicenciasProfesional(titular.getLicencias())) {
+                            return false;
+                        }
+                    }
+                } else {
+                    return false;
+                }
+            }
+
+
+        }
+
+        return true;
+    } //cierra validarClasesLicencias
+
+    public static Boolean validarExisteLicencia(ClaseLicencia claseLicencia, List<Licencia> licencias) {
+        for (Licencia l : licencias) {
+            for (ClaseLicencia cl : l.getClaseLicencias()) {
+                if (claseLicencia.equals(cl) && l.getCambioEstadoLicencias().get(l.getCambioEstadoLicencias().size() - 1).getEstadoNuevo().equals(EstadoLicencia.VIGENTE)) {
+                    return false;
+                }
+
+            }
+
+        }
+
+        return true;
+    } //cierra validarExisteLicencia
+
+    public static Boolean validarLicenciasProfesional(List<Licencia> licencias) {
+        for (Licencia l : licencias) {
+            for (ClaseLicencia cl : l.getClaseLicencias()) {
+                Period periodo = Period.between(l.getFechaAltaLicencia().toLocalDate(), LocalDateTime.now().toLocalDate());
+                Integer anio = periodo.getYears();
+                if ((cl.equals(ClaseLicencia.CLASE_B) || cl.equals(ClaseLicencia.CLASE_C) || cl.equals(ClaseLicencia.CLASE_D) || cl.equals(ClaseLicencia.CLASE_E)) && anio >= 1) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    } //cierra validarConductoresProfesional
+
 }
 
