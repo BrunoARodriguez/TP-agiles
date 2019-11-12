@@ -50,5 +50,12 @@ public class Interfaz_Imprimir_Licencia {
                 }
             }
         });
+        imprimirButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+            frame.cambiarPanel(MainFrame.PANE_VER_FORMATO_LICENCIA);
+                //this.setContentPane(new LicenciaDeConducir().getPane());
+            }
+        });
     }
 }

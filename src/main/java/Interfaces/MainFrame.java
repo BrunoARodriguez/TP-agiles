@@ -21,6 +21,7 @@ public class MainFrame extends JFrame {
     public static final int PANE_LICENCIAS_EXPIRADAS=4;
     public static final int PANE_RENOVAR_LICENCIAS =5;
     public static final int PANE_MENU_OPERADOR=6;
+    public static final int PANE_VER_FORMATO_LICENCIA=7;
 
     public static int MENU_ACTUAL;
 
@@ -165,8 +166,8 @@ public class MainFrame extends JFrame {
                 break;
             }
             case PANE_IMPRIMIR_LICENCIA:{
-               // this.setContentPane(new Interfaz_Imprimir_Licencia(this).getPane());
-                this.setContentPane(new LicenciaDeConducir().getPane());
+                this.setContentPane(new Interfaz_Imprimir_Licencia(this).getPane());
+               // this.setContentPane(new LicenciaDeConducir().getPane());
                 break;
             }
             case PANE_RENOVAR_LICENCIAS:{
@@ -175,6 +176,10 @@ public class MainFrame extends JFrame {
             }
             case  PANE_LICENCIAS_EXPIRADAS:{
                 this.setContentPane(new Interfaz_Licencias_Expiradas(this).getPane());
+                break;
+            }
+            case PANE_VER_FORMATO_LICENCIA:{
+                this.setContentPane(new LicenciaDeConducir().getPane());
                 break;
             }
 
