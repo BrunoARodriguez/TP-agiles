@@ -15,7 +15,7 @@ import java.util.List;
 public class Titular implements Serializable{
 
     private Contribuyente contribuyente;
-    private List<Licencia> licencias;
+    private List<Licencia> licencias = new ArrayList<>();
     private String observaciones;
     private Boolean donante;
     private TipoSangre tipoSangre;

@@ -22,6 +22,8 @@ public class MainFrame extends JFrame {
     public static final int PANE_RENOVAR_LICENCIAS =5;
     public static final int PANE_MENU_OPERADOR=6;
 
+    public static int MENU_ACTUAL;
+
 
     private Container previousPane;
 
@@ -147,27 +149,27 @@ public class MainFrame extends JFrame {
 
         switch (pane){
             case PANE_EMITIR_LICENCIA:{
-                this.setContentPane(new Interfaz_Emitir_Licencia2().getPane());
+                this.setContentPane(new Interfaz_Emitir_Licencia2(this).getPane());
                 break;
             }
             case PANE_MENU_OPERADOR:{
-                this.setContentPane(new Interfaz_Menu_Operador().getPane());
+                this.setContentPane(new Interfaz_Menu_Operador(this).getPane());
                 break;
             }
             case PANE_ALTA_TITULAR:{
-                this.setContentPane(new Interfaz_Alta_Titular().getPane());
+                this.setContentPane(new Interfaz_Alta_Titular(this).getPane());
                 break;
             }
             case PANE_IMPRIMIR_LICENCIA:{
-                this.setContentPane(new Interfaz_Imprimir_Licencia().getPane());
+                this.setContentPane(new Interfaz_Imprimir_Licencia(this).getPane());
                 break;
             }
             case PANE_RENOVAR_LICENCIAS:{
-                this.setContentPane(new Interfaz_Renovar_Licencia().getPane());
+                this.setContentPane(new Interfaz_Renovar_Licencia(this).getPane());
                 break;
             }
             case  PANE_LICENCIAS_EXPIRADAS:{
-                this.setContentPane(new Interfaz_Licencias_Expiradas().getPane());
+                this.setContentPane(new Interfaz_Licencias_Expiradas(this).getPane());
                 break;
             }
 
@@ -175,6 +177,16 @@ public class MainFrame extends JFrame {
         }
         this.getContentPane().setVisible(false);
         this.getContentPane().setVisible(true);
+    }
+
+    public int getMenuActual() {
+        return MENU_ACTUAL;
+    }
+
+    public void backPreviousPane() {
+        getContentPane().setVisible(false);
+        this.setContentPane(previousPane);
+        getContentPane().setVisible(true);
     }
 
     public static void main(String[] args) {

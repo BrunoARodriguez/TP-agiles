@@ -3,6 +3,8 @@ package Interfaces;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class Interfaz_Renovar_Licencia   {
     private JPanel rootPane;
@@ -28,7 +30,7 @@ public class Interfaz_Renovar_Licencia   {
         return rootPane;
     }
 
-    public Interfaz_Renovar_Licencia() {
+    public Interfaz_Renovar_Licencia(final MainFrame frame) {
         String[] columns = {"DNI titular","Nombre titular", "Apellido titular", "Clase(s)", "Fecha Alta" };
         Object[][] data = {{}};
 
@@ -37,15 +39,20 @@ public class Interfaz_Renovar_Licencia   {
         table_resultados= new JTable(tableModel);
         scrollPane.setViewportView(table_resultados);
 
-/*        setContentPane(panel1);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        pack();
-        setLocationRelativeTo(null);
-        setVisible(true);*/
+
+        volverButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                JDialogCancelar c = new JDialogCancelar(frame);
+                if(c.fueCancelado()) {
+                    frame.backPreviousPane();
+                }
+            }
+        });
+
+
 
     }
 
-//    public static void main(String[] args) {
-//        new Interfaz_Renovar_Licencia();
-//    }
+
 }

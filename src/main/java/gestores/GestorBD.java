@@ -24,6 +24,9 @@ public abstract class GestorBD {
             manager.getTransaction().begin();
             titular = manager.find(Titular.class, dni);
             manager.getTransaction().commit();
+            if(titular==null){
+                return null;
+            }
             titular.getLicencias().size();
             for(Licencia l : titular.getLicencias()){
                 l.getClaseLicencias().size();
@@ -102,6 +105,21 @@ public abstract class GestorBD {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    public static Boolean borrarTitular(Long dni){
+        Titular titular;
+        try{
+            EntityManager manager = emf.createEntityManager();
+            manager.getTransaction().begin();
+            titular = manager.find(Titular.class, dni);
+            manager.remove(titular);
+            manager.getTransaction().commit();
+            manager.close();
+            return true;
+        }catch (Exception e){
+            return false;
         }
     }
 }
