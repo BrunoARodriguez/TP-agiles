@@ -140,7 +140,7 @@ public class LicenciaDeConducir {
         //Hacemos que el componente se pinte en el Graphics de la imagen
         this.panelLicencia.paint(imagen.getGraphics());
         //Guardamos la imagen y listo
-        ImageIO.write(imagen, "png", new File("fichero.png"));
+        ImageIO.write(imagen, "png", new File("src/fichero.png"));
 
         System.out.println("Se tomo la foto del panel");
     }
@@ -149,7 +149,8 @@ public class LicenciaDeConducir {
     // Creating a PdfWriter
 
         //TODO Se debe usar una ruta que pueda ser utilizada por todos.
-        String dest = "D:/LicenciaDeConducir-"+idLicencia+".pdf";
+        //C:/Users/usuario/IdeaProjects/TP-agiles
+        String dest = "E:/LicenciaDeConducir-"+idLicencia+".pdf";
         PdfWriter writer = new PdfWriter(dest);
         // Creating a PdfDocument
         PdfDocument pdfDoc = new PdfDocument(writer);
@@ -158,7 +159,9 @@ public class LicenciaDeConducir {
 
         // Creating an ImageData object
         //TODO Se debe usar una ruta que pueda ser utilizada por todos.
-        String imageFile = "C:\\Users\\Ciro Riquelme\\IdeaProjects\\TP-agiles\\fichero.png";
+       // String imageFile = "C:\\Users\\Ciro Riquelme\\IdeaProjects\\TP-agiles\\fichero.png";
+
+        String imageFile  = "src/fichero.png";
         ImageData data = ImageDataFactory.create(imageFile);
 
         // Creating an Image object
