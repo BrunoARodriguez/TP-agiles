@@ -1,5 +1,7 @@
 package Interfaces;
 
+import LogicaDeNegocios.DTOs.LicenciaDTO;
+import LogicaDeNegocios.Entidades.Licencia;
 import LogicaDeNegocios.Entidades.Usuario;
 import LogicaDeNegocios.Enumerations.Roles;
 import gestores.GestorBD;
@@ -12,6 +14,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 public class MainFrame extends JFrame {
 
@@ -74,15 +77,15 @@ public class MainFrame extends JFrame {
         });
         menu.add(menuItem);
 
-        menuItem = new JMenuItem("Renovar Licencia",
+        JMenuItem menuItem2 = new JMenuItem("Renovar Licencia",
                 KeyEvent.VK_T);
-        menuItem.addActionListener(new ActionListener() {
+        menuItem2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 MainFrame.this.cambiarPanel(PANE_RENOVAR_LICENCIAS);
             }
         });
-        menu.add(menuItem);
+        menu.add(menuItem2);
 
 
 
@@ -179,11 +182,22 @@ public class MainFrame extends JFrame {
                 break;
             }
             case PANE_VER_FORMATO_LICENCIA:{
-                this.setContentPane(new LicenciaDeConducir().getPane());
+                //this.setContentPane(new LicenciaDeConducir(this).getPane());
                 break;
             }
+        }
+        this.getContentPane().setVisible(false);
+        this.getContentPane().setVisible(true);
+    }
 
+    public void cambiarPanelConLicencias(int pane, ArrayList<LicenciaDTO> licenciaDTOS){
+        previousPane=this.getContentPane();
 
+        switch (pane){
+            case PANE_VER_FORMATO_LICENCIA:{
+                this.setContentPane(new LicenciaDeConducir(this, licenciaDTOS).getPane());
+                break;
+            }
         }
         this.getContentPane().setVisible(false);
         this.getContentPane().setVisible(true);
