@@ -150,7 +150,7 @@ public class LicenciaDeConducir {
 
         //TODO Se debe usar una ruta que pueda ser utilizada por todos.
         //C:/Users/usuario/IdeaProjects/TP-agiles
-        String dest = "E:/LicenciaDeConducir-"+idLicencia+".pdf";
+        String dest = "C:\\Users\\Public\\LicenciaDeConducir-"+idLicencia+".pdf";
         PdfWriter writer = new PdfWriter(dest);
         // Creating a PdfDocument
         PdfDocument pdfDoc = new PdfDocument(writer);
