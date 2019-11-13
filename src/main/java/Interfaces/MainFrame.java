@@ -3,6 +3,7 @@ package Interfaces;
 import LogicaDeNegocios.Entidades.Usuario;
 import LogicaDeNegocios.Enumerations.Roles;
 import gestores.GestorBD;
+import gestores.GestorTitular;
 import gestores.GestorUsuario;
 
 import javax.persistence.EntityManagerFactory;
@@ -57,6 +58,7 @@ public class MainFrame extends JFrame {
         menuItem1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                GestorTitular.titularAux=null;
                 MainFrame.this.cambiarPanel(PANE_EMITIR_LICENCIA);
             }
         });
@@ -68,6 +70,7 @@ public class MainFrame extends JFrame {
         menuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                GestorTitular.titularAux=null;
                 MainFrame.this.cambiarPanel(PANE_IMPRIMIR_LICENCIA);
             }
         });
@@ -78,6 +81,7 @@ public class MainFrame extends JFrame {
         menuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                GestorTitular.titularAux=null;
                 MainFrame.this.cambiarPanel(PANE_RENOVAR_LICENCIAS);
             }
         });
@@ -113,6 +117,7 @@ public class MainFrame extends JFrame {
         menuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                GestorTitular.titularAux=null;
                 MainFrame.this.cambiarPanel(PANE_ALTA_TITULAR);
             }
         });
@@ -130,6 +135,7 @@ public class MainFrame extends JFrame {
         menuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                GestorTitular.titularAux=null;
                 MainFrame.this.cambiarPanel(PANE_LICENCIAS_EXPIRADAS);
             }
         });
