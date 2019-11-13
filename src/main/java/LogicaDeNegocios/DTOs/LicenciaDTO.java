@@ -92,4 +92,15 @@ public class LicenciaDTO {
     public void setEsDonante(Boolean esDonante) {
         this.esDonante = esDonante;
     }
+
+    @Override
+    public String toString() {
+        return "LicenciaDTO{" +
+                "idLicencia=" + idLicencia +
+                ", dni=" + dni +
+                ", fechaAltaLicencia=" + fechaAltaLicencia +
+                ", fechaVencimientoLicencia=" + fechaVencimientoLicencia +
+                ", esDonante=" + esDonante +
+                '}';
+    }
 }

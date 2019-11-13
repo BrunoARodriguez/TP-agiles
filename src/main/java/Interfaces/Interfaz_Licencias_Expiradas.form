@@ -14,7 +14,7 @@
         </constraints>
         <properties>
           <font size="14" style="1"/>
-          <text value="Buscar Licencia(s) para renovar"/>
+          <text value="Buscar licencias que han expirado y/o que van a expirar"/>
         </properties>
       </component>
       <component id="464ca" class="javax.swing.JLabel">
@@ -153,7 +153,7 @@
           <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Hasta"/>
+          <text value="Hasta:"/>
         </properties>
       </component>
       <component id="d3662" class="javax.swing.JTextField" binding="tf_hasta">
