@@ -226,9 +226,11 @@
           </hspacer>
         </children>
       </grid>
-      <component id="babba" class="com.toedter.calendar.JDateChooser" binding="JDateChooser1" custom-create="true" default-binding="true">
+      <component id="587d6" class="com.toedter.calendar.JDateChooser" binding="JDateChooser1" custom-create="true" default-binding="true">
         <constraints>
-          <grid row="5" column="3" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <grid row="5" column="3" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="73" height="10"/>
+          </grid>
         </constraints>
       </component>
     </children>

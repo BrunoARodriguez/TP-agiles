@@ -1,10 +1,13 @@
 package Interfaces;
 
+import LogicaDeNegocios.DTOs.CriteriosDTO;
 import LogicaDeNegocios.DTOs.LicenciaDTO;
 import LogicaDeNegocios.Enumerations.ClaseLicencia;
 import com.toedter.calendar.JDateChooser;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import java.awt.event.ActionEvent;
@@ -12,6 +15,7 @@ import java.awt.event.ActionListener;
 import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -42,14 +46,19 @@ public class Interfaz_Imprimir_Licencia {
     private Long criterioDNI;
     private String criterioNombre;
     private String criterioApellido;
-    private List<ClaseLicencia> criterioClasesLicencia;
+    private List<ClaseLicencia> criterioClasesLicencia = new ArrayList<>();
     private LocalDate criterioFechaAltaLicencia;
 
 
-    private  ArrayList<LicenciaDTO> listaLicenciasDTO = new ArrayList<LicenciaDTO>();
+    private  ArrayList<LicenciaDTO> listaLicenciasDTO = new ArrayList<>();
 
     public JPanel getPane(){
         return rootPane;
+    }
+
+    private void createUIComponents()
+    {
+        JDateChooser1 = new JDateChooser();
     }
 
     public Interfaz_Imprimir_Licencia(final MainFrame frame) {
@@ -60,6 +69,10 @@ public class Interfaz_Imprimir_Licencia {
         tableModel = new DefaultTableModel(columns,0);
         table_resultados= new JTable(tableModel);
         scrollPane.setViewportView(table_resultados);
+
+
+
+
 
 
         volverButton.addActionListener(new ActionListener() {
@@ -131,9 +144,42 @@ public class Interfaz_Imprimir_Licencia {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
 
-                tf_dni.getText();
-                tf_nombre.getText();
-                tf_apellido.getText();
+
+                if(!tf_dni.getText().isEmpty()){
+                    criterioDNI= Long.valueOf(tf_dni.getText());
+                }
+
+                criterioNombre =tf_nombre.getText();
+                criterioApellido =tf_apellido.getText();
+
+                if (claseACheckBox.isSelected()){
+                    if(!criterioClasesLicencia.contains(ClaseLicencia.CLASE_A)){
+                        criterioClasesLicencia.add(ClaseLicencia.CLASE_A);
+                        System.out.println(ClaseLicencia.CLASE_A.toString());
+                    }
+
+                    System.out.println(criterioClasesLicencia.size());
+                }
+
+                tf_desde.getText();
+                tf_hasta.getText();
+
+
+                //TODO ver si cambiamos el ingreso de fechas
+                System.out.println(JDateChooser1.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString());
+                JDateChooser1.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString();
+
+
+
+                CriteriosDTO criteriosDTO = new CriteriosDTO();
+                criteriosDTO.setDniTitular(criterioDNI);
+                criteriosDTO.setNombreTitular(criterioNombre);
+                criteriosDTO.setApellidoTitular(criterioApellido);
+                criteriosDTO.setClaseLicencias(criterioClasesLicencia);
+
+                System.out.println(criteriosDTO.toString());
+
+                //TODO llamar al metodo de db que busque las licencias de acuerdo a los criterios
 
 
             }
