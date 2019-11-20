@@ -76,90 +76,87 @@ public class Interfaz_Emitir_Licencia2 extends JPanel {
         });
 
 
-        buttonAceptar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                LicenciaDTO licenciaDTO = new LicenciaDTO();
-                if (checkBoxA.isSelected()) {
-                    licenciaDTO.getClaseLicencias().add(ClaseLicencia.CLASE_A);
-                }
-                if (checkBoxB.isSelected()) {
-                    licenciaDTO.getClaseLicencias().add(ClaseLicencia.CLASE_B);
-                }
-                if (checkBoxC.isSelected()) {
-                    licenciaDTO.getClaseLicencias().add(ClaseLicencia.CLASE_C);
-                }
-                if (checkBoxD.isSelected()) {
-                    licenciaDTO.getClaseLicencias().add(ClaseLicencia.CLASE_D);
-                }
-                if (checkBoxE.isSelected()) {
-                    licenciaDTO.getClaseLicencias().add(ClaseLicencia.CLASE_E);
-                }
-                if (checkBoxF.isSelected()) {
-                    licenciaDTO.getClaseLicencias().add(ClaseLicencia.CLASE_F);
-                }
-                if (checkBoxG.isSelected()) {
-                    licenciaDTO.getClaseLicencias().add(ClaseLicencia.CLASE_G);
-                }
-                licenciaDTO.setObservacionesLicencia(txt_observaciones.getText());
-                licenciaDTO.setFechaAltaLicencia(LocalDateTime.now());
+        buttonAceptar.addActionListener(actionEvent -> {
+            LicenciaDTO licenciaDTO = new LicenciaDTO();
+            if (checkBoxA.isSelected()) {
+                licenciaDTO.getClaseLicencias().add(ClaseLicencia.CLASE_A);
+            }
+            if (checkBoxB.isSelected()) {
+                licenciaDTO.getClaseLicencias().add(ClaseLicencia.CLASE_B);
+            }
+            if (checkBoxC.isSelected()) {
+                licenciaDTO.getClaseLicencias().add(ClaseLicencia.CLASE_C);
+            }
+            if (checkBoxD.isSelected()) {
+                licenciaDTO.getClaseLicencias().add(ClaseLicencia.CLASE_D);
+            }
+            if (checkBoxE.isSelected()) {
+                licenciaDTO.getClaseLicencias().add(ClaseLicencia.CLASE_E);
+            }
+            if (checkBoxF.isSelected()) {
+                licenciaDTO.getClaseLicencias().add(ClaseLicencia.CLASE_F);
+            }
+            if (checkBoxG.isSelected()) {
+                licenciaDTO.getClaseLicencias().add(ClaseLicencia.CLASE_G);
+            }
+            licenciaDTO.setObservacionesLicencia(txt_observaciones.getText());
+            licenciaDTO.setFechaAltaLicencia(LocalDateTime.now());
 
-                if (GestorTitular.titularAux != null && !licenciaDTO.getClaseLicencias().isEmpty() && !txt_observaciones.getText().isEmpty()) {
-                    licenciaDTO.setFechaVencimientoLicencia(LocalDateTime.parse((DDMMAATextField1.getText()),dateTimeFormatter));
-                    licenciaDTO.setDNI(Long.parseLong(txt_dni.getText()));
-                    switch (GestorTitular.crearTitular(GestorTitular.titularAux)) {
-                        case 0:
-                            System.out.println("Titular creado");
+            if (GestorTitular.titularAux != null && !licenciaDTO.getClaseLicencias().isEmpty() && !txt_observaciones.getText().isEmpty()) {
+                licenciaDTO.setFechaVencimientoLicencia(LocalDateTime.parse((DDMMAATextField1.getText()),dateTimeFormatter));
+                licenciaDTO.setDNI(Long.parseLong(txt_dni.getText()));
+                switch (GestorTitular.crearTitular(GestorTitular.titularAux)) {
+                    case 0:
+                        System.out.println("Titular creado");
 
-                            switch (GestorLicencia.crearLicencia(licenciaDTO)) {
-                                case 0:
-                                    System.out.println("Exito");
-                                    JOptionPane.showMessageDialog(frame, "Licencia creada con exito.", "Operacion Realizada", JOptionPane.INFORMATION_MESSAGE);
-                                    frame.cambiarPanel(MainFrame.PANE_MENU_OPERADOR);
-                                    GestorTitular.titularAux=null;
-                                    break;
-                                case -2:
-                                    System.out.println("Error al guardar en BD");
-                                    JOptionPane.showMessageDialog(frame, "Error al guardar en BD", "Base de datos", JOptionPane.ERROR_MESSAGE);
-                                    break;
-                                case -1:
-                                    System.out.println("No se cumplen los requerimientos para obtener licencias de la clase solicitada");
-                                    JOptionPane.showMessageDialog(frame, "No se cumplen los requerimientos para obtener licencias de la/s clase/s solicitada/s", "Licencia", JOptionPane.ERROR_MESSAGE);
-                                    break;
-                            }
-                            break;
-                        case -3:
-                            System.out.println("Titular ya existia");
+                        switch (GestorLicencia.crearLicencia(licenciaDTO)) {
+                            case 0:
+                                System.out.println("Exito");
+                                JOptionPane.showMessageDialog(frame, "Licencia creada con exito.", "Operacion Realizada", JOptionPane.INFORMATION_MESSAGE);
+                                frame.cambiarPanel(MainFrame.PANE_MENU_OPERADOR);
+                                GestorTitular.titularAux=null;
+                                break;
+                            case -2:
+                                System.out.println("Error al guardar en BD");
+                                JOptionPane.showMessageDialog(frame, "Error al guardar en BD", "Base de datos", JOptionPane.ERROR_MESSAGE);
+                                break;
+                            case -1:
+                                System.out.println("No se cumplen los requerimientos para obtener licencias de la clase solicitada");
+                                JOptionPane.showMessageDialog(frame, "No se cumplen los requerimientos para obtener licencias de la/s clase/s solicitada/s", "Licencia", JOptionPane.ERROR_MESSAGE);
+                                break;
+                        }
+                        break;
+                    case -3:
+                        System.out.println("Titular ya existia");
 
-                            switch (GestorLicencia.crearLicencia(licenciaDTO)) {
-                                case 0:
-                                    System.out.println("Exito");
-                                    JOptionPane.showMessageDialog(frame, "Licencia creada con exito.", "Operacion Realizada", JOptionPane.INFORMATION_MESSAGE);
-                                    frame.cambiarPanel(MainFrame.PANE_MENU_OPERADOR);
-                                    GestorTitular.titularAux=null;
-                                    break;
-                                case -2:
-                                    System.out.println("Error al guardar en BD");
-                                    JOptionPane.showMessageDialog(frame, "Error al guardar en BD", "Base de datos", JOptionPane.ERROR_MESSAGE);
-                                    break;
-                                case -1:
-                                    System.out.println("No se cumplen los requerimientos para obtener licencias de la clase solicitada");
-                                    JOptionPane.showMessageDialog(frame, "No se cumplen los requerimientos para obtener una licencia de la/s clase/s solicitada/s", "Licencia", JOptionPane.ERROR_MESSAGE);
-                                    break;
-                            }
-                            break;
-                        case -1:
-                            System.out.println("Documento Incorrecto");
-                            JOptionPane.showMessageDialog(frame, "Documento Incorrecto", "Campo Incorrecto", JOptionPane.ERROR_MESSAGE);
-                            break;
-                        case -2:
-                            System.out.println("Error en base de datos guardando titular.");
-                            JOptionPane.showMessageDialog(frame, "Error en base de datos guardando titular.", "Base de datos", JOptionPane.ERROR_MESSAGE);
-                            break;
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(frame, "Complete los campos requeridos.", "Campos vacios.", JOptionPane.ERROR_MESSAGE);
+                        switch (GestorLicencia.crearLicencia(licenciaDTO)) {
+                            case 0:
+                                System.out.println("Exito");
+                                JOptionPane.showMessageDialog(frame, "Licencia creada con exito.", "Operacion Realizada", JOptionPane.INFORMATION_MESSAGE);
+                                frame.cambiarPanel(MainFrame.PANE_MENU_OPERADOR);
+                                GestorTitular.titularAux=null;
+                                break;
+                            case -2:
+                                System.out.println("Error al guardar en BD");
+                                JOptionPane.showMessageDialog(frame, "Error al guardar en BD", "Base de datos", JOptionPane.ERROR_MESSAGE);
+                                break;
+                            case -1:
+                                System.out.println("No se cumplen los requerimientos para obtener licencias de la clase solicitada");
+                                JOptionPane.showMessageDialog(frame, "No se cumplen los requerimientos para obtener una licencia de la/s clase/s solicitada/s", "Licencia", JOptionPane.ERROR_MESSAGE);
+                                break;
+                        }
+                        break;
+                    case -1:
+                        System.out.println("Documento Incorrecto");
+                        JOptionPane.showMessageDialog(frame, "Documento Incorrecto", "Campo Incorrecto", JOptionPane.ERROR_MESSAGE);
+                        break;
+                    case -2:
+                        System.out.println("Error en base de datos guardando titular.");
+                        JOptionPane.showMessageDialog(frame, "Error en base de datos guardando titular.", "Base de datos", JOptionPane.ERROR_MESSAGE);
+                        break;
                 }
+            } else {
+                JOptionPane.showMessageDialog(frame, "Complete los campos requeridos.", "Campos vacios.", JOptionPane.ERROR_MESSAGE);
             }
         });
 

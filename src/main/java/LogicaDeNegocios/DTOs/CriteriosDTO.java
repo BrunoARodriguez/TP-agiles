@@ -93,4 +93,18 @@ public class CriteriosDTO {
     public void setFechaVencimientoHasta(LocalDateTime fechaVencimientoHasta) {
         this.fechaVencimientoHasta = fechaVencimientoHasta;
     }
+
+    @Override
+    public String toString() {
+        return "CriteriosDTO{" +
+                "dniTitular=" + dniTitular +
+                ", nombreTitular='" + nombreTitular + '\'' +
+                ", apellidoTitular='" + apellidoTitular + '\'' +
+                ", claseLicencias=" + claseLicencias +
+                ", fechaAltaDesde=" + fechaAltaDesde +
+                ", fechaAltaHasta=" + fechaAltaHasta +
+                ", fechaVencimientoDesde=" + fechaVencimientoDesde +
+                ", fechaVencimientoHasta=" + fechaVencimientoHasta +
+                '}';
+    }
 }
