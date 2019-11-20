@@ -169,6 +169,18 @@ public abstract class GestorLicencia {
         }
         return false;
     } //cierra validarConductoresProfesional
+    public  static  List<LicenciaDTO> listaDeLicenciasExpiradas(CriteriosDTO criteriosDTO){
+List<Licencia> buscadas = new ArrayList<>();
+Period periodo= Period.between(criteriosDTO.getFechaVencimientoHasta.toLocalDate(),LocalDateTime.now().toLocalDate());
+int anios = periodo.getYears();
+if (anios > 6){
+    return  new ArrayList<>();
+}else {
+    if (criteriosDTO.getFechaAltaDesde() == null) {
+        buscadas = GestorBD.buscarLicencias(criteriosDTO, 1);
+    }
 
+}
+}
 }
 
