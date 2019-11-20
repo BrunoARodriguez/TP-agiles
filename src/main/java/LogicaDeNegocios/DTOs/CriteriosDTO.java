@@ -3,13 +3,14 @@ package LogicaDeNegocios.DTOs;
 import LogicaDeNegocios.Enumerations.ClaseLicencia;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CriteriosDTO {
-    private Long dniTitular;
-    private String nombreTitular;
-    private String apellidoTitular;
-    private List<ClaseLicencia> claseLicencias;
+    private String dniTitular="";
+    private String nombreTitular="";
+    private String apellidoTitular="";
+    private List<ClaseLicencia> claseLicencias = new ArrayList<>();
     private LocalDateTime fechaAltaDesde;
     private LocalDateTime fechaAltaHasta;
     private LocalDateTime fechaVencimientoDesde;
@@ -18,7 +19,7 @@ public class CriteriosDTO {
     public CriteriosDTO() {
     }
 
-    public CriteriosDTO(Long dniTitular, String nombreTitular, String apellidoTitular, List<ClaseLicencia> claseLicencias, LocalDateTime fechaAltaDesde, LocalDateTime fechaAltaHasta, LocalDateTime fechaVencimientoDesde, LocalDateTime fechaVencimientoHasta) {
+    public CriteriosDTO(String dniTitular, String nombreTitular, String apellidoTitular, List<ClaseLicencia> claseLicencias, LocalDateTime fechaAltaDesde, LocalDateTime fechaAltaHasta, LocalDateTime fechaVencimientoDesde, LocalDateTime fechaVencimientoHasta) {
         this.dniTitular = dniTitular;
         this.nombreTitular = nombreTitular;
         this.apellidoTitular = apellidoTitular;
@@ -29,11 +30,11 @@ public class CriteriosDTO {
         this.fechaVencimientoHasta = fechaVencimientoHasta;
     }
 
-    public Long getDniTitular() {
+    public String getDniTitular() {
         return dniTitular;
     }
 
-    public void setDniTitular(Long dniTitular) {
+    public void setDniTitular(String dniTitular) {
         this.dniTitular = dniTitular;
     }
 
