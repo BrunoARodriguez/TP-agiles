@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="Interfaces.Interfaz_Imprimir_Licencia">
-  <grid id="27dc6" binding="rootPane" layout-manager="GridLayoutManager" row-count="9" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+  <grid id="27dc6" binding="rootPane" layout-manager="GridLayoutManager" row-count="9" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="10" left="10" bottom="10" right="10"/>
     <constraints>
-      <xy x="20" y="20" width="440" height="285"/>
+      <xy x="20" y="20" width="468" height="285"/>
     </constraints>
     <properties/>
     <border type="none"/>
     <children>
       <component id="fe7e1" class="javax.swing.JLabel">
         <constraints>
-          <grid row="0" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="0" column="0" row-span="1" col-span="4" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <font size="14" style="1"/>
@@ -35,7 +35,7 @@
       </component>
       <component id="159e8" class="javax.swing.JTextField" binding="tf_dni">
         <constraints>
-          <grid row="1" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="2" anchor="8" fill="0" indent="0" use-parent-layout="false">
+          <grid row="1" column="1" row-span="1" col-span="3" vsize-policy="0" hsize-policy="2" anchor="8" fill="0" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="-1"/>
           </grid>
         </constraints>
@@ -43,7 +43,7 @@
       </component>
       <component id="2bf7d" class="javax.swing.JTextField" binding="tf_nombre">
         <constraints>
-          <grid row="2" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="2" anchor="8" fill="0" indent="0" use-parent-layout="false">
+          <grid row="2" column="1" row-span="1" col-span="3" vsize-policy="0" hsize-policy="2" anchor="8" fill="0" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="-1"/>
           </grid>
         </constraints>
@@ -59,7 +59,7 @@
       </component>
       <component id="e04f9" class="javax.swing.JTextField" binding="tf_apellido">
         <constraints>
-          <grid row="3" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="2" anchor="8" fill="0" indent="0" use-parent-layout="false">
+          <grid row="3" column="1" row-span="1" col-span="3" vsize-policy="0" hsize-policy="2" anchor="8" fill="0" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="-1"/>
           </grid>
         </constraints>
@@ -75,48 +75,48 @@
       </component>
       <grid id="836c9" layout-manager="FlowLayout" hgap="4" vgap="5" flow-align="1">
         <constraints>
-          <grid row="4" column="1" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <grid row="4" column="1" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties/>
         <border type="none"/>
         <children>
-          <component id="e6a83" class="javax.swing.JCheckBox" binding="aCheckBox" default-binding="true">
+          <component id="e6a83" class="javax.swing.JCheckBox" binding="claseACheckBox">
             <constraints/>
             <properties>
               <text value="A"/>
             </properties>
           </component>
-          <component id="5a6fe" class="javax.swing.JCheckBox" binding="bCheckBox" default-binding="true">
+          <component id="5a6fe" class="javax.swing.JCheckBox" binding="claseBCheckBox">
             <constraints/>
             <properties>
               <text value="B"/>
             </properties>
           </component>
-          <component id="7d5af" class="javax.swing.JCheckBox" binding="cCheckBox" default-binding="true">
+          <component id="7d5af" class="javax.swing.JCheckBox" binding="claseCCheckBox">
             <constraints/>
             <properties>
               <text value="C"/>
             </properties>
           </component>
-          <component id="c2804" class="javax.swing.JCheckBox" binding="dCheckBox" default-binding="true">
+          <component id="c2804" class="javax.swing.JCheckBox" binding="claseDCheckBox">
             <constraints/>
             <properties>
               <text value="D"/>
             </properties>
           </component>
-          <component id="27368" class="javax.swing.JCheckBox" binding="eCheckBox" default-binding="true">
+          <component id="27368" class="javax.swing.JCheckBox" binding="claseECheckBox">
             <constraints/>
             <properties>
               <text value="E"/>
             </properties>
           </component>
-          <component id="59565" class="javax.swing.JCheckBox" binding="fCheckBox" default-binding="true">
+          <component id="59565" class="javax.swing.JCheckBox" binding="claseFCheckBox">
             <constraints/>
             <properties>
               <text value="F"/>
             </properties>
           </component>
-          <component id="556c2" class="javax.swing.JCheckBox" binding="gCheckBox" default-binding="true">
+          <component id="556c2" class="javax.swing.JCheckBox" binding="claseGCheckBox">
             <constraints/>
             <properties>
               <text value="G"/>
@@ -158,7 +158,7 @@
       </component>
       <component id="d3662" class="javax.swing.JTextField" binding="tf_hasta">
         <constraints>
-          <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="0" indent="0" use-parent-layout="false">
+          <grid row="6" column="2" row-span="1" col-span="2" vsize-policy="0" hsize-policy="2" anchor="8" fill="0" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="-1"/>
           </grid>
         </constraints>
@@ -167,7 +167,7 @@
       <grid id="b5a69" binding="panelResultados" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
-          <grid row="7" column="1" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <grid row="7" column="1" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties/>
         <border type="none"/>
@@ -190,7 +190,7 @@
       <grid id="86264" layout-manager="GridLayoutManager" row-count="1" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
-          <grid row="8" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <grid row="8" column="2" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties/>
         <border type="none"/>
@@ -226,6 +226,11 @@
           </hspacer>
         </children>
       </grid>
+      <component id="babba" class="com.toedter.calendar.JDateChooser" binding="JDateChooser1" custom-create="true" default-binding="true">
+        <constraints>
+          <grid row="5" column="3" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+      </component>
     </children>
   </grid>
 </form>

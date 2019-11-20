@@ -1,6 +1,8 @@
 package Interfaces;
 
 import LogicaDeNegocios.DTOs.LicenciaDTO;
+import LogicaDeNegocios.Enumerations.ClaseLicencia;
+import com.toedter.calendar.JDateChooser;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -8,6 +10,7 @@ import javax.swing.table.TableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.Array;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,13 +22,13 @@ public class Interfaz_Imprimir_Licencia {
     private JTextField tf_dni;
     private JTextField tf_nombre;
     private JTextField tf_apellido;
-    private JCheckBox aCheckBox;
-    private JCheckBox bCheckBox;
-    private JCheckBox cCheckBox;
-    private JCheckBox dCheckBox;
-    private JCheckBox eCheckBox;
-    private JCheckBox fCheckBox;
-    private JCheckBox gCheckBox;
+    private JCheckBox claseACheckBox;
+    private JCheckBox claseBCheckBox;
+    private JCheckBox claseCCheckBox;
+    private JCheckBox claseDCheckBox;
+    private JCheckBox claseECheckBox;
+    private JCheckBox claseFCheckBox;
+    private JCheckBox claseGCheckBox;
     private JTextField tf_desde;
     private JTextField tf_hasta;
     private JTable table_resultados;
@@ -34,6 +37,13 @@ public class Interfaz_Imprimir_Licencia {
     private JButton imprimirButton;
     private JPanel panelResultados;
     private JScrollPane scrollPane;
+    private JDateChooser JDateChooser1;
+
+    private Long criterioDNI;
+    private String criterioNombre;
+    private String criterioApellido;
+    private List<ClaseLicencia> criterioClasesLicencia;
+    private LocalDate criterioFechaAltaLicencia;
 
 
     private  ArrayList<LicenciaDTO> listaLicenciasDTO = new ArrayList<LicenciaDTO>();
@@ -113,6 +123,19 @@ public class Interfaz_Imprimir_Licencia {
 
 
                 //this.setContentPane(new LicenciaDeConducir().getPane());
+            }
+        });
+
+
+        buscarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+
+                tf_dni.getText();
+                tf_nombre.getText();
+                tf_apellido.getText();
+
+
             }
         });
     }
