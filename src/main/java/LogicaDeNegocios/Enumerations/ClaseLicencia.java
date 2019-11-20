@@ -18,4 +18,6 @@ public enum ClaseLicencia {
     public String getName() {
         return this.name;
     }
+
+
 }

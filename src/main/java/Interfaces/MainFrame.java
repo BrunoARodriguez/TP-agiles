@@ -1,8 +1,11 @@
 package Interfaces;
 
+import LogicaDeNegocios.DTOs.LicenciaDTO;
+import LogicaDeNegocios.Entidades.Licencia;
 import LogicaDeNegocios.Entidades.Usuario;
 import LogicaDeNegocios.Enumerations.Roles;
 import gestores.GestorBD;
+import gestores.GestorTitular;
 import gestores.GestorUsuario;
 
 import javax.persistence.EntityManagerFactory;
@@ -12,6 +15,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 public class MainFrame extends JFrame {
 
@@ -21,6 +25,7 @@ public class MainFrame extends JFrame {
     public static final int PANE_LICENCIAS_EXPIRADAS=4;
     public static final int PANE_RENOVAR_LICENCIAS =5;
     public static final int PANE_MENU_OPERADOR=6;
+    public static final int PANE_VER_FORMATO_LICENCIA=7;
 
     public static int MENU_ACTUAL;
 
@@ -57,6 +62,7 @@ public class MainFrame extends JFrame {
         menuItem1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                GestorTitular.titularAux=null;
                 MainFrame.this.cambiarPanel(PANE_EMITIR_LICENCIA);
             }
         });
@@ -68,20 +74,22 @@ public class MainFrame extends JFrame {
         menuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                GestorTitular.titularAux=null;
                 MainFrame.this.cambiarPanel(PANE_IMPRIMIR_LICENCIA);
             }
         });
         menu.add(menuItem);
 
-        menuItem = new JMenuItem("Renovar Licencia",
+        JMenuItem menuItem2 = new JMenuItem("Renovar Licencia",
                 KeyEvent.VK_T);
-        menuItem.addActionListener(new ActionListener() {
+        menuItem2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                GestorTitular.titularAux=null;
                 MainFrame.this.cambiarPanel(PANE_RENOVAR_LICENCIAS);
             }
         });
-        menu.add(menuItem);
+        menu.add(menuItem2);
 
 
 
@@ -113,6 +121,7 @@ public class MainFrame extends JFrame {
         menuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                GestorTitular.titularAux=null;
                 MainFrame.this.cambiarPanel(PANE_ALTA_TITULAR);
             }
         });
@@ -130,6 +139,7 @@ public class MainFrame extends JFrame {
         menuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                GestorTitular.titularAux=null;
                 MainFrame.this.cambiarPanel(PANE_LICENCIAS_EXPIRADAS);
             }
         });
@@ -143,6 +153,10 @@ public class MainFrame extends JFrame {
     double height = screenSize.getHeight()/2;
     this.setLocation((int)width-this.getWidth()/2,(int)height-this.getHeight()/2);
 }
+
+    public MainFrame() {
+
+    }
 
     public void cambiarPanel(int pane){
         previousPane=this.getContentPane();
@@ -162,6 +176,7 @@ public class MainFrame extends JFrame {
             }
             case PANE_IMPRIMIR_LICENCIA:{
                 this.setContentPane(new Interfaz_Imprimir_Licencia(this).getPane());
+               // this.setContentPane(new LicenciaDeConducir().getPane());
                 break;
             }
             case PANE_RENOVAR_LICENCIAS:{
@@ -172,8 +187,23 @@ public class MainFrame extends JFrame {
                 this.setContentPane(new Interfaz_Licencias_Expiradas(this).getPane());
                 break;
             }
+            case PANE_VER_FORMATO_LICENCIA:{
+                //this.setContentPane(new LicenciaDeConducir(this).getPane());
+                break;
+            }
+        }
+        this.getContentPane().setVisible(false);
+        this.getContentPane().setVisible(true);
+    }
 
+    public void cambiarPanelConLicencias(int pane, ArrayList<LicenciaDTO> licenciaDTOS){
+        previousPane=this.getContentPane();
 
+        switch (pane){
+            case PANE_VER_FORMATO_LICENCIA:{
+                this.setContentPane(new LicenciaDeConducir(this, licenciaDTOS).getPane());
+                break;
+            }
         }
         this.getContentPane().setVisible(false);
         this.getContentPane().setVisible(true);
