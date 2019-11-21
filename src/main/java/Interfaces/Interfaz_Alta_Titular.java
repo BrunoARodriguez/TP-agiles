@@ -85,9 +85,8 @@ public class Interfaz_Alta_Titular {
                 try {
                     titularDTO.setDni(Long.valueOf(tfNumeroDocumento.getText()));
                 } catch (Exception e) {
-                    JOptionPane.showMessageDialog(frame, "No se cumplen los requerimientos para obtener una licencia de la/s clase/s solicitada/s", "Licencia", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(frame, "Documento ingresado no es valido.", "Licencia", JOptionPane.ERROR_MESSAGE);
                 }
-
 
                 titularDTO.setDonante(esDonanteCheckBox.isSelected());
                 titularDTO.setObservaciones(taObservaciones.getText());
@@ -102,7 +101,6 @@ public class Interfaz_Alta_Titular {
                 titularDTO.setTieneLicencias(false);
                 GestorTitular.titularAux = titularDTO;
                 if (GestorTitular.validarTitularExistente(titularDTO.getDni())) {
-
                     System.out.println("Ya existe titular.");
                     JOptionPane.showMessageDialog(frame, "Ya existe titular", "Titular", JOptionPane.ERROR_MESSAGE);
 

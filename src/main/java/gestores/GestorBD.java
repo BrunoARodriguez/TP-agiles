@@ -127,7 +127,7 @@ public abstract class GestorBD {
 
     public static List<Licencia> buscarLicencias(CriteriosDTO criteriosDTO, Integer caso) {
 
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("''yyyy-MM-dd HH:mm:ss''");
         EntityManager manager = emf.createEntityManager();
         StringBuffer query = new StringBuffer()
                 .append("SELECT l FROM Licencia l, Titular t, Contribuyente c WHERE l.titularLicencia LIKE ")
@@ -187,6 +187,7 @@ public abstract class GestorBD {
                     if(licencia.getClaseLicencias().contains(criteriosDTO.getClaseLicencias().get(i))){
                         match = true;
                     }
+                    i++;
                 }
                 if(!match){
                     iterator.remove();

@@ -1,6 +1,10 @@
 package Interfaces;
 
+import LogicaDeNegocios.DTOs.CriteriosDTO;
+import LogicaDeNegocios.DTOs.DatosTablaDTO;
+import LogicaDeNegocios.DTOs.LicenciaDTO;
 import LogicaDeNegocios.Enumerations.ClaseLicencia;
+import gestores.GestorLicencia;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -8,6 +12,7 @@ import javax.swing.table.TableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,21 +58,25 @@ public class Interfaz_Renovar_Licencia {
 
         renovarButton.setEnabled(false);
 
-        dni = null;
-        fechaDesde = null;
-        fechaHasta = null;
-        claseLicenciaList = new ArrayList<>();
-
-
         buscarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
 
-                if (!tf_dni.getText().isEmpty()) {
-                    dni = Long.valueOf(tf_dni.getText());
+                dni = null;
+                fechaDesde = null;
+                fechaHasta = null;
+                claseLicenciaList = new ArrayList<>();
+
+                if(!tf_dni.getText().isEmpty()){
+                    try {
+                        dni = Long.valueOf(tf_dni.getText());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        JOptionPane.showMessageDialog(frame, "Documento Ingresado Invalido", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
                 }
 
-                //TODO Ver si mandamos cadena vacia o null
                 nombre = tf_nombre.getText();
                 apellido = tf_apellido.getText();
 
@@ -92,14 +101,51 @@ public class Interfaz_Renovar_Licencia {
                 if (gCheckBox.isSelected()) {
                     claseLicenciaList.add(ClaseLicencia.CLASE_G);
                 }
+                if (tf_desde.getText().isEmpty() && tf_hasta.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(frame, "Debe ingresar al menos una fecha.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
                 if (!tf_desde.getText().isEmpty()) {
-                    fechaDesde = LocalDateTime.parse(tf_desde.getText(), dateTimeFormatter);
+                    fechaDesde = LocalDateTime.parse(tf_desde.getText()+" 03:00:00", dateTimeFormatter);
+                    Period periodo = Period.between(fechaDesde.toLocalDate(), LocalDateTime.now().toLocalDate());
+                    int anios = periodo.getYears();
+                    if (anios > 6) {
+                        JOptionPane.showMessageDialog(frame, "La fecha de vencimiento no puede ser de más de 6 años en el futuro.", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
                 }
                 if (!tf_hasta.getText().isEmpty()) {
-                    fechaHasta = LocalDateTime.parse(tf_hasta.getText(), dateTimeFormatter);
+                    fechaHasta = LocalDateTime.parse(tf_hasta.getText()+" 03:00:00", dateTimeFormatter);
+                    Period periodo = Period.between(fechaHasta.toLocalDate(), LocalDateTime.now().toLocalDate());
+                    int anios = periodo.getYears();
+                    if (anios > 6) {
+                        JOptionPane.showMessageDialog(frame, "La fecha de vencimiento no puede ser de más de 6 años en el futuro.", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
                 }
 
+                CriteriosDTO criteriosDTO = new CriteriosDTO();
+                if (dni == null) {
+                    criteriosDTO.setDniTitular("");
+                } else {
+                    criteriosDTO.setDniTitular(dni.toString());
+                }
+                criteriosDTO.setNombreTitular(nombre);
+                criteriosDTO.setApellidoTitular(apellido);
+                criteriosDTO.setFechaVencimientoDesde(fechaDesde);
+                criteriosDTO.setFechaVencimientoHasta(fechaHasta);
+                criteriosDTO.setClaseLicencias(claseLicenciaList);
 
+                List<DatosTablaDTO> datosTablaDTOS = GestorLicencia.listarLicencias(criteriosDTO);
+
+                if(datosTablaDTOS.isEmpty()){
+                    JOptionPane.showMessageDialog(frame, "No se encontraron resultados.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                } else {
+                    //TODO agregar los datos encontrados en la tabla
+                    JOptionPane.showMessageDialog(frame, "Busqueda completada.", "Consulta de licencias.", JOptionPane.INFORMATION_MESSAGE);
+                    System.out.println(datosTablaDTOS.toString());
+                }
 
             }
         });
@@ -114,8 +160,6 @@ public class Interfaz_Renovar_Licencia {
             }
         });
 
-
     }
-
 
 }

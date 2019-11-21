@@ -1,6 +1,7 @@
 package gestores;
 
 import LogicaDeNegocios.DTOs.CriteriosDTO;
+import LogicaDeNegocios.DTOs.DatosTablaDTO;
 import LogicaDeNegocios.DTOs.LicenciaDTO;
 import LogicaDeNegocios.Entidades.CambioEstadoLicencia;
 import LogicaDeNegocios.Entidades.Comprobante;
@@ -12,6 +13,7 @@ import LogicaDeNegocios.Enumerations.EstadoLicencia;
 
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -171,23 +173,28 @@ public abstract class GestorLicencia {
         return false;
     } //cierra validarConductoresProfesional
 
-    public static List<LicenciaDTO> listaDeLicenciasExpiradas(CriteriosDTO criteriosDTO) {
-
+    public static List<DatosTablaDTO> listarLicencias(CriteriosDTO criteriosDTO) {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         List<Licencia> buscadas = new ArrayList<>();
-        Period periodo = Period.between(criteriosDTO.getFechaVencimientoHasta().toLocalDate(), LocalDateTime.now().toLocalDate());
-        int anios = periodo.getYears();
-        if (anios > 6) {
-            return new ArrayList<>();
-        } else {
-            buscadas = GestorBD.buscarLicencias(criteriosDTO, casoDeBusqueda(criteriosDTO.getFechaAltaDesde(), criteriosDTO.getFechaAltaHasta(), criteriosDTO.getFechaVencimientoDesde(), criteriosDTO.getFechaVencimientoHasta()));
-            List<LicenciaDTO> aux = new ArrayList<>();
+        buscadas = GestorBD.buscarLicencias(criteriosDTO, casoDeBusqueda(criteriosDTO.getFechaAltaDesde(), criteriosDTO.getFechaAltaHasta(), criteriosDTO.getFechaVencimientoDesde(), criteriosDTO.getFechaVencimientoHasta()));
+        List<DatosTablaDTO> aux = new ArrayList<>();
 
-            for (Licencia l : buscadas) {
-                LicenciaDTO licenciaDTO = new LicenciaDTO(l.getIdLicencia(), l.getTitularLicencia().getContribuyente().getNroDocumento(), l.getFechaAltaLicencia(), l.getFechaVencimientoLicencia(), (ArrayList<ClaseLicencia>) l.getClaseLicencias(), l.getObservacionesLicencia());
-                aux.add(licenciaDTO);
+        for (Licencia l : buscadas) {
+            DatosTablaDTO datosTablaDTO = new DatosTablaDTO();
+            datosTablaDTO.setIdLicencia(l.getIdLicencia());
+            datosTablaDTO.setNombre(l.getTitularLicencia().getContribuyente().getNombreContribuyente());
+            datosTablaDTO.setApellido(l.getTitularLicencia().getContribuyente().getApellidoContribuyente());
+            datosTablaDTO.setDni(l.getTitularLicencia().getContribuyente().getNroDocumento().toString());
+            datosTablaDTO.setEstadoLicencia(l.getCambioEstadoLicencias().get(l.getCambioEstadoLicencias().size()-1).getEstadoNuevo().getName());
+            datosTablaDTO.setClasesLicencia(new ArrayList<>());
+            for(ClaseLicencia cl : l.getClaseLicencias()){
+                datosTablaDTO.getClasesLicencia().add(cl.getName());
             }
-            return aux;
+            datosTablaDTO.setFechaAlta(dateTimeFormatter.format(l.getFechaAltaLicencia()));
+            aux.add(datosTablaDTO);
         }
+
+        return aux;
     } //cierra metodo listaLicenciasExpiradas
 
     private static int casoDeBusqueda(LocalDateTime fechaAltaDesde, LocalDateTime fechaAltaHasta, LocalDateTime fechaVencimientoDesde, LocalDateTime fechaVencimientoHasta) {
@@ -196,21 +203,21 @@ public abstract class GestorLicencia {
             // buscamos las licencias dadas de alta esa    fecha
             return 1;
         } else if (fechaAltaDesde != null && fechaAltaHasta == null) {
-                //buscamos las licencias dadas de alta desde esa fecha en adelante
-                return 2;
-            } else if (fechaVencimientoDesde == null && fechaVencimientoHasta != null) {
-                    //buscamos las licencias que vencen esa fecha
-                    return 3;
-                }else if (fechaVencimientoDesde != null && fechaVencimientoHasta == null) {
-                        // buscamos las licencias dadas de alta esa fecha en adelante
-                        return 4;
-                    } else if (fechaAltaDesde != null && fechaAltaHasta != null) {
-                            //buscamos por intervalo de fechas altas
-                            return 5;
-                        }else {
-                            //buscamos por intervalo de fechas vencimiento
-                            return 6;
-                        }
+            //buscamos las licencias dadas de alta desde esa fecha en adelante
+            return 2;
+        } else if (fechaVencimientoDesde == null && fechaVencimientoHasta != null) {
+            //buscamos las licencias que vencen esa fecha
+            return 3;
+        } else if (fechaVencimientoDesde != null && fechaVencimientoHasta == null) {
+            // buscamos las licencias dadas de alta esa fecha en adelante
+            return 4;
+        } else if (fechaAltaDesde != null && fechaAltaHasta != null) {
+            //buscamos por intervalo de fechas altas
+            return 5;
+        } else {
+            //buscamos por intervalo de fechas vencimiento
+            return 6;
+        }
     }
 
 }
