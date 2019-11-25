@@ -4,15 +4,18 @@ import LogicaDeNegocios.DTOs.CriteriosDTO;
 import LogicaDeNegocios.DTOs.DatosTablaDTO;
 import LogicaDeNegocios.DTOs.LicenciaDTO;
 import LogicaDeNegocios.Enumerations.ClaseLicencia;
+import com.toedter.calendar.JDateChooser;
 import gestores.GestorLicencia;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,14 +32,13 @@ public class Interfaz_Renovar_Licencia {
     private JCheckBox eCheckBox;
     private JCheckBox fCheckBox;
     private JCheckBox gCheckBox;
-    private JTextField tf_desde;
-    private JTextField tf_hasta;
     private JTable table_resultados;
     private JButton volverButton;
     private JButton buscarButton;
     private JButton renovarButton;
     private JScrollPane scrollPane;
-    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+    private JDateChooser tf_desde;
+    private JDateChooser tf_hasta;
     private Long dni;
     private String nombre;
     private String apellido;
@@ -46,6 +48,17 @@ public class Interfaz_Renovar_Licencia {
 
     public JPanel getPane() {
         return rootPane;
+    }
+
+    private void createUIComponents()
+    {
+        tf_desde = new JDateChooser();
+        tf_desde.getDateEditor().setEnabled(false);
+        ((JTextField)tf_desde.getDateEditor().getUiComponent()).setDisabledTextColor(Color.black);
+
+        tf_hasta = new JDateChooser();
+        tf_hasta.getDateEditor().setEnabled(false);
+        ((JTextField)tf_hasta.getDateEditor().getUiComponent()).setDisabledTextColor(Color.black);
     }
 
     public Interfaz_Renovar_Licencia(final MainFrame frame) {
@@ -102,12 +115,14 @@ public class Interfaz_Renovar_Licencia {
                 if (gCheckBox.isSelected()) {
                     claseLicenciaList.add(ClaseLicencia.CLASE_G);
                 }
-                if (tf_desde.getText().isEmpty() && tf_hasta.getText().isEmpty()) {
+
+                if (tf_desde.getDate()==null && tf_hasta.getDate()==null) {
                     JOptionPane.showMessageDialog(frame, "Debe ingresar al menos una fecha.", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                if (!tf_desde.getText().isEmpty()) {
-                    fechaDesde = LocalDateTime.parse(tf_desde.getText()+" 03:00:00", dateTimeFormatter);
+
+                if (tf_desde.getDate()!=null) {
+                    fechaDesde= tf_desde.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().atTime(3,0,0);
                     Period periodo = Period.between(fechaDesde.toLocalDate(), LocalDateTime.now().toLocalDate());
                     int anios = periodo.getYears();
                     if (anios > 6) {
@@ -115,8 +130,9 @@ public class Interfaz_Renovar_Licencia {
                         return;
                     }
                 }
-                if (!tf_hasta.getText().isEmpty()) {
-                    fechaHasta = LocalDateTime.parse(tf_hasta.getText()+" 03:00:00", dateTimeFormatter);
+
+                if(tf_hasta.getDate()!=null){
+                    fechaHasta= tf_hasta.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().atTime(3,0,0);
                     Period periodo = Period.between(fechaHasta.toLocalDate(), LocalDateTime.now().toLocalDate());
                     int anios = periodo.getYears();
                     if (anios > 6) {
@@ -144,7 +160,6 @@ public class Interfaz_Renovar_Licencia {
                     return;
                 } else {
                     JOptionPane.showMessageDialog(frame, "Busqueda completada.", "Consulta de licencias.", JOptionPane.INFORMATION_MESSAGE);
-                    System.out.println(datosTablaDTOS.toString());
                 }
                 //TODO ver si hacemos que al fallar busquedas se vacie la tabla
                 modeloLicencias.setDatosTablaDTOS(datosTablaDTOS);

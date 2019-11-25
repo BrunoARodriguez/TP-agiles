@@ -140,14 +140,6 @@
           <text value="Desde:"/>
         </properties>
       </component>
-      <component id="1c6e" class="javax.swing.JTextField" binding="tf_desde">
-        <constraints>
-          <grid row="5" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="0" indent="0" use-parent-layout="false">
-            <preferred-size width="150" height="-1"/>
-          </grid>
-        </constraints>
-        <properties/>
-      </component>
       <component id="ea3a0" class="javax.swing.JLabel">
         <constraints>
           <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
@@ -155,14 +147,6 @@
         <properties>
           <text value="Hasta:"/>
         </properties>
-      </component>
-      <component id="d3662" class="javax.swing.JTextField" binding="tf_hasta">
-        <constraints>
-          <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="0" indent="0" use-parent-layout="false">
-            <preferred-size width="150" height="-1"/>
-          </grid>
-        </constraints>
-        <properties/>
       </component>
       <grid id="b5a69" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="0" left="0" bottom="0" right="0"/>
@@ -226,6 +210,16 @@
           </hspacer>
         </children>
       </grid>
+      <component id="b37cf" class="com.toedter.calendar.JDateChooser" binding="tf_desde" custom-create="true">
+        <constraints>
+          <grid row="5" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+      </component>
+      <component id="384d6" class="com.toedter.calendar.JDateChooser" binding="tf_hasta" custom-create="true">
+        <constraints>
+          <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+      </component>
     </children>
   </grid>
 </form>
