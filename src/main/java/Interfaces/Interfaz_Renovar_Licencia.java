@@ -42,6 +42,7 @@ public class Interfaz_Renovar_Licencia {
     private String apellido;
     private List<ClaseLicencia> claseLicenciaList;
     private LocalDateTime fechaDesde, fechaHasta;
+    private List<DatosTablaDTO> datosTablaDTOS;
 
     public JPanel getPane() {
         return rootPane;
@@ -49,11 +50,11 @@ public class Interfaz_Renovar_Licencia {
 
     public Interfaz_Renovar_Licencia(final MainFrame frame) {
         String[] columns = {"DNI titular", "Nombre titular", "Apellido titular", "Clase(s)", "Fecha Alta"};
-        Object[][] data = {{}};
+        datosTablaDTOS = new ArrayList<>();
 
-        TableModel tableModel;
-        tableModel = new DefaultTableModel(columns, 0);
-        table_resultados = new JTable(tableModel);
+        ModeloLicencias modeloLicencias = new ModeloLicencias(datosTablaDTOS, columns);
+        table_resultados = new JTable(modeloLicencias);
+        table_resultados.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         scrollPane.setViewportView(table_resultados);
 
         renovarButton.setEnabled(false);
@@ -136,16 +137,18 @@ public class Interfaz_Renovar_Licencia {
                 criteriosDTO.setFechaVencimientoHasta(fechaHasta);
                 criteriosDTO.setClaseLicencias(claseLicenciaList);
 
-                List<DatosTablaDTO> datosTablaDTOS = GestorLicencia.listarLicencias(criteriosDTO);
+                datosTablaDTOS = GestorLicencia.listarLicencias(criteriosDTO);
 
                 if(datosTablaDTOS.isEmpty()){
                     JOptionPane.showMessageDialog(frame, "No se encontraron resultados.", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 } else {
-                    //TODO agregar los datos encontrados en la tabla
                     JOptionPane.showMessageDialog(frame, "Busqueda completada.", "Consulta de licencias.", JOptionPane.INFORMATION_MESSAGE);
                     System.out.println(datosTablaDTOS.toString());
                 }
+                //TODO ver si hacemos que al fallar busquedas se vacie la tabla
+                modeloLicencias.setDatosTablaDTOS(datosTablaDTOS);
+                table_resultados.updateUI();
 
             }
         });
