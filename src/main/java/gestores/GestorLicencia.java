@@ -1,13 +1,8 @@
 package gestores;
 
-import LogicaDeNegocios.DTOs.CriteriosDTO;
-import LogicaDeNegocios.DTOs.DatosTablaDTO;
-import LogicaDeNegocios.DTOs.LicenciaDTO;
-import LogicaDeNegocios.Entidades.CambioEstadoLicencia;
-import LogicaDeNegocios.Entidades.Comprobante;
-import LogicaDeNegocios.Entidades.Licencia;
+import LogicaDeNegocios.DTOs.*;
+import LogicaDeNegocios.Entidades.*;
 import LogicaDeNegocios.Entidades.Resources.CostoLicencia;
-import LogicaDeNegocios.Entidades.Titular;
 import LogicaDeNegocios.Enumerations.ClaseLicencia;
 import LogicaDeNegocios.Enumerations.EstadoLicencia;
 
@@ -218,6 +213,36 @@ public abstract class GestorLicencia {
             //buscamos por intervalo de fechas vencimiento
             return 6;
         }
+    }
+
+    public static CarnetDTO buscarCarnetDTO(Long idLicencia) {
+
+        Licencia licencia = GestorBD.buscarLicencia(idLicencia);
+        if (licencia == null) {
+            return null;
+        } else {
+            CarnetDTO carnetDTO = new CarnetDTO();
+            carnetDTO.setIdLicencia(licencia.getIdLicencia());
+            carnetDTO.setNombre(licencia.getTitularLicencia().getContribuyente().getNombreContribuyente());
+            carnetDTO.setApellido(licencia.getTitularLicencia().getContribuyente().getApellidoContribuyente());
+            carnetDTO.setDomicilio(licencia.getTitularLicencia().getContribuyente().getDomicilioContribuyente());
+            carnetDTO.setFechaDeNacimiento(licencia.getTitularLicencia().getContribuyente().getFechaNacimientoContribuyente());
+            carnetDTO.setFechaAltaLicencia(licencia.getFechaAltaLicencia());
+            carnetDTO.setFechaVencimientoLicencia(licencia.getFechaVencimientoLicencia());
+            //carnetDTO.setClaseLicencias(licencia.getClaseLicencias());
+            // datosTablaDTO.setClasesLicencia(new ArrayList<>());
+            carnetDTO.setClasesLicencia(new ArrayList<>());
+            for(ClaseLicencia cl : licencia.getClaseLicencias()){
+                carnetDTO.getClasesLicencia().add(cl.getName());
+            }
+            carnetDTO.setEsDonante(licencia.getTitularLicencia().getDonante());
+            carnetDTO.setTipoSangre(licencia.getTitularLicencia().getTipoSangre());
+            carnetDTO.setObservacionesLicencia(licencia.getObservacionesLicencia());
+
+
+            return carnetDTO;
+        }
+
     }
 
 }
