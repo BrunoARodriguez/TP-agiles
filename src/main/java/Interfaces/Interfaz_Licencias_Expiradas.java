@@ -12,6 +12,10 @@ import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.ZoneId;
@@ -38,6 +42,7 @@ public class Interfaz_Licencias_Expiradas {
     private JPanel panelResultados;
     private JDateChooser tf_desde;
     private JDateChooser tf_hasta;
+    private JLabel labelFecha;
 
     private Long dni;
     private String nombre;
@@ -55,10 +60,67 @@ public class Interfaz_Licencias_Expiradas {
         tf_desde = new JDateChooser();
         tf_desde.getDateEditor().setEnabled(false);
         ((JTextField)tf_desde.getDateEditor().getUiComponent()).setDisabledTextColor(Color.black);
+        ((JTextField) tf_desde.getDateEditor().getUiComponent()).addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent mouseEvent) {
+                if(mouseEvent.getClickCount()==2){
+                    ((JTextField)tf_desde.getDateEditor()).setText("");
+                    tf_desde.setCalendar(null);
+                }
+            }
 
+            @Override
+            public void mousePressed(MouseEvent mouseEvent) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent mouseEvent) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent mouseEvent) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent mouseEvent) {
+
+            }
+        });
         tf_hasta = new JDateChooser();
         tf_hasta.getDateEditor().setEnabled(false);
         ((JTextField)tf_hasta.getDateEditor().getUiComponent()).setDisabledTextColor(Color.black);
+        ((JTextField) tf_hasta.getDateEditor().getUiComponent()).addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent mouseEvent) {
+                if(mouseEvent.getClickCount()==2){
+                    ((JTextField)tf_hasta.getDateEditor()).setText("");
+                    tf_hasta.setCalendar(null);
+                }
+            }
+
+            @Override
+            public void mousePressed(MouseEvent mouseEvent) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent mouseEvent) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent mouseEvent) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent mouseEvent) {
+
+            }
+        });
     }
 
     public Interfaz_Licencias_Expiradas(final MainFrame frame) {
