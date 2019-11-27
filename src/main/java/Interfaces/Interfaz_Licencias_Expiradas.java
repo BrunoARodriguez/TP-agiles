@@ -12,6 +12,10 @@ import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.ZoneId;
@@ -38,6 +42,7 @@ public class Interfaz_Licencias_Expiradas {
     private JPanel panelResultados;
     private JDateChooser tf_desde;
     private JDateChooser tf_hasta;
+    private JLabel labelFecha;
 
     private Long dni;
     private String nombre;
@@ -55,10 +60,67 @@ public class Interfaz_Licencias_Expiradas {
         tf_desde = new JDateChooser();
         tf_desde.getDateEditor().setEnabled(false);
         ((JTextField)tf_desde.getDateEditor().getUiComponent()).setDisabledTextColor(Color.black);
+        ((JTextField) tf_desde.getDateEditor().getUiComponent()).addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent mouseEvent) {
+                if(mouseEvent.getClickCount()==2){
+                    ((JTextField)tf_desde.getDateEditor()).setText("");
+                    tf_desde.setCalendar(null);
+                }
+            }
 
+            @Override
+            public void mousePressed(MouseEvent mouseEvent) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent mouseEvent) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent mouseEvent) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent mouseEvent) {
+
+            }
+        });
         tf_hasta = new JDateChooser();
         tf_hasta.getDateEditor().setEnabled(false);
         ((JTextField)tf_hasta.getDateEditor().getUiComponent()).setDisabledTextColor(Color.black);
+        ((JTextField) tf_hasta.getDateEditor().getUiComponent()).addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent mouseEvent) {
+                if(mouseEvent.getClickCount()==2){
+                    ((JTextField)tf_hasta.getDateEditor()).setText("");
+                    tf_hasta.setCalendar(null);
+                }
+            }
+
+            @Override
+            public void mousePressed(MouseEvent mouseEvent) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent mouseEvent) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent mouseEvent) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent mouseEvent) {
+
+            }
+        });
     }
 
     public Interfaz_Licencias_Expiradas(final MainFrame frame) {
@@ -117,11 +179,17 @@ public class Interfaz_Licencias_Expiradas {
                 if (tf_desde.getDate()==null && tf_hasta.getDate()==null) {
                     JOptionPane.showMessageDialog(frame, "Debe ingresar al menos una fecha.", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
+                }else if(tf_desde.getDate()!=null && tf_hasta.getDate()!=null){
+                    Period period = Period.between(tf_desde.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), tf_hasta.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                    if(period.getYears()<0 || period.getMonths()<0 || period.getDays()<0){
+                        JOptionPane.showMessageDialog(frame, "La fecha hasta no puede ser menor que la fecha desde.", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
                 }
 
                 if (tf_desde.getDate()!=null) {
                     fechaDesde= tf_desde.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().atTime(3,0,0);
-                    Period periodo = Period.between(fechaDesde.toLocalDate(), LocalDateTime.now().toLocalDate());
+                    Period periodo = Period.between(LocalDateTime.now().toLocalDate(),fechaDesde.toLocalDate());
                     int anios = periodo.getYears();
                     if (anios > 6) {
                         JOptionPane.showMessageDialog(frame, "La fecha de vencimiento no puede ser de más de 6 años en el futuro.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -131,7 +199,7 @@ public class Interfaz_Licencias_Expiradas {
 
                 if(tf_hasta.getDate()!=null){
                     fechaHasta= tf_hasta.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().atTime(3,0,0);
-                    Period periodo = Period.between(fechaHasta.toLocalDate(), LocalDateTime.now().toLocalDate());
+                    Period periodo = Period.between(LocalDateTime.now().toLocalDate(), fechaHasta.toLocalDate());
                     int anios = periodo.getYears();
                     if (anios > 6) {
                         JOptionPane.showMessageDialog(frame, "La fecha de vencimiento no puede ser de más de 6 años en el futuro.", "Error", JOptionPane.ERROR_MESSAGE);
