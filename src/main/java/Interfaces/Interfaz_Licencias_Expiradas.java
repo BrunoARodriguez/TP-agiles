@@ -179,11 +179,17 @@ public class Interfaz_Licencias_Expiradas {
                 if (tf_desde.getDate()==null && tf_hasta.getDate()==null) {
                     JOptionPane.showMessageDialog(frame, "Debe ingresar al menos una fecha.", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
+                }else if(tf_desde.getDate()!=null && tf_hasta.getDate()!=null){
+                    Period period = Period.between(tf_desde.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), tf_hasta.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                    if(period.getYears()<0 || period.getMonths()<0 || period.getDays()<0){
+                        JOptionPane.showMessageDialog(frame, "La fecha hasta no puede ser menor que la fecha desde.", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
                 }
 
                 if (tf_desde.getDate()!=null) {
                     fechaDesde= tf_desde.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().atTime(3,0,0);
-                    Period periodo = Period.between(fechaDesde.toLocalDate(), LocalDateTime.now().toLocalDate());
+                    Period periodo = Period.between(LocalDateTime.now().toLocalDate(),fechaDesde.toLocalDate());
                     int anios = periodo.getYears();
                     if (anios > 6) {
                         JOptionPane.showMessageDialog(frame, "La fecha de vencimiento no puede ser de más de 6 años en el futuro.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -193,7 +199,7 @@ public class Interfaz_Licencias_Expiradas {
 
                 if(tf_hasta.getDate()!=null){
                     fechaHasta= tf_hasta.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().atTime(3,0,0);
-                    Period periodo = Period.between(fechaHasta.toLocalDate(), LocalDateTime.now().toLocalDate());
+                    Period periodo = Period.between(LocalDateTime.now().toLocalDate(), fechaHasta.toLocalDate());
                     int anios = periodo.getYears();
                     if (anios > 6) {
                         JOptionPane.showMessageDialog(frame, "La fecha de vencimiento no puede ser de más de 6 años en el futuro.", "Error", JOptionPane.ERROR_MESSAGE);
