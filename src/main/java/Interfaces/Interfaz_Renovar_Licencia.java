@@ -256,7 +256,7 @@ public class Interfaz_Renovar_Licencia {
             public void actionPerformed(ActionEvent actionEvent) {
                 switch (GestorLicencia.renovarLicencia(modeloLicencias.getIdLicencia(table_resultados.getSelectedRow()))) {
                     case 0:
-                        JOptionPane.showMessageDialog(frame, "La fecha de vencimiento no puede ser de más de 6 años en el futuro.", "Exito", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(frame, "Licencia reovada con exito.", "Exito", JOptionPane.INFORMATION_MESSAGE);
                         return;
                     case -1:
                         JOptionPane.showMessageDialog(frame, "No se logró encontrar una licencia.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -268,7 +268,6 @@ public class Interfaz_Renovar_Licencia {
                         JOptionPane.showMessageDialog(frame, "No se puede renovar esta licencia ya que le faltan más de 45 días para su vencimiento.", "Error", JOptionPane.ERROR_MESSAGE);
                         return;
                 }
-
             }
         });
 

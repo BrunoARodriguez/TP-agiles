@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 
+import LogicaDeNegocios.DTOs.CarnetDTO;
 import LogicaDeNegocios.DTOs.LicenciaDTO;
 import com.itextpdf.io.image.ImageData;
 import com.itextpdf.io.image.ImageDataFactory;
@@ -41,40 +42,18 @@ public class LicenciaDeConducir {
     private JLabel tfObservaciones;
     private JButton imprimirTodasButton;
     private JButton verSiguienteButton;
+    private JButton cancelarButton;
 
-    private  ArrayList<LicenciaDTO> licenciaDTOS = new ArrayList<>();
-    private LicenciaDTO licenciaDTOActual;
+    private ArrayList<CarnetDTO> licenciaDTOS = new ArrayList<>();
+    private CarnetDTO licenciaDTOActual;
     Integer cantidadLicencias;
     Integer cantidadImpresas = 0;
     Integer indiceLicenciaActual=0;
 
-
-
-  /*  public LicenciaDeConducir(final MainFrame frame) {
-
-
-        imprimir.addActionListener(actionEvent -> {
-            try {
-                tomarFoto();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            try {
-                generarPdf();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
-        });
-    }*/
-
-    public LicenciaDeConducir(final MainFrame frame, ArrayList<LicenciaDTO> licenciaDTOS)   {
-
+    public LicenciaDeConducir(final MainFrame frame, ArrayList<CarnetDTO> licenciaDTOS)   {
 
         this.licenciaDTOS=licenciaDTOS;
-        for(LicenciaDTO l : this.licenciaDTOS){
+        for(CarnetDTO l : this.licenciaDTOS){
             System.out.println(l.toString());
         }
 
@@ -89,8 +68,8 @@ public class LicenciaDeConducir {
                     e.printStackTrace();
                 }
             JOptionPane.showMessageDialog(frame, "Impresion exitosa", "Imprimir licencia", JOptionPane.INFORMATION_MESSAGE);
-
         });
+
         verSiguienteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -107,7 +86,7 @@ public class LicenciaDeConducir {
         imprimirTodasButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                for(LicenciaDTO l : LicenciaDeConducir.this.licenciaDTOS){
+                for(CarnetDTO l : LicenciaDeConducir.this.licenciaDTOS){
                     setearDatosLicencia(l);
                     try {
                         imprimirLicencia(l);
@@ -118,19 +97,40 @@ public class LicenciaDeConducir {
                 JOptionPane.showMessageDialog(frame, "Impresion exitosa", "Imprimir licencia", JOptionPane.INFORMATION_MESSAGE);
             }
         });
+        cancelarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                JDialogCancelar c = new JDialogCancelar(frame);
+                if(c.fueCancelado()) {
+                    frame.backPreviousPane();
+                }
+            }
+        });
     }
 
-    private void imprimirLicencia(LicenciaDTO licenciaDTO) throws IOException {
+    private void imprimirLicencia(CarnetDTO licenciaDTO) throws IOException {
         tomarFoto();
         generarPdf(licenciaDTO.getIdLicencia().toString());
     }
 
-    private void setearDatosLicencia(LicenciaDTO licenciaDTO) {
+    private void setearDatosLicencia(CarnetDTO licenciaDTO) {
         //TODO faltan campos
         tfNroLicencia.setText(licenciaDTO.getIdLicencia().toString());
+        tfNombre.setText(licenciaDTO.getNombre());
+        tfApellido.setText(licenciaDTO.getApellido());
+        tfDomicilio.setText(licenciaDTO.getDomicilio());
+        tfFechaNacimiento.setText(licenciaDTO.getFechaDeNacimiento().toLocalDate().toString());
         tfFechaAlta.setText(licenciaDTO.getFechaAltaLicencia().toLocalDate().toString());
         tfFechaVencimiento.setText(licenciaDTO.getFechaVencimientoLicencia().toLocalDate().toString());
+        String clases=" ";
+        for(String clase : licenciaDTO.getClasesLicencia()){
+            clases=clases.concat(" - " + clase);
+        }
+        tfTipoDeClases.setText(clases);
+
         tfEsDonante.setText(licenciaDTO.getEsDonante().toString());
+        tfGrupoYFactor.setText(licenciaDTO.getTipoSangre().toString());
+        tfObservaciones.setText(licenciaDTO.getObservacionesLicencia());
     }
 
     public void tomarFoto() throws IOException {
@@ -174,7 +174,6 @@ public class LicenciaDeConducir {
         document.close();
 
         System.out.println("Se genero el pdf de la licencia " + idLicencia + " en la ruta "+ dest);
-
     }
 
     public JPanel getPane() {

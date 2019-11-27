@@ -1,5 +1,6 @@
 package Interfaces;
 
+import LogicaDeNegocios.DTOs.CarnetDTO;
 import LogicaDeNegocios.DTOs.CriteriosDTO;
 import LogicaDeNegocios.DTOs.DatosTablaDTO;
 import LogicaDeNegocios.DTOs.LicenciaDTO;
@@ -133,7 +134,7 @@ public class Interfaz_Imprimir_Licencia {
 
         ModeloLicencias modeloLicencias = new ModeloLicencias(datosTablaDTOS, columns);
         table_resultados = new JTable(modeloLicencias);
-        table_resultados.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        table_resultados.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         scrollPane.setViewportView(table_resultados);
 
         volverButton.addActionListener(new ActionListener() {
@@ -150,56 +151,41 @@ public class Interfaz_Imprimir_Licencia {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
 
-                  ArrayList<LicenciaDTO> listaLicenciasDTOImprimir = new ArrayList<LicenciaDTO>();
-
                 int[] indicesLicencias =table_resultados.getSelectedRows();
                 List<Integer> indiceLicenciaList = new ArrayList<Integer>();
+                List<Long> idLicenciasSeleccionadas = new ArrayList<>();
 
                 for (int value : indicesLicencias) {
                     indiceLicenciaList.add(value);
                 }
 
-                //TODO esto es solo de prueba:
-                indiceLicenciaList.add(0);
-                indiceLicenciaList.add(1);
-
-                LicenciaDTO l1 = new LicenciaDTO();
-                l1.setIdLicencia((long) 1);
-                l1.setDNI((long) 40617525);
-                l1.setFechaAltaLicencia(LocalDateTime.now());
-                l1.setFechaVencimientoLicencia(LocalDateTime.now());
-                l1.setEsDonante(true);
-
-                LicenciaDTO l2 = new LicenciaDTO();
-                l2.setIdLicencia((long) 2);
-                l2.setDNI((long) 40617524);
-                l2.setFechaAltaLicencia(LocalDateTime.now());
-                l2.setFechaVencimientoLicencia(LocalDateTime.now());
-                l2.setEsDonante(false);
-                listaLicenciasDTO.add(l1);
-                listaLicenciasDTO.add(l2);
+                //TODO guardar id de licencacias seleccionadas , buscar la licencias en base de datos , generar un nuevo
+                // DTO y luego mandarselos a LIcenciaDeConducir.
 
 
                 //Integer indiceLicencia = table_resultados.getSelectedRow();
                 if(indiceLicenciaList.isEmpty()) {
                     JOptionPane.showMessageDialog(frame, "Debe seleccionar al menos una licencia", "Imprimir Licencia", JOptionPane.ERROR_MESSAGE);
                 }else {
-
                     for(Integer indice : indiceLicenciaList){
-                        LicenciaDTO licenciaSelecionada = listaLicenciasDTO.get(indice);
-                        listaLicenciasDTOImprimir.add(licenciaSelecionada);
+                        System.out.println(" indice : " + indice);
+                        idLicenciasSeleccionadas.add(datosTablaDTOS.get(indice).getIdLicencia());
+                    }
+                    ArrayList listaCarnetImprimir = new ArrayList<CarnetDTO>();
+                    for(Long idLicencia : idLicenciasSeleccionadas){
+                        System.out.println("id licencia : " + idLicencia);
+                        CarnetDTO carnetDTO = GestorLicencia.buscarCarnetDTO(idLicencia);
+                        listaCarnetImprimir.add(carnetDTO);
                     }
 
                     //LicenciaDTO licenciaSeleccionada = listaLicenciasDTO.get(indiceLicenciaList);
                     //frame.cambiarPanel(MainFrame.PANE_VER_FORMATO_LICENCIA);
-                    frame.cambiarPanelConLicencias(MainFrame.PANE_VER_FORMATO_LICENCIA, listaLicenciasDTOImprimir);
+                    frame.cambiarPanelConLicencias(MainFrame.PANE_VER_FORMATO_LICENCIA, listaCarnetImprimir);
                 }
-
-
                 //this.setContentPane(new LicenciaDeConducir().getPane());
             }
         });
-        imprimirButton.setEnabled(false);
+
 
         buscarButton.addActionListener(new ActionListener() {
             @Override
