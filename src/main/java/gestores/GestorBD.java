@@ -125,22 +125,6 @@ public abstract class GestorBD {
         }
     }
 
-    public static Licencia buscarLicencia(Long idLicencia){
-        Licencia licencia;
-        try{
-            EntityManager manager = emf.createEntityManager();
-            manager.getTransaction().begin();
-            licencia = manager.find(Licencia.class, idLicencia);
-            licencia = manager.merge(licencia);
-            manager.getTransaction().commit();
-            manager.close();
-            return licencia;
-        }catch (Exception e){
-            e.printStackTrace();
-            return null;
-        }
-    }
-
     public static List<Licencia> buscarLicencias(CriteriosDTO criteriosDTO, Integer caso) {
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("''yyyy-MM-dd HH:mm:ss''");
@@ -213,4 +197,20 @@ public abstract class GestorBD {
 
         return licenciaList;
     }
+
+    public static Licencia buscarLicencia(Long idLicencia) {
+        try {
+            EntityManager manager = emf.createEntityManager();
+            Licencia licencia;
+            manager.getTransaction().begin();
+             licencia = manager.find(Licencia.class, idLicencia);
+            manager.getTransaction().commit();
+            System.out.println("tamaño clases : " +  licencia.getClaseLicencias().size());
+            manager.close();
+            return licencia;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }//cierra buscarLicencia
 }

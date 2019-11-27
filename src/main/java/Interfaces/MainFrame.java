@@ -1,5 +1,6 @@
 package Interfaces;
 
+import LogicaDeNegocios.DTOs.CarnetDTO;
 import LogicaDeNegocios.DTOs.LicenciaDTO;
 import LogicaDeNegocios.Entidades.Licencia;
 import LogicaDeNegocios.Entidades.Usuario;
@@ -197,7 +198,7 @@ public class MainFrame extends JFrame {
         this.getContentPane().setVisible(true);
     }
 
-    public void cambiarPanelConLicencias(int pane, ArrayList<LicenciaDTO> licenciaDTOS){
+    public void cambiarPanelConLicencias(int pane, ArrayList<CarnetDTO> licenciaDTOS){
         previousPane=this.getContentPane();
 
         switch (pane){

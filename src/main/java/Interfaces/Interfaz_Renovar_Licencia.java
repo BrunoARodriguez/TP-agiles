@@ -11,10 +11,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.ZoneId;
@@ -52,16 +49,15 @@ public class Interfaz_Renovar_Licencia {
         return rootPane;
     }
 
-    private void createUIComponents()
-    {
+    private void createUIComponents() {
         tf_desde = new JDateChooser();
         tf_desde.getDateEditor().setEnabled(false);
-        ((JTextField)tf_desde.getDateEditor().getUiComponent()).setDisabledTextColor(Color.black);
+        ((JTextField) tf_desde.getDateEditor().getUiComponent()).setDisabledTextColor(Color.black);
         ((JTextField) tf_desde.getDateEditor().getUiComponent()).addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
-                if(mouseEvent.getClickCount()==2){
-                    ((JTextField)tf_desde.getDateEditor()).setText("");
+                if (mouseEvent.getClickCount() == 2) {
+                    ((JTextField) tf_desde.getDateEditor()).setText("");
                     tf_desde.setCalendar(null);
                 }
             }
@@ -88,12 +84,12 @@ public class Interfaz_Renovar_Licencia {
         });
         tf_hasta = new JDateChooser();
         tf_hasta.getDateEditor().setEnabled(false);
-        ((JTextField)tf_hasta.getDateEditor().getUiComponent()).setDisabledTextColor(Color.black);
+        ((JTextField) tf_hasta.getDateEditor().getUiComponent()).setDisabledTextColor(Color.black);
         ((JTextField) tf_hasta.getDateEditor().getUiComponent()).addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
-                if(mouseEvent.getClickCount()==2){
-                    ((JTextField)tf_hasta.getDateEditor()).setText("");
+                if (mouseEvent.getClickCount() == 2) {
+                    ((JTextField) tf_hasta.getDateEditor()).setText("");
                     tf_hasta.setCalendar(null);
                 }
             }
@@ -140,7 +136,7 @@ public class Interfaz_Renovar_Licencia {
                 fechaHasta = null;
                 claseLicenciaList = new ArrayList<>();
 
-                if(!tf_dni.getText().isEmpty()){
+                if (!tf_dni.getText().isEmpty()) {
                     try {
                         dni = Long.valueOf(tf_dni.getText());
                     } catch (Exception e) {
@@ -175,20 +171,20 @@ public class Interfaz_Renovar_Licencia {
                     claseLicenciaList.add(ClaseLicencia.CLASE_G);
                 }
 
-                if (tf_desde.getDate()==null && tf_hasta.getDate()==null) {
+                if (tf_desde.getDate() == null && tf_hasta.getDate() == null) {
                     JOptionPane.showMessageDialog(frame, "Debe ingresar al menos una fecha.", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
-                } else if(tf_desde.getDate()!=null && tf_hasta.getDate()!=null){
+                } else if (tf_desde.getDate() != null && tf_hasta.getDate() != null) {
                     Period period = Period.between(tf_desde.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), tf_hasta.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-                    if(period.getYears()<0 || period.getMonths()<0 || period.getDays()<0){
+                    if (period.getYears() < 0 || period.getMonths() < 0 || period.getDays() < 0) {
                         JOptionPane.showMessageDialog(frame, "La fecha hasta no puede ser menor que la fecha desde.", "Error", JOptionPane.ERROR_MESSAGE);
                         return;
                     }
                 }
 
-                if (tf_desde.getDate()!=null) {
-                    fechaDesde= tf_desde.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().atTime(3,0,0);
-                    Period periodo = Period.between(LocalDateTime.now().toLocalDate(),fechaDesde.toLocalDate());
+                if (tf_desde.getDate() != null) {
+                    fechaDesde = tf_desde.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().atTime(3, 0, 0);
+                    Period periodo = Period.between(LocalDateTime.now().toLocalDate(), fechaDesde.toLocalDate());
                     int anios = periodo.getYears();
                     if (anios > 6) {
                         JOptionPane.showMessageDialog(frame, "La fecha de vencimiento no puede ser de más de 6 años en el futuro.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -196,9 +192,9 @@ public class Interfaz_Renovar_Licencia {
                     }
                 }
 
-                if(tf_hasta.getDate()!=null){
-                    fechaHasta= tf_hasta.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().atTime(3,0,0);
-                    Period periodo = Period.between(LocalDateTime.now().toLocalDate(),fechaHasta.toLocalDate());
+                if (tf_hasta.getDate() != null) {
+                    fechaHasta = tf_hasta.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().atTime(3, 0, 0);
+                    Period periodo = Period.between(LocalDateTime.now().toLocalDate(), fechaHasta.toLocalDate());
                     int anios = periodo.getYears();
                     if (anios > 6) {
                         JOptionPane.showMessageDialog(frame, "La fecha de vencimiento no puede ser de más de 6 años en el futuro.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -220,7 +216,7 @@ public class Interfaz_Renovar_Licencia {
 
                 datosTablaDTOS = GestorLicencia.listarLicencias(criteriosDTO);
 
-                if(datosTablaDTOS.isEmpty()){
+                if (datosTablaDTOS.isEmpty()) {
                     JOptionPane.showMessageDialog(frame, "No se encontraron resultados.", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 } else {
@@ -239,6 +235,38 @@ public class Interfaz_Renovar_Licencia {
                 JDialogCancelar c = new JDialogCancelar(frame);
                 if (c.fueCancelado()) {
                     frame.backPreviousPane();
+                }
+            }
+        });
+
+        table_resultados.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent focusEvent) {
+                renovarButton.setEnabled(true);
+            }
+
+            @Override
+            public void focusLost(FocusEvent focusEvent) {
+
+            }
+        });
+
+        renovarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                switch (GestorLicencia.renovarLicencia(modeloLicencias.getIdLicencia(table_resultados.getSelectedRow()))) {
+                    case 0:
+                        JOptionPane.showMessageDialog(frame, "Licencia reovada con exito.", "Exito", JOptionPane.INFORMATION_MESSAGE);
+                        return;
+                    case -1:
+                        JOptionPane.showMessageDialog(frame, "No se logró encontrar una licencia.", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    case -2:
+                        JOptionPane.showMessageDialog(frame, "La licencia renovada no se pudo guardar.", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    case -3:
+                        JOptionPane.showMessageDialog(frame, "No se puede renovar esta licencia ya que le faltan más de 45 días para su vencimiento.", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
                 }
             }
         });

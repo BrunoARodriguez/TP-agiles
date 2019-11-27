@@ -1,13 +1,8 @@
 package gestores;
 
-import LogicaDeNegocios.DTOs.CriteriosDTO;
-import LogicaDeNegocios.DTOs.DatosTablaDTO;
-import LogicaDeNegocios.DTOs.LicenciaDTO;
-import LogicaDeNegocios.Entidades.CambioEstadoLicencia;
-import LogicaDeNegocios.Entidades.Comprobante;
-import LogicaDeNegocios.Entidades.Licencia;
+import LogicaDeNegocios.DTOs.*;
+import LogicaDeNegocios.Entidades.*;
 import LogicaDeNegocios.Entidades.Resources.CostoLicencia;
-import LogicaDeNegocios.Entidades.Titular;
 import LogicaDeNegocios.Enumerations.ClaseLicencia;
 import LogicaDeNegocios.Enumerations.EstadoLicencia;
 
@@ -185,9 +180,9 @@ public abstract class GestorLicencia {
             datosTablaDTO.setNombre(l.getTitularLicencia().getContribuyente().getNombreContribuyente());
             datosTablaDTO.setApellido(l.getTitularLicencia().getContribuyente().getApellidoContribuyente());
             datosTablaDTO.setDni(l.getTitularLicencia().getContribuyente().getNroDocumento().toString());
-            datosTablaDTO.setEstadoLicencia(l.getCambioEstadoLicencias().get(l.getCambioEstadoLicencias().size()-1).getEstadoNuevo().getName());
+            datosTablaDTO.setEstadoLicencia(l.getCambioEstadoLicencias().get(l.getCambioEstadoLicencias().size() - 1).getEstadoNuevo().getName());
             datosTablaDTO.setClasesLicencia(new ArrayList<>());
-            for(ClaseLicencia cl : l.getClaseLicencias()){
+            for (ClaseLicencia cl : l.getClaseLicencias()) {
                 datosTablaDTO.getClasesLicencia().add(cl.getName());
             }
             datosTablaDTO.setFechaAlta(dateTimeFormatter.format(l.getFechaAltaLicencia()));
@@ -218,6 +213,64 @@ public abstract class GestorLicencia {
             //buscamos por intervalo de fechas vencimiento
             return 6;
         }
+    }
+
+    public static CarnetDTO buscarCarnetDTO(Long idLicencia) {
+
+        Licencia licencia = GestorBD.buscarLicencia(idLicencia);
+        if (licencia == null) {
+            return null;
+        } else {
+            CarnetDTO carnetDTO = new CarnetDTO();
+            carnetDTO.setIdLicencia(licencia.getIdLicencia());
+            carnetDTO.setNombre(licencia.getTitularLicencia().getContribuyente().getNombreContribuyente());
+            carnetDTO.setApellido(licencia.getTitularLicencia().getContribuyente().getApellidoContribuyente());
+            carnetDTO.setDomicilio(licencia.getTitularLicencia().getContribuyente().getDomicilioContribuyente());
+            carnetDTO.setFechaDeNacimiento(licencia.getTitularLicencia().getContribuyente().getFechaNacimientoContribuyente());
+            carnetDTO.setFechaAltaLicencia(licencia.getFechaAltaLicencia());
+            carnetDTO.setFechaVencimientoLicencia(licencia.getFechaVencimientoLicencia());
+            //carnetDTO.setClaseLicencias(licencia.getClaseLicencias());
+            // datosTablaDTO.setClasesLicencia(new ArrayList<>());
+            carnetDTO.setClasesLicencia(new ArrayList<>());
+            for (ClaseLicencia cl : licencia.getClaseLicencias()) {
+                carnetDTO.getClasesLicencia().add(cl.getName());
+            }
+            carnetDTO.setEsDonante(licencia.getTitularLicencia().getDonante());
+            carnetDTO.setTipoSangre(licencia.getTitularLicencia().getTipoSangre());
+            carnetDTO.setObservacionesLicencia(licencia.getObservacionesLicencia());
+
+
+            return carnetDTO;
+        }
+    }
+
+    //historia renovar licencia
+    public static int renovarLicencia(Long idLicencia) {
+        Licencia licenciaBuscada = GestorBD.buscarLicencia(idLicencia);
+        if (licenciaBuscada == null) {
+            //no se encontro la licencia con ese id en la base de datos
+            return -1;
+        } else {
+            Period periodo = Period.between(LocalDateTime.now().toLocalDate(),licenciaBuscada.getFechaVencimientoLicencia().toLocalDate());
+            if (periodo.getMonths() > 1 || (periodo.getMonths() == 1 && periodo.getDays() > 15)) {
+                //la licencia le faltan mas de 45 dias para vencer
+                return -3;
+            }
+            LocalDateTime fechaVencimiento = GestorLicencia.calcularVigencia(licenciaBuscada.getTitularLicencia().getContribuyente().getFechaNacimientoContribuyente(), true, LocalDateTime.now());
+            Licencia licenciaRenovada = new Licencia(licenciaBuscada.getTitularLicencia(), LocalDateTime.now(), fechaVencimiento, new ArrayList<>(licenciaBuscada.getClaseLicencias()), licenciaBuscada.getObservacionesLicencia(), new ArrayList<>(licenciaBuscada.getCambioEstadoLicencias()));
+            CambioEstadoLicencia estadoAnterior = licenciaRenovada.getCambioEstadoLicencias().get(licenciaRenovada.getCambioEstadoLicencias().size() - 1);
+            CambioEstadoLicencia cambioEstadoLicencia = new CambioEstadoLicencia(licenciaBuscada.getIdLicencia(), licenciaRenovada.getIdLicencia(), estadoAnterior.getEstadoNuevo(), EstadoLicencia.VIGENTE, LocalDateTime.now(), GestorUsuario.getUsuario(), licenciaRenovada.getObservacionesLicencia(), licenciaRenovada);
+            licenciaRenovada.getCambioEstadoLicencias().add(cambioEstadoLicencia);
+            licenciaRenovada.getTitularLicencia().getLicencias().add(licenciaRenovada);
+            if (GestorBD.guardarLicencia(licenciaRenovada)) {
+                // termina bien
+                return 0;
+            } else {
+                // no se pudo guardar en la base de datos
+                return -2;
+            }
+        }
+
     }
 
 }
