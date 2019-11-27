@@ -233,11 +233,12 @@ public abstract class GestorLicencia {
                 return -3;
             }
             LocalDateTime fechaVencimiento = GestorLicencia.calcularVigencia(licenciaBuscada.getTitularLicencia().getContribuyente().getFechaNacimientoContribuyente(), true, LocalDateTime.now());
+            ArrayList<ClaseLicencia> claseLicencias = (ArrayList<ClaseLicencia>) licenciaBuscada.getClaseLicencias();
             Licencia licenciaRenovada = new Licencia(licenciaBuscada.getTitularLicencia(), LocalDateTime.now(), fechaVencimiento, (ArrayList<ClaseLicencia>) licenciaBuscada.getClaseLicencias(), licenciaBuscada.getObservacionesLicencia(), (ArrayList<CambioEstadoLicencia>) licenciaBuscada.getCambioEstadoLicencias());
             CambioEstadoLicencia estadoAnterior = licenciaRenovada.getCambioEstadoLicencias().get(licenciaRenovada.getCambioEstadoLicencias().size() - 1);
             CambioEstadoLicencia cambioEstadoLicencia = new CambioEstadoLicencia(licenciaBuscada.getIdLicencia(), licenciaRenovada.getIdLicencia(), estadoAnterior.getEstadoNuevo(), EstadoLicencia.VIGENTE, LocalDateTime.now(), GestorUsuario.getUsuario(), licenciaRenovada.getObservacionesLicencia(), licenciaRenovada);
             licenciaRenovada.getCambioEstadoLicencias().add(cambioEstadoLicencia);
-            licenciaBuscada.getTitularLicencia().getLicencias().add(licenciaRenovada);
+            licenciaRenovada.getTitularLicencia().getLicencias().add(licenciaRenovada);
             if (GestorBD.guardarLicencia(licenciaRenovada)) {
                 // termina bien
                 return 0;

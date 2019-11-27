@@ -14,6 +14,9 @@ public class ModeloLicencias extends AbstractTableModel {
         this.datosTablaDTOS = datosTablaDTOS;
         this.columnas = columnas;
     }
+public  Long getIdLicencia(int row) {
+        return  datosTablaDTOS.get(row).getIdLicencia();
+}
 
     @Override
     public int getRowCount() {
