@@ -1,6 +1,7 @@
 package gestores;
 
 import LogicaDeNegocios.DTOs.CriteriosDTO;
+import LogicaDeNegocios.DTOs.DatosTablaDTO;
 import LogicaDeNegocios.DTOs.LicenciaDTO;
 import LogicaDeNegocios.Entidades.CambioEstadoLicencia;
 import LogicaDeNegocios.Entidades.Comprobante;
@@ -12,6 +13,7 @@ import LogicaDeNegocios.Enumerations.EstadoLicencia;
 
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -171,91 +173,80 @@ public abstract class GestorLicencia {
         return false;
     } //cierra validarConductoresProfesional
 
-    public  static  List<LicenciaDTO> listaDeLicenciasExpiradas(CriteriosDTO criteriosDTO){
-
+    public static List<DatosTablaDTO> listarLicencias(CriteriosDTO criteriosDTO) {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         List<Licencia> buscadas = new ArrayList<>();
-Period periodo= Period.between(criteriosDTO.getFechaVencimientoHasta().toLocalDate(),LocalDateTime.now().toLocalDate());
-int anios = periodo.getYears();
-if (anios > 6){
-    return  new ArrayList<>();
-}else {
-        buscadas = GestorBD.buscarLicencias(criteriosDTO, casoDeBusqueda(criteriosDTO.getFechaAltaDesde(),criteriosDTO.getFechaAltaHasta(),criteriosDTO.getFechaVencimientoDesde(),criteriosDTO.getFechaVencimientoHasta()));
-List<LicenciaDTO> aux = new ArrayList<>();
+        buscadas = GestorBD.buscarLicencias(criteriosDTO, casoDeBusqueda(criteriosDTO.getFechaAltaDesde(), criteriosDTO.getFechaAltaHasta(), criteriosDTO.getFechaVencimientoDesde(), criteriosDTO.getFechaVencimientoHasta()));
+        List<DatosTablaDTO> aux = new ArrayList<>();
 
-for ( Licencia l: buscadas){
-    LicenciaDTO licenciaDTO = new LicenciaDTO(l.getIdLicencia(),l.getTitularLicencia().getContribuyente().getNroDocumento(), l.getFechaAltaLicencia(),l.getFechaVencimientoLicencia(),(ArrayList<ClaseLicencia>) l.getClaseLicencias(),l.getObservacionesLicencia());
-    aux.add(licenciaDTO);
-}
-return  aux;
-}
-} //cierra metodo listaLicenciasExpiradas
+        for (Licencia l : buscadas) {
+            DatosTablaDTO datosTablaDTO = new DatosTablaDTO();
+            datosTablaDTO.setIdLicencia(l.getIdLicencia());
+            datosTablaDTO.setNombre(l.getTitularLicencia().getContribuyente().getNombreContribuyente());
+            datosTablaDTO.setApellido(l.getTitularLicencia().getContribuyente().getApellidoContribuyente());
+            datosTablaDTO.setDni(l.getTitularLicencia().getContribuyente().getNroDocumento().toString());
+            datosTablaDTO.setEstadoLicencia(l.getCambioEstadoLicencias().get(l.getCambioEstadoLicencias().size() - 1).getEstadoNuevo().getName());
+            datosTablaDTO.setClasesLicencia(new ArrayList<>());
+            for (ClaseLicencia cl : l.getClaseLicencias()) {
+                datosTablaDTO.getClasesLicencia().add(cl.getName());
+            }
+            datosTablaDTO.setFechaAlta(dateTimeFormatter.format(l.getFechaAltaLicencia()));
+            aux.add(datosTablaDTO);
+        }
 
-    private  static  int casoDeBusqueda(LocalDateTime fechaAltaDesde,LocalDateTime fechaAltaHasta, LocalDateTime fechaVencimientoDesde, LocalDateTime fechaVencimientoHasta){
+        return aux;
+    } //cierra metodo listaLicenciasExpiradas
 
-if (fechaAltaDesde == null && fechaAltaHasta != null){
-    // buscamos las licencias dadas de alta esa    fecha
-    return  1;
-}else {
-    if (fechaAltaDesde != null && fechaAltaHasta == null) {
-//buscamos las licencias dadas de alta desde esa fecha en adelante
-        return 2;
-    } else {
-        if (fechaVencimientoDesde == null && fechaVencimientoHasta != null) {
+    private static int casoDeBusqueda(LocalDateTime fechaAltaDesde, LocalDateTime fechaAltaHasta, LocalDateTime fechaVencimientoDesde, LocalDateTime fechaVencimientoHasta) {
+
+        if (fechaAltaDesde == null && fechaAltaHasta != null) {
+            // buscamos las licencias dadas de alta esa    fecha
+            return 1;
+        } else if (fechaAltaDesde != null && fechaAltaHasta == null) {
+            //buscamos las licencias dadas de alta desde esa fecha en adelante
+            return 2;
+        } else if (fechaVencimientoDesde == null && fechaVencimientoHasta != null) {
             //buscamos las licencias que vencen esa fecha
             return 3;
-        }
-        if (fechaVencimientoDesde != null && fechaVencimientoHasta == null) {
+        } else if (fechaVencimientoDesde != null && fechaVencimientoHasta == null) {
             // buscamos las licencias dadas de alta esa fecha en adelante
             return 4;
-        }
-    else {
-        if (fechaAltaDesde != null && fechaAltaHasta != null){
+        } else if (fechaAltaDesde != null && fechaAltaHasta != null) {
             //buscamos por intervalo de fechas altas
-            return  5;
-        }
-        if (fechaVencimientoDesde != null && fechaVencimientoHasta != null){
+            return 5;
+        } else {
             //buscamos por intervalo de fechas vencimiento
-            return  6;
+            return 6;
         }
+    }
+
+    //historia renovar licencia
+    public static int renovarLicencia(Long idLicencia) {
+        Licencia licenciaBuscada = GestorBD.buscarLicencia(idLicencia);
+        if (licenciaBuscada == null) {
+            //no se encontro la licencia con ese id en la base de datos
+            return -1;
+        } else {
+            Period periodo = Period.between(licenciaBuscada.getFechaVencimientoLicencia().toLocalDate(), LocalDateTime.now().toLocalDate());
+            if (periodo.getMonths() > 1 || (periodo.getMonths() == 1 && periodo.getDays() > 15)) {
+                //la licencia le faltan mas de 45 dias para vencer
+                return -3;
+            }
+            LocalDateTime fechaVencimiento = GestorLicencia.calcularVigencia(licenciaBuscada.getTitularLicencia().getContribuyente().getFechaNacimientoContribuyente(), true, LocalDateTime.now());
+            Licencia licenciaRenovada = new Licencia(licenciaBuscada.getTitularLicencia(), LocalDateTime.now(), fechaVencimiento, (ArrayList<ClaseLicencia>) licenciaBuscada.getClaseLicencias(), licenciaBuscada.getObservacionesLicencia(), (ArrayList<CambioEstadoLicencia>) licenciaBuscada.getCambioEstadoLicencias());
+            CambioEstadoLicencia estadoAnterior = licenciaRenovada.getCambioEstadoLicencias().get(licenciaRenovada.getCambioEstadoLicencias().size() - 1);
+            CambioEstadoLicencia cambioEstadoLicencia = new CambioEstadoLicencia(licenciaBuscada.getIdLicencia(), licenciaRenovada.getIdLicencia(), estadoAnterior.getEstadoNuevo(), EstadoLicencia.VIGENTE, LocalDateTime.now(), GestorUsuario.getUsuario(), licenciaRenovada.getObservacionesLicencia(), licenciaRenovada);
+            licenciaRenovada.getCambioEstadoLicencias().add(cambioEstadoLicencia);
+            licenciaBuscada.getTitularLicencia().getLicencias().add(licenciaRenovada);
+            if (GestorBD.guardarLicencia(licenciaRenovada)) {
+                // termina bien
+                return 0;
+            } else {
+                // no se pudo guardar en la base de datos
+                return -2;
+            }
         }
     }
-}
-// si no
-
-
-    }
-/*
-historia renovar licencia
- */
-
-public  static int renovarLicencia(Integer idLicencia){
-    Licencia licenciaBuscada = GestorBD.buscarLicencia(idLicencia);
-if (licenciaBuscada == null){
-    //no se encontro la licencia con ese id en la base de datos
-    return  -1;
-}
-else  {
-    Period periodo = Period.between(licenciaBuscada.getFechaVencimientoLicencia().toLocalDate(),LocalDateTime.now().toLocalDate());
-    if (periodo.getMonths() > 1 || (periodo.getMonths() == 1 && periodo.getDays() > 15)){
-//la licencia le faltan mas de 45 dias para vencer
-return  -3;
-    }
-    LocalDateTime fechaVencimiento = GestorLicencia.calcularVigencia(licenciaBuscada.getTitularLicencia().getContribuyente().getFechaNacimientoContribuyente(),true,LocalDateTime.now());
-    Licencia licenciaRenovada = new Licencia(licenciaBuscada.getTitularLicencia(),LocalDateTime.now(),fechaVencimiento,(ArrayList<ClaseLicencia>) licenciaBuscada.getClaseLicencias(),licenciaBuscada.getObservacionesLicencia(),(ArrayList<CambioEstadoLicencia>) licenciaBuscada.getCambioEstadoLicencias());
-    CambioEstadoLicencia estadoAnterior = licenciaRenovada.getCambioEstadoLicencias().get(licenciaRenovada.getCambioEstadoLicencias().size() - 1);
-    CambioEstadoLicencia cambioEstadoLicencia = new CambioEstadoLicencia(licenciaBuscada.getIdLicencia(),licenciaRenovada.getIdLicencia(),estadoAnterior.getEstadoNuevo(),EstadoLicencia.VIGENTE,LocalDateTime.now(),GestorUsuario.getUsuario(),licenciaRenovada.getObservacionesLicencia(),licenciaRenovada);
-    licenciaRenovada.getCambioEstadoLicencias().add(cambioEstadoLicencia);
-licenciaBuscada.getTitularLicencia().getLicencias().add(licenciaRenovada);
-if (GestorBD.guardarLicencia(licenciaRenovada)){
-    // todo termina bien
-    return  0;
-}
-else {
-    // no se pudo guardar en la base de datos
-    return  -2;
-}
-}
-}
 
 }
 

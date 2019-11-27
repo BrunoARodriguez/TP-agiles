@@ -1,13 +1,17 @@
 package gestores;
 
+import LogicaDeNegocios.DTOs.CriteriosDTO;
 import LogicaDeNegocios.Entidades.Contribuyente;
 import LogicaDeNegocios.Entidades.Licencia;
 import LogicaDeNegocios.Entidades.Resources.CostoLicencia;
 import LogicaDeNegocios.Entidades.Titular;
+import LogicaDeNegocios.Enumerations.ClaseLicencia;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import java.util.ArrayList;
+import javax.persistence.Query;
+import java.time.format.DateTimeFormatter;
+import java.util.Iterator;
 import java.util.List;
 
 public abstract class GestorBD {
@@ -24,11 +28,11 @@ public abstract class GestorBD {
             manager.getTransaction().begin();
             titular = manager.find(Titular.class, dni);
             manager.getTransaction().commit();
-            if(titular==null){
+            if (titular == null) {
                 return null;
             }
             titular.getLicencias().size();
-            for(Licencia l : titular.getLicencias()){
+            for (Licencia l : titular.getLicencias()) {
                 l.getClaseLicencias().size();
                 l.getCambioEstadoLicencias().size();
             }
@@ -59,10 +63,9 @@ public abstract class GestorBD {
         try {
             EntityManager manager = emf.createEntityManager();
             manager.getTransaction().begin();
-            if(manager.find(Titular.class, titular.getContribuyente().getNroDocumento())!=null){
+            if (manager.find(Titular.class, titular.getContribuyente().getNroDocumento()) != null) {
                 titular = manager.merge(titular);
-            }
-            else{
+            } else {
                 manager.persist(titular);
             }
             manager.getTransaction().commit();
@@ -78,10 +81,9 @@ public abstract class GestorBD {
         try {
             EntityManager manager = emf.createEntityManager();
             manager.getTransaction().begin();
-            if(licencia.getIdLicencia()== null || manager.find(Licencia.class, licencia.getIdLicencia())!=null){
+            if (licencia.getIdLicencia() == null || manager.find(Licencia.class, licencia.getIdLicencia()) != null) {
                 licencia = manager.merge(licencia);
-            }
-            else{
+            } else {
                 manager.persist(licencia);
             }
             manager.getTransaction().commit();
@@ -108,9 +110,9 @@ public abstract class GestorBD {
         }
     }
 
-    public static Boolean borrarTitular(Long dni){
+    public static Boolean borrarTitular(Long dni) {
         Titular titular;
-        try{
+        try {
             EntityManager manager = emf.createEntityManager();
             manager.getTransaction().begin();
             titular = manager.find(Titular.class, dni);
@@ -118,8 +120,97 @@ public abstract class GestorBD {
             manager.getTransaction().commit();
             manager.close();
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
+    }
+
+    public static Licencia buscarLicencia(Long idLicencia){
+        Licencia licencia;
+        try{
+            EntityManager manager = emf.createEntityManager();
+            manager.getTransaction().begin();
+            licencia = manager.find(Licencia.class, idLicencia);
+            licencia = manager.merge(licencia);
+            manager.getTransaction().commit();
+            manager.close();
+            return licencia;
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static List<Licencia> buscarLicencias(CriteriosDTO criteriosDTO, Integer caso) {
+
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("''yyyy-MM-dd HH:mm:ss''");
+        EntityManager manager = emf.createEntityManager();
+        StringBuffer query = new StringBuffer()
+                .append("SELECT l FROM Licencia l, Titular t, Contribuyente c WHERE l.titularLicencia LIKE ")
+                .append("'%")
+                .append(criteriosDTO.getDniTitular())
+                .append("%'")
+                .append(" AND t.contribuyente = l.titularLicencia AND c.nroDocumento = l.titularLicencia AND c.nombreContribuyente LIKE ")
+                .append("'%")
+                .append(criteriosDTO.getNombreTitular())
+                .append("%'")
+                .append(" AND c.apellidoContribuyente LIKE ")
+                .append("'%")
+                .append(criteriosDTO.getApellidoTitular())
+                .append("%'");
+
+        switch (caso) {
+            case 1:
+                query.append(" AND l.fechaAltaLicencia = ")
+                        .append(dateTimeFormatter.format(criteriosDTO.getFechaAltaHasta()));
+                break;
+            case 2:
+                query.append(" AND l.fechaAltaLicencia >= ")
+                        .append(dateTimeFormatter.format(criteriosDTO.getFechaAltaDesde()));
+                break;
+            case 3:
+                query.append(" AND l.fechaVencimientoLicencia = ")
+                        .append(dateTimeFormatter.format(criteriosDTO.getFechaVencimientoHasta()));
+                break;
+            case 4:
+                query.append(" AND l.fechaVencimientoLicencia >= ")
+                        .append(dateTimeFormatter.format(criteriosDTO.getFechaVencimientoDesde()));
+                break;
+            case 5:
+                query.append(" AND l.fechaAltaLicencia BETWEEN ")
+                        .append(dateTimeFormatter.format(criteriosDTO.getFechaAltaDesde()))
+                        .append(" AND ")
+                        .append(dateTimeFormatter.format(criteriosDTO.getFechaAltaHasta()));
+                break;
+            case 6:
+                query.append(" AND l.fechaVencimientoLicencia BETWEEN ")
+                        .append(dateTimeFormatter.format(criteriosDTO.getFechaVencimientoDesde()))
+                        .append(" AND ")
+                        .append(dateTimeFormatter.format(criteriosDTO.getFechaVencimientoHasta()));
+                break;
+        }
+        Query query1 = manager.createQuery(query.toString());
+
+        List<Licencia> licenciaList= query1.getResultList();
+
+        if(!criteriosDTO.getClaseLicencias().isEmpty()){
+            Iterator<Licencia> iterator = licenciaList.iterator();
+            while(iterator.hasNext()){
+                Licencia licencia = iterator.next();
+                int i = 0;
+                Boolean match = false;
+                while(!match && i<criteriosDTO.getClaseLicencias().size()){
+                    if(licencia.getClaseLicencias().contains(criteriosDTO.getClaseLicencias().get(i))){
+                        match = true;
+                    }
+                    i++;
+                }
+                if(!match){
+                    iterator.remove();
+                }
+            }
+        }
+
+        return licenciaList;
     }
 }
