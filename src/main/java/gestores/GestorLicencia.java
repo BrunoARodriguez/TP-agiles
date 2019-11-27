@@ -224,6 +224,38 @@ if (fechaAltaDesde == null && fechaAltaHasta != null){
 
 
     }
+/*
+historia renovar licencia
+ */
+
+public  static int renovarLicencia(Integer idLicencia){
+    Licencia licenciaBuscada = GestorBD.buscarLicencia(idLicencia);
+if (licenciaBuscada == null){
+    //no se encontro la licencia con ese id en la base de datos
+    return  -1;
+}
+else  {
+    Period periodo = Period.between(licenciaBuscada.getFechaVencimientoLicencia().toLocalDate(),LocalDateTime.now().toLocalDate());
+    if (periodo.getMonths() > 1 || (periodo.getMonths() == 1 && periodo.getDays() > 15)){
+//la licencia le faltan mas de 45 dias para vencer
+return  -3;
+    }
+    LocalDateTime fechaVencimiento = GestorLicencia.calcularVigencia(licenciaBuscada.getTitularLicencia().getContribuyente().getFechaNacimientoContribuyente(),true,LocalDateTime.now());
+    Licencia licenciaRenovada = new Licencia(licenciaBuscada.getTitularLicencia(),LocalDateTime.now(),fechaVencimiento,(ArrayList<ClaseLicencia>) licenciaBuscada.getClaseLicencias(),licenciaBuscada.getObservacionesLicencia(),(ArrayList<CambioEstadoLicencia>) licenciaBuscada.getCambioEstadoLicencias());
+    CambioEstadoLicencia estadoAnterior = licenciaRenovada.getCambioEstadoLicencias().get(licenciaRenovada.getCambioEstadoLicencias().size() - 1);
+    CambioEstadoLicencia cambioEstadoLicencia = new CambioEstadoLicencia(licenciaBuscada.getIdLicencia(),licenciaRenovada.getIdLicencia(),estadoAnterior.getEstadoNuevo(),EstadoLicencia.VIGENTE,LocalDateTime.now(),GestorUsuario.getUsuario(),licenciaRenovada.getObservacionesLicencia(),licenciaRenovada);
+    licenciaRenovada.getCambioEstadoLicencias().add(cambioEstadoLicencia);
+licenciaBuscada.getTitularLicencia().getLicencias().add(licenciaRenovada);
+if (GestorBD.guardarLicencia(licenciaRenovada)){
+    // todo termina bien
+    return  0;
+}
+else {
+    // no se pudo guardar en la base de datos
+    return  -2;
+}
+}
+}
 
 }
 
