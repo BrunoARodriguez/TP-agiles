@@ -13,11 +13,12 @@ public class JDialogCancelar extends JDialog {
     private boolean cancelado = false;
 
     public JDialogCancelar(final MainFrame frame) {
-        setContentPane(contentPane);
-        setTitle("TP AGILES");
-        setLocationRelativeTo(frame);
-        setModal(true);
-        getRootPane().setDefaultButton(buttonOK);
+        this.setContentPane(contentPane);
+        this.setSize(160,140);
+        this.setTitle("TP AGILES");
+        this.setLocationRelativeTo(null);
+        this.setModal(true);
+        this.getRootPane().setDefaultButton(buttonOK);
 
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {

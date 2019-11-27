@@ -151,7 +151,8 @@ public class MainFrame extends JFrame {
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     double width = screenSize.getWidth()/2;
     double height = screenSize.getHeight()/2;
-    this.setLocation((int)width-this.getWidth()/2,(int)height-this.getHeight()/2);
+    this.setLocationRelativeTo(null);
+    //this.setLocation((int)width-this.getWidth()/2,(int)height-this.getHeight()/2);
 }
 
     public MainFrame() {
