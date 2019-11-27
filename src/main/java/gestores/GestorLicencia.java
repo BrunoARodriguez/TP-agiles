@@ -262,6 +262,9 @@ public abstract class GestorLicencia {
             CambioEstadoLicencia cambioEstadoLicencia = new CambioEstadoLicencia(licenciaBuscada.getIdLicencia(), licenciaRenovada.getIdLicencia(), estadoAnterior.getEstadoNuevo(), EstadoLicencia.VIGENTE, LocalDateTime.now(), GestorUsuario.getUsuario(), licenciaRenovada.getObservacionesLicencia(), licenciaRenovada);
             licenciaRenovada.getCambioEstadoLicencias().add(cambioEstadoLicencia);
             licenciaRenovada.getTitularLicencia().getLicencias().add(licenciaRenovada);
+            //cambiamos el estado a no vigente
+            CambioEstadoLicencia ultimoEstado = new CambioEstadoLicencia(null,licenciaBuscada.getIdLicencia(),estadoAnterior.getEstadoNuevo(),EstadoLicencia.NO_VIGENTE,LocalDateTime.now(),GestorUsuario.getUsuario(),licenciaBuscada.getObservacionesLicencia(),licenciaBuscada);
+            licenciaBuscada.getCambioEstadoLicencias().add(ultimoEstado);
             if (GestorBD.guardarLicencia(licenciaRenovada)) {
                 // termina bien
                 return 0;
