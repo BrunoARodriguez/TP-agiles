@@ -206,8 +206,6 @@ public abstract class GestorBD {
              licencia = manager.find(Licencia.class, idLicencia);
             manager.getTransaction().commit();
             System.out.println("tamaño clases : " +  licencia.getClaseLicencias().size());
-           ;
-
             manager.close();
             return licencia;
         } catch (Exception e) {

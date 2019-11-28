@@ -251,17 +251,20 @@ public abstract class GestorLicencia {
             //no se encontro la licencia con ese id en la base de datos
             return -1;
         } else {
-            Period periodo = Period.between(licenciaBuscada.getFechaVencimientoLicencia().toLocalDate(), LocalDateTime.now().toLocalDate());
+            Period periodo = Period.between(LocalDateTime.now().toLocalDate(),licenciaBuscada.getFechaVencimientoLicencia().toLocalDate());
             if (periodo.getMonths() > 1 || (periodo.getMonths() == 1 && periodo.getDays() > 15)) {
                 //la licencia le faltan mas de 45 dias para vencer
                 return -3;
             }
             LocalDateTime fechaVencimiento = GestorLicencia.calcularVigencia(licenciaBuscada.getTitularLicencia().getContribuyente().getFechaNacimientoContribuyente(), true, LocalDateTime.now());
-            Licencia licenciaRenovada = new Licencia(licenciaBuscada.getTitularLicencia(), LocalDateTime.now(), fechaVencimiento, (ArrayList<ClaseLicencia>) licenciaBuscada.getClaseLicencias(), licenciaBuscada.getObservacionesLicencia(), (ArrayList<CambioEstadoLicencia>) licenciaBuscada.getCambioEstadoLicencias());
+            Licencia licenciaRenovada = new Licencia(licenciaBuscada.getTitularLicencia(), LocalDateTime.now(), fechaVencimiento, new ArrayList<>(licenciaBuscada.getClaseLicencias()), licenciaBuscada.getObservacionesLicencia(), new ArrayList<>(licenciaBuscada.getCambioEstadoLicencias()));
             CambioEstadoLicencia estadoAnterior = licenciaRenovada.getCambioEstadoLicencias().get(licenciaRenovada.getCambioEstadoLicencias().size() - 1);
             CambioEstadoLicencia cambioEstadoLicencia = new CambioEstadoLicencia(licenciaBuscada.getIdLicencia(), licenciaRenovada.getIdLicencia(), estadoAnterior.getEstadoNuevo(), EstadoLicencia.VIGENTE, LocalDateTime.now(), GestorUsuario.getUsuario(), licenciaRenovada.getObservacionesLicencia(), licenciaRenovada);
             licenciaRenovada.getCambioEstadoLicencias().add(cambioEstadoLicencia);
-            licenciaBuscada.getTitularLicencia().getLicencias().add(licenciaRenovada);
+            licenciaRenovada.getTitularLicencia().getLicencias().add(licenciaRenovada);
+            //cambiamos el estado a no vigente
+            CambioEstadoLicencia ultimoEstado = new CambioEstadoLicencia(null,licenciaBuscada.getIdLicencia(),estadoAnterior.getEstadoNuevo(),EstadoLicencia.NO_VIGENTE,LocalDateTime.now(),GestorUsuario.getUsuario(),licenciaBuscada.getObservacionesLicencia(),licenciaBuscada);
+            licenciaBuscada.getCambioEstadoLicencias().add(ultimoEstado);
             if (GestorBD.guardarLicencia(licenciaRenovada)) {
                 // termina bien
                 return 0;
