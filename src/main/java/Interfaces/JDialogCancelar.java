@@ -13,7 +13,7 @@ public class JDialogCancelar extends JDialog {
     private boolean cancelado = false;
 
     public JDialogCancelar(final MainFrame frame) {
-        this.setContentPane(contentPane);
+/*        this.setContentPane(contentPane);
         this.setSize(160,140);
         this.setTitle("TP AGILES");
         this.setLocationRelativeTo(null);
@@ -50,7 +50,22 @@ public class JDialogCancelar extends JDialog {
         //setResizable(false);
 
         this.pack();
-        setVisible(true);
+        setVisible(true);*/
+
+        String [] botones = { "OK", " CANCELAR"};
+
+        int variable = JOptionPane.showOptionDialog(frame,"Se perderan los datos ingresados", "Confirmar volver",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,null,botones,null);
+        switch (variable){
+            case  0:
+                onOK();
+                break;
+            case 1 :
+                onCancel();
+                break;
+            default:
+        }
+
+        System.out.println(variable);
     }
 
     private void onOK() {
