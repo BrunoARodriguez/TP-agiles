@@ -6,6 +6,7 @@ import LogicaDeNegocios.Entidades.Licencia;
 import LogicaDeNegocios.Entidades.Resources.CostoLicencia;
 import LogicaDeNegocios.Entidades.Titular;
 import LogicaDeNegocios.Enumerations.ClaseLicencia;
+import LogicaDeNegocios.Enumerations.EstadoLicencia;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -145,8 +146,10 @@ public abstract class GestorBD {
 
         switch (caso) {
             case 1:
-                query.append(" AND l.fechaAltaLicencia = ")
-                        .append(dateTimeFormatter.format(criteriosDTO.getFechaAltaHasta()));
+                query.append(" AND l.fechaAltaLicencia BETWEEN ")
+                        .append(dateTimeFormatter.format(criteriosDTO.getFechaAltaHasta()))
+                        .append(" AND ")
+                        .append(dateTimeFormatter.format(criteriosDTO.getFechaAltaHasta().plusDays(1)));
                 break;
             case 2:
                 query.append(" AND l.fechaAltaLicencia >= ")
@@ -189,7 +192,7 @@ public abstract class GestorBD {
                     }
                     i++;
                 }
-                if(!match){
+                if(!match || licencia.getCambioEstadoLicencias().get(licencia.getCambioEstadoLicencias().size()-1).getEstadoNuevo() == EstadoLicencia.NO_VIGENTE){
                     iterator.remove();
                 }
             }
