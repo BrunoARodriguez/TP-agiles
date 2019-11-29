@@ -277,12 +277,16 @@ public class Interfaz_Imprimir_Licencia {
 
                 if(datosTablaDTOS.isEmpty()){
                     JOptionPane.showMessageDialog(frame, "No se encontraron resultados.", "Error", JOptionPane.ERROR_MESSAGE);
+                    datosTablaDTOS.clear();
+                    modeloLicencias.setDatosTablaDTOS(datosTablaDTOS);
+                    table_resultados.updateUI();
                     return;
                 } else {
                     JOptionPane.showMessageDialog(frame, "Busqueda completada.", "Consulta de licencias.", JOptionPane.INFORMATION_MESSAGE);
+                    modeloLicencias.setDatosTablaDTOS(datosTablaDTOS);
                 }
-                //TODO ver si hacemos que al fallar busquedas se vacie la tabla
-                modeloLicencias.setDatosTablaDTOS(datosTablaDTOS);
+                //TODO ver si hacemos que al fallar busquedas se vacie la tabla -> si , hay que vaciar la tabla.
+
                 table_resultados.updateUI();
 
             }
