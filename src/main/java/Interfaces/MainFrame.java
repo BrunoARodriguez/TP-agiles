@@ -33,10 +33,10 @@ public class MainFrame extends JFrame {
 
     private Container previousPane;
 
-    public MainFrame(int pane){
-    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    setBounds(100, 100, 800 , 600);
-    this.cambiarPanel(pane);
+    public MainFrame(int pane) {
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setBounds(100, 100, 800, 600);
+        this.cambiarPanel(pane);
 
 
         //Where the GUI is created:
@@ -63,7 +63,7 @@ public class MainFrame extends JFrame {
         menuItem1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                GestorTitular.titularAux=null;
+                GestorTitular.titularAux = null;
                 MainFrame.this.cambiarPanel(PANE_EMITIR_LICENCIA);
             }
         });
@@ -72,10 +72,14 @@ public class MainFrame extends JFrame {
 
         menuItem = new JMenuItem("Imprimir Licencia",
                 KeyEvent.VK_T);
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(
+                KeyEvent.VK_2, ActionEvent.ALT_MASK));
+        menuItem.getAccessibleContext().setAccessibleDescription(
+                "Imprimir Licencia");
         menuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                GestorTitular.titularAux=null;
+                GestorTitular.titularAux = null;
                 MainFrame.this.cambiarPanel(PANE_IMPRIMIR_LICENCIA);
             }
         });
@@ -83,20 +87,22 @@ public class MainFrame extends JFrame {
 
         JMenuItem menuItem2 = new JMenuItem("Renovar Licencia",
                 KeyEvent.VK_T);
+        menuItem2.setAccelerator(KeyStroke.getKeyStroke(
+                KeyEvent.VK_3, ActionEvent.ALT_MASK));
+        menuItem2.getAccessibleContext().setAccessibleDescription(
+                "Renovar Licencia");
         menuItem2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                GestorTitular.titularAux=null;
+                GestorTitular.titularAux = null;
                 MainFrame.this.cambiarPanel(PANE_RENOVAR_LICENCIAS);
             }
         });
         menu.add(menuItem2);
 
 
-
-
 //a submenu
-        menu.addSeparator();
+/*        menu.addSeparator();
         submenu = new JMenu("A submenu");
         submenu.setMnemonic(KeyEvent.VK_S);
 
@@ -107,7 +113,7 @@ public class MainFrame extends JFrame {
 
         menuItem = new JMenuItem("Another item");
         submenu.add(menuItem);
-        menu.add(submenu);
+        menu.add(submenu);*/
 
 //Build second menu in the menu bar.
         menu = new JMenu("Titulares");
@@ -119,6 +125,10 @@ public class MainFrame extends JFrame {
 
         menuItem = new JMenuItem("Alta Titular",
                 KeyEvent.VK_T);
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(
+                KeyEvent.VK_4, ActionEvent.ALT_MASK));
+        menuItem.getAccessibleContext().setAccessibleDescription(
+                "Alta Titular");
         menuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -137,6 +147,10 @@ public class MainFrame extends JFrame {
 
         menuItem = new JMenuItem("Licencias Expiradas",
                 KeyEvent.VK_T);
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(
+                KeyEvent.VK_5, ActionEvent.ALT_MASK));
+        menuItem.getAccessibleContext().setAccessibleDescription(
+                "Licencias Expiradas");
         menuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
