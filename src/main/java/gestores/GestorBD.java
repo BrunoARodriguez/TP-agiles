@@ -167,13 +167,13 @@ public abstract class GestorBD {
                 query.append(" AND l.fechaAltaLicencia BETWEEN ")
                         .append(dateTimeFormatter.format(criteriosDTO.getFechaAltaDesde()))
                         .append(" AND ")
-                        .append(dateTimeFormatter.format(criteriosDTO.getFechaAltaHasta()));
+                        .append(dateTimeFormatter.format(criteriosDTO.getFechaAltaHasta().plusDays(1)));
                 break;
             case 6:
                 query.append(" AND l.fechaVencimientoLicencia BETWEEN ")
                         .append(dateTimeFormatter.format(criteriosDTO.getFechaVencimientoDesde()))
                         .append(" AND ")
-                        .append(dateTimeFormatter.format(criteriosDTO.getFechaVencimientoHasta()));
+                        .append(dateTimeFormatter.format(criteriosDTO.getFechaVencimientoHasta().plusDays(1)));
                 break;
         }
         Query query1 = manager.createQuery(query.toString());
