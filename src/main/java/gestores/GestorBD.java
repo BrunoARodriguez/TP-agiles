@@ -1,6 +1,7 @@
 package gestores;
 
 import LogicaDeNegocios.DTOs.CriteriosDTO;
+import LogicaDeNegocios.DTOs.LicenciaDTO;
 import LogicaDeNegocios.Entidades.Contribuyente;
 import LogicaDeNegocios.Entidades.Licencia;
 import LogicaDeNegocios.Entidades.Resources.CostoLicencia;
@@ -11,6 +12,7 @@ import LogicaDeNegocios.Enumerations.EstadoLicencia;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
+import java.math.BigInteger;
 import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
 import java.util.List;
@@ -88,6 +90,30 @@ public abstract class GestorBD {
                 manager.persist(licencia);
             }
             manager.getTransaction().commit();
+            manager.close();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }//cierra guardarLicencia
+
+    public static Boolean guardarLicencia2(Licencia licencia, LicenciaDTO licenciaDTO) {
+        try {
+            EntityManager manager = emf.createEntityManager();
+            manager.getTransaction().begin();
+            if (licencia.getIdLicencia() == null || manager.find(Licencia.class, licencia.getIdLicencia()) != null) {
+                licencia = manager.merge(licencia);
+            } else {
+                manager.persist(licencia);
+                manager.flush();
+            }
+            manager.getTransaction().commit();
+
+            System.out.println(" id licencia  :" + licencia.getIdLicencia());
+            licenciaDTO.setIdLicencia(licencia.getIdLicencia());
+
+
             manager.close();
             return true;
         } catch (Exception e) {
@@ -216,4 +242,6 @@ public abstract class GestorBD {
             return null;
         }
     }//cierra buscarLicencia
+
+
 }
