@@ -8,6 +8,8 @@ import gestores.GestorLicencia;
 import gestores.GestorTitular;
 
 import javax.swing.*;
+import javax.swing.text.AbstractDocument;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -44,6 +46,18 @@ public class Interfaz_Emitir_Licencia2 extends JPanel {
         if (GestorTitular.titularAux != null) {
             txt_dni.setEditable(false);
         }
+
+        AbstractDocument doc = (AbstractDocument) txt_dni.getDocument();
+        doc.setDocumentFilter(new LimiteTexto(8));
+
+        txt_observaciones.setLineWrap(true);
+        txt_observaciones.setWrapStyleWord(true);
+        AbstractDocument doc_1 = (AbstractDocument) txt_observaciones.getDocument();
+        doc_1.setDocumentFilter(new LimiteTexto(250));
+        txt_observaciones.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, null);
+        txt_observaciones.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, null);
+
+
 
         DDMMAATextField.setText(dateTimeFormatter.format(LocalDateTime.now()));
 
