@@ -35,7 +35,7 @@ public abstract class GestorLicencia {
             return -1;
         }
         titular.getLicencias().add(licencia);
-        if (GestorBD.guardarLicencia(licencia)) {
+        if (GestorBD.guardarLicencia2(licencia,licenciaDTO)) {
             Float costoLicencia = calcularCostoLicencia(licencia.getFechaAltaLicencia(), licencia.getFechaVencimientoLicencia(), licencia.getClaseLicencias());
             String observaciones = "Se ha emitido la licencia a nombre de : \n" + licencia.getTitularLicencia().getContribuyente().getNombreContribuyente() + " " + licencia.getTitularLicencia().getContribuyente().getApellidoContribuyente() + "\nDe la(s) clase(s) : " + licencia.getClaseLicencias().toString();
             Comprobante comprobante = new Comprobante(licenciaDTO.getFechaAltaLicencia(), costoLicencia, licencia, observaciones);

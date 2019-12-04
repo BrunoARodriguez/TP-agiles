@@ -1,9 +1,11 @@
 package Interfaces;
 
+import LogicaDeNegocios.DTOs.CarnetDTO;
 import LogicaDeNegocios.DTOs.ContribuyenteDTO;
 import LogicaDeNegocios.DTOs.LicenciaDTO;
 import LogicaDeNegocios.DTOs.TitularDTO;
 import LogicaDeNegocios.Enumerations.ClaseLicencia;
+import gestores.GestorBD;
 import gestores.GestorLicencia;
 import gestores.GestorTitular;
 
@@ -16,6 +18,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 public class Interfaz_Emitir_Licencia2 extends JPanel {
 
@@ -42,6 +45,7 @@ public class Interfaz_Emitir_Licencia2 extends JPanel {
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 
     public Interfaz_Emitir_Licencia2(final MainFrame frame) {
+
 
         if (GestorTitular.titularAux != null) {
             txt_dni.setEditable(false);
@@ -123,8 +127,17 @@ public class Interfaz_Emitir_Licencia2 extends JPanel {
                         switch (GestorLicencia.crearLicencia(licenciaDTO)) {
                             case 0:
                                 System.out.println("Exito");
-                                JOptionPane.showMessageDialog(frame, "Licencia creada con exito.", "Operacion Realizada", JOptionPane.INFORMATION_MESSAGE);
-                                frame.cambiarPanel(MainFrame.PANE_MENU_OPERADOR);
+                                JOptionPane.showMessageDialog(frame, "Licencia con id "+ licenciaDTO.getIdLicencia() +" creada con exito.", "Operacion Realizada", JOptionPane.INFORMATION_MESSAGE);
+
+                                //JOptionPane.showMessageDialog(frame, "Licencia creada con exito.", "Operacion Realizada", JOptionPane.INFORMATION_MESSAGE);
+                                //frame.cambiarPanel(MainFrame.PANE_MENU_OPERADOR);
+
+                                CarnetDTO carnetDTO = GestorLicencia.buscarCarnetDTO(licenciaDTO.getIdLicencia());
+                                ArrayList listaCarnetImprimir = new ArrayList<CarnetDTO>();
+                                listaCarnetImprimir.add(carnetDTO);
+                                frame.cambiarPanelConLicencias(MainFrame.PANE_VER_FORMATO_LICENCIA, listaCarnetImprimir);
+
+
                                 GestorTitular.titularAux=null;
                                 break;
                             case -2:
@@ -143,8 +156,15 @@ public class Interfaz_Emitir_Licencia2 extends JPanel {
                         switch (GestorLicencia.crearLicencia(licenciaDTO)) {
                             case 0:
                                 System.out.println("Exito");
-                                JOptionPane.showMessageDialog(frame, "Licencia creada con exito.", "Operacion Realizada", JOptionPane.INFORMATION_MESSAGE);
-                                frame.cambiarPanel(MainFrame.PANE_MENU_OPERADOR);
+                                JOptionPane.showMessageDialog(frame, "Licencia con id "+ licenciaDTO.getIdLicencia() +" creada con exito.", "Operacion Realizada", JOptionPane.INFORMATION_MESSAGE);
+
+                                //JOptionPane.showMessageDialog(frame, "Licencia creada con exito.", "Operacion Realizada", JOptionPane.INFORMATION_MESSAGE);
+                                //frame.cambiarPanel(MainFrame.PANE_MENU_OPERADOR);
+                                CarnetDTO carnetDTO = GestorLicencia.buscarCarnetDTO(licenciaDTO.getIdLicencia());
+                                ArrayList listaCarnetImprimir = new ArrayList<CarnetDTO>();
+                                listaCarnetImprimir.add(carnetDTO);
+                                frame.cambiarPanelConLicencias(MainFrame.PANE_VER_FORMATO_LICENCIA, listaCarnetImprimir);
+
                                 GestorTitular.titularAux=null;
                                 break;
                             case -2:
