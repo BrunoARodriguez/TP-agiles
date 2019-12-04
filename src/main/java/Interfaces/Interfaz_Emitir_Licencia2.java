@@ -57,8 +57,6 @@ public class Interfaz_Emitir_Licencia2 extends JPanel {
         txt_observaciones.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, null);
         txt_observaciones.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, null);
 
-
-
         DDMMAATextField.setText(dateTimeFormatter.format(LocalDateTime.now()));
 
         cargar();
@@ -88,7 +86,6 @@ public class Interfaz_Emitir_Licencia2 extends JPanel {
                 }
             }
         });
-
 
         buttonAceptar.addActionListener(actionEvent -> {
             LicenciaDTO licenciaDTO = new LicenciaDTO();
