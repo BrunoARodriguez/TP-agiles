@@ -225,7 +225,7 @@ public abstract class GestorBD {
         }
 
         return licenciaList;
-    }
+    }//cierra buscarLicencias
 
     public static Licencia buscarLicencia(Long idLicencia) {
         try {

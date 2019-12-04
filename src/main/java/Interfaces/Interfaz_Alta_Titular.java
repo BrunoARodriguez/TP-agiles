@@ -8,6 +8,8 @@ import gestores.GestorTitular;
 
 import javax.swing.*;
 import javax.swing.JPanel;
+import javax.swing.text.AbstractDocument;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.ZoneId;
@@ -37,6 +39,17 @@ public class Interfaz_Alta_Titular {
         for (TipoSangre t : tipoSangre) {
             cbTipoSangre.addItem(t.getName());
         }
+
+        AbstractDocument doc = (AbstractDocument) tfNumeroDocumento.getDocument();
+        doc.setDocumentFilter(new LimiteTexto(8));
+
+        taObservaciones.setColumns(0);
+        taObservaciones.setLineWrap(true);
+        taObservaciones.setWrapStyleWord(true);
+        AbstractDocument doc_1 = (AbstractDocument) taObservaciones.getDocument();
+        doc_1.setDocumentFilter(new LimiteTexto(250));
+        taObservaciones.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, null);
+        taObservaciones.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, null);
 
         buscarDatosButton.addActionListener(new ActionListener() {
             @Override

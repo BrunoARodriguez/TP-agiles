@@ -14,6 +14,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import javax.swing.text.AbstractDocument;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -136,6 +137,15 @@ public class Interfaz_Imprimir_Licencia {
         table_resultados = new JTable(modeloLicencias);
         table_resultados.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         scrollPane.setViewportView(table_resultados);
+
+        AbstractDocument doc = (AbstractDocument) tf_dni.getDocument();
+        doc.setDocumentFilter(new LimiteTexto(8));
+
+        AbstractDocument doc_1 = (AbstractDocument) tf_nombre.getDocument();
+        doc_1.setDocumentFilter(new LimiteTexto(30));
+
+        AbstractDocument doc_2 = (AbstractDocument) tf_apellido.getDocument();
+        doc_2.setDocumentFilter(new LimiteTexto(30));
 
         volverButton.addActionListener(new ActionListener() {
             @Override
