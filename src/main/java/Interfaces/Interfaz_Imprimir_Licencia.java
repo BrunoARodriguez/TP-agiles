@@ -157,7 +157,7 @@ public class Interfaz_Imprimir_Licencia {
             }
         });
         imprimirButton.addActionListener(new ActionListener() {
-            //TODO volver a configurar una vez que este resulta la logica de la busqueda en base de datos
+
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
 
@@ -168,10 +168,6 @@ public class Interfaz_Imprimir_Licencia {
                 for (int value : indicesLicencias) {
                     indiceLicenciaList.add(value);
                 }
-
-                //TODO guardar id de licencacias seleccionadas , buscar la licencias en base de datos , generar un nuevo
-                // DTO y luego mandarselos a LIcenciaDeConducir.
-
 
                 //Integer indiceLicencia = table_resultados.getSelectedRow();
                 if(indiceLicenciaList.isEmpty()) {
@@ -187,15 +183,11 @@ public class Interfaz_Imprimir_Licencia {
                         CarnetDTO carnetDTO = GestorLicencia.buscarCarnetDTO(idLicencia);
                         listaCarnetImprimir.add(carnetDTO);
                     }
-
-                    //LicenciaDTO licenciaSeleccionada = listaLicenciasDTO.get(indiceLicenciaList);
-                    //frame.cambiarPanel(MainFrame.PANE_VER_FORMATO_LICENCIA);
                     frame.cambiarPanelConLicencias(MainFrame.PANE_VER_FORMATO_LICENCIA, listaCarnetImprimir);
                 }
                 //this.setContentPane(new LicenciaDeConducir().getPane());
             }
         });
-
 
         buscarButton.addActionListener(new ActionListener() {
             @Override

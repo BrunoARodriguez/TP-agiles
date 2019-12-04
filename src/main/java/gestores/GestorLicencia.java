@@ -1,5 +1,6 @@
 package gestores;
 
+import Interfaces.MainFrame;
 import LogicaDeNegocios.DTOs.*;
 import LogicaDeNegocios.Entidades.*;
 import LogicaDeNegocios.Entidades.Resources.CostoLicencia;
@@ -36,11 +37,17 @@ public abstract class GestorLicencia {
         }
         titular.getLicencias().add(licencia);
         if (GestorBD.guardarLicencia2(licencia,licenciaDTO)) {
+/*            Float costoLicencia = calcularCostoLicencia(licencia.getFechaAltaLicencia(), licencia.getFechaVencimientoLicencia(), licencia.getClaseLicencias());
+            String observaciones = "Se ha emitido la licencia a nombre de : \n" + licencia.getTitularLicencia().getContribuyente().getNombreContribuyente() + " " + licencia.getTitularLicencia().getContribuyente().getApellidoContribuyente() + "\nDe la(s) clase(s) : " + licencia.getClaseLicencias().toString();
+            Comprobante comprobante = new Comprobante(licenciaDTO.getFechaAltaLicencia(), costoLicencia,  observaciones);*/
+           // GestorImpresion.imprimirComprobante(comprobante);
+            //Exito perro
+
             Float costoLicencia = calcularCostoLicencia(licencia.getFechaAltaLicencia(), licencia.getFechaVencimientoLicencia(), licencia.getClaseLicencias());
             String observaciones = "Se ha emitido la licencia a nombre de : \n" + licencia.getTitularLicencia().getContribuyente().getNombreContribuyente() + " " + licencia.getTitularLicencia().getContribuyente().getApellidoContribuyente() + "\nDe la(s) clase(s) : " + licencia.getClaseLicencias().toString();
-            Comprobante comprobante = new Comprobante(licenciaDTO.getFechaAltaLicencia(), costoLicencia, licencia, observaciones);
-            GestorImpresion.imprimirComprobante(comprobante);
-            //Exito perro
+            Comprobante comprobante = new Comprobante(licenciaDTO.getFechaAltaLicencia(), costoLicencia,  observaciones);
+            licenciaDTO.setComprobante(comprobante);
+
             return 0;
         } else {
             if (!GestorTitular.titularAux.getTieneLicencias()) {
@@ -275,6 +282,11 @@ public abstract class GestorLicencia {
         }
 
     }
+
+    public static void MostrarLicenciaYComprobante(Licencia licencia, LicenciaDTO licenciaDTO, final MainFrame frame){
+
+    }
+
 
 }
 

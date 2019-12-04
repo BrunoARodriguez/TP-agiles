@@ -12,7 +12,6 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 
 import LogicaDeNegocios.DTOs.CarnetDTO;
-import LogicaDeNegocios.DTOs.LicenciaDTO;
 import com.itextpdf.io.image.ImageData;
 import com.itextpdf.io.image.ImageDataFactory;
 
@@ -43,27 +42,30 @@ public class LicenciaDeConducir {
     private JButton imprimirTodasButton;
     private JButton verSiguienteButton;
     private JButton cancelarButton;
+    private JButton comprobanteButton;
 
-    private ArrayList<CarnetDTO> licenciaDTOS = new ArrayList<>();
-    private CarnetDTO licenciaDTOActual;
+    private ArrayList<CarnetDTO> carnetDTOS = new ArrayList<>();
+    private CarnetDTO carnetDTOActual;
     Integer cantidadLicencias;
     Integer cantidadImpresas = 0;
     Integer indiceLicenciaActual=0;
 
-    public LicenciaDeConducir(final MainFrame frame, ArrayList<CarnetDTO> licenciaDTOS)   {
+    public LicenciaDeConducir(final MainFrame frame, ArrayList<CarnetDTO> carnetDTOS)   {
 
-        this.licenciaDTOS=licenciaDTOS;
-        for(CarnetDTO l : this.licenciaDTOS){
+        this.carnetDTOS =carnetDTOS;
+        for(CarnetDTO l : this.carnetDTOS){
             System.out.println(l.toString());
         }
 
-        cantidadLicencias = this.licenciaDTOS.size();
-        licenciaDTOActual= this.licenciaDTOS.get(indiceLicenciaActual);
-        setearDatosLicencia(licenciaDTOActual);
+        cantidadLicencias = this.carnetDTOS.size();
+        carnetDTOActual = this.carnetDTOS.get(indiceLicenciaActual);
+        setearDatosLicencia(carnetDTOActual);
+
+
 
         imprimir.addActionListener(actionEvent -> {
                 try {
-                    imprimirLicencia(licenciaDTOActual);
+                    imprimirLicencia(carnetDTOActual);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -77,8 +79,8 @@ public class LicenciaDeConducir {
                 if(indiceLicenciaActual>=cantidadLicencias){
                     JOptionPane.showMessageDialog(frame, "No quedan licencia mas en la cola", "Imprimir Licencia", JOptionPane.ERROR_MESSAGE);
                 }else{
-                    licenciaDTOActual = LicenciaDeConducir.this.licenciaDTOS.get(indiceLicenciaActual);
-                    setearDatosLicencia(licenciaDTOActual);
+                    carnetDTOActual = LicenciaDeConducir.this.carnetDTOS.get(indiceLicenciaActual);
+                    setearDatosLicencia(carnetDTOActual);
                 }
 
             }
@@ -86,7 +88,7 @@ public class LicenciaDeConducir {
         imprimirTodasButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                for(CarnetDTO l : LicenciaDeConducir.this.licenciaDTOS){
+                for(CarnetDTO l : LicenciaDeConducir.this.carnetDTOS){
                     setearDatosLicencia(l);
                     try {
                         imprimirLicencia(l);
@@ -102,7 +104,18 @@ public class LicenciaDeConducir {
             public void actionPerformed(ActionEvent actionEvent) {
                 JDialogCancelar c = new JDialogCancelar(frame);
                 if(c.fueCancelado()) {
-                    frame.backPreviousPane();
+                    frame.cambiarPanel(MainFrame.PANE_MENU_OPERADOR);
+                }
+            }
+        });
+
+        comprobanteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                if(carnetDTOActual.getComprobante()!=null){
+                    frame.cambiarPanelComprobante(carnetDTOActual);
+                }else{
+                    System.out.println("No existe comprobante en el sistema");
                 }
             }
         });

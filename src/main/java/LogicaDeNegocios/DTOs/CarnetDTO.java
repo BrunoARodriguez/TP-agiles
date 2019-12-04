@@ -1,5 +1,6 @@
 package LogicaDeNegocios.DTOs;
 
+import LogicaDeNegocios.Entidades.Comprobante;
 import LogicaDeNegocios.Enumerations.ClaseLicencia;
 import LogicaDeNegocios.Enumerations.TipoSangre;
 
@@ -20,6 +21,7 @@ public class CarnetDTO {
     private Boolean esDonante;
     private TipoSangre tipoSangre;
     private String observacionesLicencia;
+    private Comprobante comprobante;
 
     public Long getIdLicencia() {
         return idLicencia;
@@ -124,5 +126,13 @@ public class CarnetDTO {
                 ", tipoSangre=" + tipoSangre +
                 ", observacionesLicencia='" + observacionesLicencia + '\'' +
                 '}';
+    }
+
+    public Comprobante getComprobante() {
+        return comprobante;
+    }
+
+    public void setComprobante(Comprobante comprobante) {
+        this.comprobante = comprobante;
     }
 }

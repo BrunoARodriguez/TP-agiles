@@ -132,13 +132,13 @@ public class Interfaz_Emitir_Licencia2 extends JPanel {
                                 System.out.println("Exito");
                                 JOptionPane.showMessageDialog(frame, "Licencia con id "+ licenciaDTO.getIdLicencia() +" creada con exito.", "Operacion Realizada", JOptionPane.INFORMATION_MESSAGE);
 
-                                //JOptionPane.showMessageDialog(frame, "Licencia creada con exito.", "Operacion Realizada", JOptionPane.INFORMATION_MESSAGE);
-                                //frame.cambiarPanel(MainFrame.PANE_MENU_OPERADOR);
-
                                 CarnetDTO carnetDTO = GestorLicencia.buscarCarnetDTO(licenciaDTO.getIdLicencia());
+                                carnetDTO.setComprobante(licenciaDTO.getComprobante());
+                                System.out.println("COMPROBANTE " + carnetDTO.getComprobante().toString());
                                 ArrayList listaCarnetImprimir = new ArrayList<CarnetDTO>();
                                 listaCarnetImprimir.add(carnetDTO);
                                 frame.cambiarPanelConLicencias(MainFrame.PANE_VER_FORMATO_LICENCIA, listaCarnetImprimir);
+
 
 
                                 GestorTitular.titularAux=null;
@@ -164,6 +164,8 @@ public class Interfaz_Emitir_Licencia2 extends JPanel {
                                 //JOptionPane.showMessageDialog(frame, "Licencia creada con exito.", "Operacion Realizada", JOptionPane.INFORMATION_MESSAGE);
                                 //frame.cambiarPanel(MainFrame.PANE_MENU_OPERADOR);
                                 CarnetDTO carnetDTO = GestorLicencia.buscarCarnetDTO(licenciaDTO.getIdLicencia());
+                                carnetDTO.setComprobante(licenciaDTO.getComprobante());
+                                System.out.println("COMPROBANTE " + carnetDTO.getComprobante().toString());
                                 ArrayList listaCarnetImprimir = new ArrayList<CarnetDTO>();
                                 listaCarnetImprimir.add(carnetDTO);
                                 frame.cambiarPanelConLicencias(MainFrame.PANE_VER_FORMATO_LICENCIA, listaCarnetImprimir);

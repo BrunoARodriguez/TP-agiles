@@ -225,6 +225,13 @@ public class MainFrame extends JFrame {
         this.getContentPane().setVisible(true);
     }
 
+    public void cambiarPanelComprobante(CarnetDTO carnetDTO){
+        previousPane=this.getContentPane();
+        this.setContentPane(new Interfaz_Ver_Comprobante(this,carnetDTO).getPane());
+        this.getContentPane().setVisible(false);
+        this.getContentPane().setVisible(true);
+    }
+
     public int getMenuActual() {
         return MENU_ACTUAL;
     }
