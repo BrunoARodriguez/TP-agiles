@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import LogicaDeNegocios.DTOs.CarnetDTO;
@@ -69,11 +70,16 @@ public class LicenciaDeConducir {
 
         imprimir.addActionListener(actionEvent -> {
                 try {
-                    imprimirLicencia(carnetDTOActual);
+
+                    if(imprimirLicencia(carnetDTOActual)){
+                        JOptionPane.showMessageDialog(frame, "Impresion exitosa", "Imprimir licencia", JOptionPane.INFORMATION_MESSAGE);
+                    }else{
+                        JOptionPane.showMessageDialog(frame, "No puede imprimir una licencia NO VIGENTE", "Imprimir Licencia", JOptionPane.ERROR_MESSAGE);
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            JOptionPane.showMessageDialog(frame, "Impresion exitosa", "Imprimir licencia", JOptionPane.INFORMATION_MESSAGE);
+
         });
 
         verSiguienteButton.addActionListener(new ActionListener() {
@@ -95,7 +101,12 @@ public class LicenciaDeConducir {
                 for(CarnetDTO l : LicenciaDeConducir.this.carnetDTOS){
                     setearDatosLicencia(l);
                     try {
-                        imprimirLicencia(l);
+                        if(imprimirLicencia(l)){
+
+                        }else{
+                            JOptionPane.showMessageDialog(frame, "La licencia "+ l.getIdLicencia()+ " no se encuentra vigente", "Imprimir Licencia", JOptionPane.ERROR_MESSAGE);
+                        }
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -130,9 +141,15 @@ public class LicenciaDeConducir {
         });
     }
 
-    private void imprimirLicencia(CarnetDTO licenciaDTO) throws IOException {
-        tomarFoto();
-        generarPdf(licenciaDTO.getIdLicencia().toString());
+    private Boolean imprimirLicencia(CarnetDTO licenciaDTO) throws IOException {
+        if(validarEstadoLicencia(licenciaDTO)){
+            tomarFoto();
+            generarPdf(licenciaDTO.getIdLicencia().toString());
+            return true;
+        }else{
+            System.out.println("La licencia con id " + licenciaDTO.getIdLicencia() + " no esta vigente");
+            return false;
+        }
     }
 
     private void setearDatosLicencia(CarnetDTO licenciaDTO) {
@@ -196,6 +213,16 @@ public class LicenciaDeConducir {
         document.close();
 
         System.out.println("Se genero el pdf de la licencia " + idLicencia + " en la ruta "+ dest);
+    }
+
+    private Boolean validarEstadoLicencia(CarnetDTO licencia){
+        LocalDateTime fechaActual = LocalDateTime.now();
+        LocalDateTime fechaVencimientoLicencia = licencia.getFechaVencimientoLicencia();
+        if (fechaActual.isBefore(fechaVencimientoLicencia)){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     public JPanel getPane() {
