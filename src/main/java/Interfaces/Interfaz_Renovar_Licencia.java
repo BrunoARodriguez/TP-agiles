@@ -4,6 +4,7 @@ import LogicaDeNegocios.DTOs.CriteriosDTO;
 import LogicaDeNegocios.DTOs.DatosTablaDTO;
 import LogicaDeNegocios.DTOs.LicenciaDTO;
 import LogicaDeNegocios.Enumerations.ClaseLicencia;
+import LogicaDeNegocios.Exceptions.ExcepcionRenovarLicencia;
 import com.toedter.calendar.JDateChooser;
 import gestores.GestorLicencia;
 
@@ -264,19 +265,12 @@ public class Interfaz_Renovar_Licencia {
         renovarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                switch (GestorLicencia.renovarLicencia(modeloLicencias.getIdLicencia(table_resultados.getSelectedRow()))) {
-                    case 0:
-                        JOptionPane.showMessageDialog(frame, "Licencia reovada con exito.", "Exito", JOptionPane.INFORMATION_MESSAGE);
-                        return;
-                    case -1:
-                        JOptionPane.showMessageDialog(frame, "No se logró encontrar una licencia.", "Error", JOptionPane.ERROR_MESSAGE);
-                        return;
-                    case -2:
-                        JOptionPane.showMessageDialog(frame, "La licencia renovada no se pudo guardar.", "Error", JOptionPane.ERROR_MESSAGE);
-                        return;
-                    case -3:
-                        JOptionPane.showMessageDialog(frame, "No se puede renovar esta licencia ya que le faltan más de 45 días para su vencimiento.", "Error", JOptionPane.ERROR_MESSAGE);
-                        return;
+                try {
+                    GestorLicencia.renovarLicencia(modeloLicencias.getIdLicencia(table_resultados.getSelectedRow()));
+                    JOptionPane.showMessageDialog(frame, "Licencia reovada con exito.", "Exito al renovar la licencia", JOptionPane.INFORMATION_MESSAGE);
+
+                } catch (ExcepcionRenovarLicencia e) {
+                    JOptionPane.showMessageDialog(frame, e.getMessage(), "Error al renovar licencia", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });

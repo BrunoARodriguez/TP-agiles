@@ -7,6 +7,7 @@ import LogicaDeNegocios.Entidades.Resources.CostoLicencia;
 import LogicaDeNegocios.Enumerations.ClaseLicencia;
 import LogicaDeNegocios.Enumerations.EstadoLicencia;
 import LogicaDeNegocios.Exceptions.ExcepcionCrearLicencia;
+import LogicaDeNegocios.Exceptions.ExcepcionRenovarLicencia;
 
 import java.time.LocalDateTime;
 import java.time.Period;
@@ -252,16 +253,16 @@ public abstract class GestorLicencia {
     }
 
     //historia renovar licencia
-    public static int renovarLicencia(Long idLicencia) {
+    public static void renovarLicencia(Long idLicencia) throws ExcepcionRenovarLicencia {
         Licencia licenciaBuscada = GestorBD.buscarLicencia(idLicencia);
         if (licenciaBuscada == null) {
             //no se encontro la licencia con ese id en la base de datos
-            return -1;
+            throw new ExcepcionRenovarLicencia("No se encontro la licencia, consulte con el encargado de la base de datos.");
         } else {
             Period periodo = Period.between(LocalDateTime.now().toLocalDate(),licenciaBuscada.getFechaVencimientoLicencia().toLocalDate());
             if (periodo.getMonths() > 1 || (periodo.getMonths() == 1 && periodo.getDays() > 15)) {
                 //la licencia le faltan mas de 45 dias para vencer
-                return -3;
+                throw new ExcepcionRenovarLicencia("Todavia no se puede renovar la licencia, el periodo tiene que ser menor a 45 dias hasta su vencimiento.");
             }
             LocalDateTime fechaVencimiento = GestorLicencia.calcularVigencia(licenciaBuscada.getTitularLicencia().getContribuyente().getFechaNacimientoContribuyente(), true, LocalDateTime.now());
             Licencia licenciaRenovada = new Licencia(licenciaBuscada.getTitularLicencia(), LocalDateTime.now(), fechaVencimiento, new ArrayList<>(licenciaBuscada.getClaseLicencias()), licenciaBuscada.getObservacionesLicencia(), new ArrayList<>(licenciaBuscada.getCambioEstadoLicencias()));
@@ -274,16 +275,12 @@ public abstract class GestorLicencia {
             licenciaBuscada.getCambioEstadoLicencias().add(ultimoEstado);
             if (GestorBD.guardarLicencia(licenciaRenovada)) {
                 // termina bien
-                return 0;
+                return ;
             } else {
                 // no se pudo guardar en la base de datos
-                return -2;
+                throw new ExcepcionRenovarLicencia("No se pudo guardar la licencia renovada.");
             }
         }
-
-    }
-
-    public static void MostrarLicenciaYComprobante(Licencia licencia, LicenciaDTO licenciaDTO, final MainFrame frame){
 
     }
 
