@@ -1,21 +1,26 @@
 package LogicaDeNegocios.Entidades;
 
+import LogicaDeNegocios.Enumerations.ClaseLicencia;
+
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class Comprobante {
 
     private LocalDateTime fechaCreacion;
     private Float costoTramite;
-    private Licencia licenciaAsociada;
+   // private Licencia licenciaAsociada;
     private String observaciones;
+
+   // String observaciones = "Se ha emitido la licencia a nombre de : \n" + licencia.getTitularLicencia().getContribuyente().getNombreContribuyente() + " " + licencia.getTitularLicencia().getContribuyente().getApellidoContribuyente() + "\nDe la(s) clase(s) : " + licencia.getClaseLicencias().toString();
+
 
     public Comprobante() {
     }
 
-    public Comprobante(LocalDateTime fechaCreacion, Float costoTramite, Licencia licenciaAsociada, String observaciones) {
+    public Comprobante(LocalDateTime fechaCreacion, Float costoTramite, String observaciones) {
         this.fechaCreacion = fechaCreacion;
         this.costoTramite = costoTramite;
-        this.licenciaAsociada = licenciaAsociada;
         this.observaciones = observaciones;
     }
 
@@ -44,14 +49,6 @@ public class Comprobante {
         this.costoTramite = costoTramite;
     }
 
-    public Licencia getLicenciaAsociada() {
-        return licenciaAsociada;
-    }
-
-    public void setLicenciaAsociada(Licencia licenciaAsociada) {
-        this.licenciaAsociada = licenciaAsociada;
-    }
-
     public String getObservaciones() {
         return observaciones;
     }
@@ -59,4 +56,5 @@ public class Comprobante {
     public void setObservaciones(String observaciones) {
         this.observaciones = observaciones;
     }
+
 }

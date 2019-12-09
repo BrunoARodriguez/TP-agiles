@@ -1,6 +1,7 @@
 package LogicaDeNegocios.DTOs;
 
 import LogicaDeNegocios.Entidades.CambioEstadoLicencia;
+import LogicaDeNegocios.Entidades.Comprobante;
 import LogicaDeNegocios.Entidades.Titular;
 import LogicaDeNegocios.Enumerations.ClaseLicencia;
 
@@ -15,6 +16,8 @@ public class LicenciaDTO {
     private ArrayList<ClaseLicencia> claseLicencias;
     private String observacionesLicencia;
     private Boolean esDonante;
+
+    private Comprobante comprobante;
 
     public LicenciaDTO() {
         claseLicencias = new ArrayList<ClaseLicencia>();
@@ -91,6 +94,14 @@ public class LicenciaDTO {
 
     public void setEsDonante(Boolean esDonante) {
         this.esDonante = esDonante;
+    }
+
+    public Comprobante getComprobante() {
+        return comprobante;
+    }
+
+    public void setComprobante(Comprobante comprobante) {
+        this.comprobante = comprobante;
     }
 
     @Override

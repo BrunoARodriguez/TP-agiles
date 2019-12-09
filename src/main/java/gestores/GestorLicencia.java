@@ -1,10 +1,12 @@
 package gestores;
 
+import Interfaces.MainFrame;
 import LogicaDeNegocios.DTOs.*;
 import LogicaDeNegocios.Entidades.*;
 import LogicaDeNegocios.Entidades.Resources.CostoLicencia;
 import LogicaDeNegocios.Enumerations.ClaseLicencia;
 import LogicaDeNegocios.Enumerations.EstadoLicencia;
+import LogicaDeNegocios.Exceptions.ExcepcionCrearLicencia;
 
 import java.time.LocalDateTime;
 import java.time.Period;
@@ -14,7 +16,7 @@ import java.util.List;
 
 public abstract class GestorLicencia {
 
-    public static int crearLicencia(LicenciaDTO licenciaDTO) {
+    public static void crearLicencia(LicenciaDTO licenciaDTO) throws ExcepcionCrearLicencia {
 
         Titular titular = GestorTitular.buscarTitular(GestorTitular.titularAux.getDni());
         Licencia licencia = new Licencia(titular, licenciaDTO.getFechaAltaLicencia(), licenciaDTO.getFechaVencimientoLicencia(), licenciaDTO.getClaseLicencias(), licenciaDTO.getObservacionesLicencia(), new ArrayList<CambioEstadoLicencia>());
@@ -32,16 +34,21 @@ public abstract class GestorLicencia {
                 }
             }
             // ya tiene licencia de esta(s) clase(s)
-            return -1;
+            throw new ExcepcionCrearLicencia("El titular ya tiene licencias vigentes con esta clase.");
         }
         titular.getLicencias().add(licencia);
         if (GestorBD.guardarLicencia2(licencia,licenciaDTO)) {
+/*            Float costoLicencia = calcularCostoLicencia(licencia.getFechaAltaLicencia(), licencia.getFechaVencimientoLicencia(), licencia.getClaseLicencias());
+            String observaciones = "Se ha emitido la licencia a nombre de : \n" + licencia.getTitularLicencia().getContribuyente().getNombreContribuyente() + " " + licencia.getTitularLicencia().getContribuyente().getApellidoContribuyente() + "\nDe la(s) clase(s) : " + licencia.getClaseLicencias().toString();
+            Comprobante comprobante = new Comprobante(licenciaDTO.getFechaAltaLicencia(), costoLicencia,  observaciones);*/
+           // GestorImpresion.imprimirComprobante(comprobante);
+            //Exito perro
+
             Float costoLicencia = calcularCostoLicencia(licencia.getFechaAltaLicencia(), licencia.getFechaVencimientoLicencia(), licencia.getClaseLicencias());
             String observaciones = "Se ha emitido la licencia a nombre de : \n" + licencia.getTitularLicencia().getContribuyente().getNombreContribuyente() + " " + licencia.getTitularLicencia().getContribuyente().getApellidoContribuyente() + "\nDe la(s) clase(s) : " + licencia.getClaseLicencias().toString();
-            Comprobante comprobante = new Comprobante(licenciaDTO.getFechaAltaLicencia(), costoLicencia, licencia, observaciones);
-            GestorImpresion.imprimirComprobante(comprobante);
-            //Exito perro
-            return 0;
+            Comprobante comprobante = new Comprobante(licenciaDTO.getFechaAltaLicencia(), costoLicencia,  observaciones);
+            licenciaDTO.setComprobante(comprobante);
+
         } else {
             if (!GestorTitular.titularAux.getTieneLicencias()) {
                 int i = 0;
@@ -54,7 +61,7 @@ public abstract class GestorLicencia {
                 }
             }
             //Error al guardar
-            return -2;
+            throw new ExcepcionCrearLicencia("Error al guardar la licencia. Intente nuevamente mas tarde o comuniquese con en el encargado de base de datos.");
         }
 
     }//cierra crearLicencia
@@ -275,6 +282,11 @@ public abstract class GestorLicencia {
         }
 
     }
+
+    public static void MostrarLicenciaYComprobante(Licencia licencia, LicenciaDTO licenciaDTO, final MainFrame frame){
+
+    }
+
 
 }
 

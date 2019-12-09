@@ -8,6 +8,7 @@ import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.property.TextAlignment;
 
+import javax.swing.*;
 import java.time.format.DateTimeFormatter;
 
 public abstract class GestorImpresion {
@@ -61,8 +62,11 @@ public abstract class GestorImpresion {
             return false;
         }
 
+
         return true;
 
     }
+
+
 
 }

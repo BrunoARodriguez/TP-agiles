@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="Interfaces.Interfaz_Ver_Comprobante">
+  <grid id="27dc6" binding="rootPane" layout-manager="GridLayoutManager" row-count="7" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="0" left="0" bottom="0" right="0"/>
+    <constraints>
+      <xy x="20" y="20" width="398" height="178"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <component id="b896a" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="1" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Municipalidad Santa Fe."/>
+        </properties>
+      </component>
+      <component id="44cd9" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="1" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Comprobante de tramite de licencia de conducir."/>
+        </properties>
+      </component>
+      <component id="b7d4d" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false">
+            <preferred-size width="308" height="16"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="Se ha emitido la licencia a nombre de :"/>
+        </properties>
+      </component>
+      <component id="314fe" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false">
+            <preferred-size width="308" height="16"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="De la(s) clase(s) :"/>
+        </properties>
+      </component>
+      <component id="817b" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false">
+            <preferred-size width="308" height="16"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="Costo del tramite:"/>
+        </properties>
+      </component>
+      <component id="3dbd8" class="javax.swing.JLabel" binding="lbnombreTitular">
+        <constraints>
+          <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value=""/>
+        </properties>
+      </component>
+      <component id="3dc1c" class="javax.swing.JLabel" binding="lbClasesLicencia">
+        <constraints>
+          <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value=""/>
+        </properties>
+      </component>
+      <component id="a5cc3" class="javax.swing.JLabel" binding="lbCostoTramite">
+        <constraints>
+          <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value=""/>
+        </properties>
+      </component>
+      <component id="8cb02" class="javax.swing.JButton" binding="imprimirComprobanteButton" default-binding="true">
+        <constraints>
+          <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+            <preferred-size width="308" height="24"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="ImprimirComprobante"/>
+        </properties>
+      </component>
+      <component id="e511d" class="javax.swing.JButton" binding="cancelarButton" default-binding="true">
+        <constraints>
+          <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Cancelar"/>
+        </properties>
+      </component>
+      <component id="29290" class="javax.swing.JLabel" binding="lbFechaYHora">
+        <constraints>
+          <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value=""/>
+        </properties>
+      </component>
+      <component id="9aeb0" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false">
+            <preferred-size width="308" height="16"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="Fecha y hora del tramite:"/>
+        </properties>
+      </component>
+    </children>
+  </grid>
+</form>
