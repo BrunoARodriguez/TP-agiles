@@ -5,6 +5,7 @@ import LogicaDeNegocios.DTOs.TitularDTO;
 import LogicaDeNegocios.Entidades.Contribuyente;
 import LogicaDeNegocios.Entidades.Licencia;
 import LogicaDeNegocios.Entidades.Titular;
+import LogicaDeNegocios.Exceptions.ExcepcionCrearTitular;
 
 import java.util.ArrayList;
 
@@ -34,26 +35,26 @@ public abstract class GestorTitular {
         }
     } //cierra buscarContribuyente
 
-    public static int crearTitular(TitularDTO titularDTO) {
+    public static void crearTitular(TitularDTO titularDTO) throws ExcepcionCrearTitular {
         Contribuyente contribuyente = GestorBD.buscarContribuyente(titularDTO.getDni());
         if (contribuyente != null) {
             if (buscarTitular(titularDTO.getDni()) == null) {
                 Titular titular = new Titular(contribuyente, new ArrayList<Licencia>(), titularDTO.getObservaciones(), titularDTO.getDonante(), titularDTO.getTipoSangre());
                 if (GestorBD.guardarTitular(titular)) {
-                    //Exitos prro
-                    return 0;
+                    //Exitos
+                    return ;
                 }
                 else{
                     //Error en base de datos.
-                    return -2;
+                    throw new ExcepcionCrearTitular("Error al guardar el titular, intentelo nuevamente mas tarde o comuniquese con el encargador de base de datos.");
                 }
             } else {
                 //Titular ya existe con este documento.
-                return -3;
+                return ;
             }
         } else {
             //Contribuyente no encontrado en base de datos
-            return -1;
+            throw new ExcepcionCrearTitular("El documento ingresado es invalido!");
         }
     }//cierra crearTitular
 
