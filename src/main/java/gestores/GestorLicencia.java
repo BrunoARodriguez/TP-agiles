@@ -253,8 +253,9 @@ public abstract class GestorLicencia {
     }
 
     //historia renovar licencia
-    public static void renovarLicencia(Long idLicencia) throws ExcepcionRenovarLicencia {
+    public static void renovarLicencia(Long idLicencia, LicenciaDTO licenciaDTO) throws ExcepcionRenovarLicencia {
         Licencia licenciaBuscada = GestorBD.buscarLicencia(idLicencia);
+
         if (licenciaBuscada == null) {
             //no se encontro la licencia con ese id en la base de datos
             throw new ExcepcionRenovarLicencia("No se encontro la licencia, consulte con el encargado de la base de datos.");
@@ -273,7 +274,7 @@ public abstract class GestorLicencia {
             //cambiamos el estado a no vigente
             CambioEstadoLicencia ultimoEstado = new CambioEstadoLicencia(null,licenciaBuscada.getIdLicencia(),estadoAnterior.getEstadoNuevo(),EstadoLicencia.NO_VIGENTE,LocalDateTime.now(),GestorUsuario.getUsuario(),licenciaBuscada.getObservacionesLicencia(),licenciaBuscada);
             licenciaBuscada.getCambioEstadoLicencias().add(ultimoEstado);
-            if (GestorBD.guardarLicencia(licenciaRenovada)) {
+            if (GestorBD.guardarLicencia2(licenciaRenovada, licenciaDTO)) {
                 // termina bien
                 return ;
             } else {

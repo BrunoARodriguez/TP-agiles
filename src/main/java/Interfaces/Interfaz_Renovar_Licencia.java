@@ -1,5 +1,6 @@
 package Interfaces;
 
+import LogicaDeNegocios.DTOs.CarnetDTO;
 import LogicaDeNegocios.DTOs.CriteriosDTO;
 import LogicaDeNegocios.DTOs.DatosTablaDTO;
 import LogicaDeNegocios.DTOs.LicenciaDTO;
@@ -7,6 +8,7 @@ import LogicaDeNegocios.Enumerations.ClaseLicencia;
 import LogicaDeNegocios.Exceptions.ExcepcionRenovarLicencia;
 import com.toedter.calendar.JDateChooser;
 import gestores.GestorLicencia;
+import gestores.GestorTitular;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -266,8 +268,18 @@ public class Interfaz_Renovar_Licencia {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 try {
-                    GestorLicencia.renovarLicencia(modeloLicencias.getIdLicencia(table_resultados.getSelectedRow()));
-                    JOptionPane.showMessageDialog(frame, "Licencia reovada con exito.", "Exito al renovar la licencia", JOptionPane.INFORMATION_MESSAGE);
+                    LicenciaDTO licenciaDTO = new LicenciaDTO();
+                    GestorLicencia.renovarLicencia(modeloLicencias.getIdLicencia(table_resultados.getSelectedRow()),licenciaDTO);
+
+                    CarnetDTO carnetDTO = GestorLicencia.buscarCarnetDTO(licenciaDTO.getIdLicencia());
+                    carnetDTO.setComprobante(licenciaDTO.getComprobante());
+                    ArrayList listaCarnetImprimir = new ArrayList<CarnetDTO>();
+                    listaCarnetImprimir.add(carnetDTO);
+
+
+                    JOptionPane.showMessageDialog(frame, "Licencia renovada con exito.", "Exito al renovar la licencia", JOptionPane.INFORMATION_MESSAGE);
+
+                    frame.cambiarPanelConLicencias(MainFrame.PANE_VER_FORMATO_LICENCIA, listaCarnetImprimir);
 
                 } catch (ExcepcionRenovarLicencia e) {
                     JOptionPane.showMessageDialog(frame, e.getMessage(), "Error al renovar licencia", JOptionPane.ERROR_MESSAGE);
