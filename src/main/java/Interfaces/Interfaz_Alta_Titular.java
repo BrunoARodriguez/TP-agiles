@@ -98,7 +98,7 @@ public class Interfaz_Alta_Titular {
                 try {
                     titularDTO.setDni(Long.valueOf(tfNumeroDocumento.getText()));
                 } catch (Exception e) {
-                    JOptionPane.showMessageDialog(frame, "Documento ingresado no es valido.", "Licencia", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(frame, e.getMessage(), "Licencia", JOptionPane.ERROR_MESSAGE);
                 }
 
                 titularDTO.setDonante(esDonanteCheckBox.isSelected());

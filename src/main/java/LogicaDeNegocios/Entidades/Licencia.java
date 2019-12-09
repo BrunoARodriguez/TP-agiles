@@ -27,6 +27,8 @@ public class Licencia {
     private List<CambioEstadoLicencia> cambioEstadoLicencias;
 
     public Licencia() {
+        claseLicencias = new ArrayList<ClaseLicencia>();
+        cambioEstadoLicencias = new ArrayList<CambioEstadoLicencia>();
     }
 
     public Licencia(Titular titularLicencia, LocalDateTime fechaAltaLicencia, LocalDateTime fechaVencimientoLicencia, ArrayList<ClaseLicencia> claseLicencias, String observacionesLicencia, ArrayList<CambioEstadoLicencia> cambioEstadoLicencias) {

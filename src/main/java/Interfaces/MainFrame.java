@@ -203,10 +203,6 @@ public class MainFrame extends JFrame {
                 this.setContentPane(new Interfaz_Licencias_Expiradas(this).getPane());
                 break;
             }
-            case PANE_VER_FORMATO_LICENCIA:{
-                //this.setContentPane(new LicenciaDeConducir(this).getPane());
-                break;
-            }
         }
         this.getContentPane().setVisible(false);
         this.getContentPane().setVisible(true);
