@@ -52,6 +52,10 @@ public class LicenciaDeConducir {
 
     public LicenciaDeConducir(final MainFrame frame, ArrayList<CarnetDTO> carnetDTOS)   {
 
+        frame.setSize(1200,400);
+        frame.setLocation(frame.getLocation().x-200,frame.getLocation().y);
+        frame.setResizable(false);
+
         this.carnetDTOS =carnetDTOS;
         for(CarnetDTO l : this.carnetDTOS){
             System.out.println(l.toString());
@@ -97,6 +101,7 @@ public class LicenciaDeConducir {
                     }
                 }
                 JOptionPane.showMessageDialog(frame, "Impresion exitosa", "Imprimir licencia", JOptionPane.INFORMATION_MESSAGE);
+                frame.cambiarPanel(MainFrame.PANE_MENU_OPERADOR);
             }
         });
         cancelarButton.addActionListener(new ActionListener() {
@@ -104,6 +109,9 @@ public class LicenciaDeConducir {
             public void actionPerformed(ActionEvent actionEvent) {
                 JDialogCancelar c = new JDialogCancelar(frame);
                 if(c.fueCancelado()) {
+                    frame.setSize(800,600);
+                    frame.setLocation(frame.getLocation().x+200,frame.getLocation().y);
+                    frame.setResizable(true);
                     frame.cambiarPanel(MainFrame.PANE_MENU_OPERADOR);
                 }
             }
@@ -116,6 +124,7 @@ public class LicenciaDeConducir {
                     frame.cambiarPanelComprobante(carnetDTOActual);
                 }else{
                     System.out.println("No existe comprobante en el sistema");
+                    JOptionPane.showMessageDialog(frame, "No existe comprobante en el sistema", "Imprimir comprobante", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
         });
