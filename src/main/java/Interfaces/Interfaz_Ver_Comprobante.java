@@ -35,6 +35,9 @@ public class Interfaz_Ver_Comprobante {
             public void actionPerformed(ActionEvent actionEvent) {
                 if(GestorImpresion.imprimirComprobante(carnetDTO.getComprobante())){
                     JOptionPane.showMessageDialog(frame, "Impresion exitosa", "Imprimir comprobante", JOptionPane.INFORMATION_MESSAGE);
+                    frame.setSize(1200,400);
+                    frame.setLocationRelativeTo(null);
+                    frame.backPreviousPane();
                 }
             }
         });
@@ -43,6 +46,8 @@ public class Interfaz_Ver_Comprobante {
             public void actionPerformed(ActionEvent actionEvent) {
                 JDialogCancelar c = new JDialogCancelar(frame);
                 if(c.fueCancelado()) {
+                    frame.setSize(1200,400);
+                    frame.setLocationRelativeTo(null);
                     frame.backPreviousPane();
                 }
             }

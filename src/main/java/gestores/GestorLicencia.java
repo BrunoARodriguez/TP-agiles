@@ -275,6 +275,10 @@ public abstract class GestorLicencia {
             CambioEstadoLicencia ultimoEstado = new CambioEstadoLicencia(null,licenciaBuscada.getIdLicencia(),estadoAnterior.getEstadoNuevo(),EstadoLicencia.NO_VIGENTE,LocalDateTime.now(),GestorUsuario.getUsuario(),licenciaBuscada.getObservacionesLicencia(),licenciaBuscada);
             licenciaBuscada.getCambioEstadoLicencias().add(ultimoEstado);
             if (GestorBD.guardarLicencia2(licenciaRenovada, licenciaDTO)) {
+                Float costoLicencia = calcularCostoLicencia(licenciaRenovada.getFechaAltaLicencia(), licenciaRenovada.getFechaVencimientoLicencia(), licenciaRenovada.getClaseLicencias());
+                String observaciones = "Se ha emitido la licencia a nombre de : \n" + licenciaRenovada.getTitularLicencia().getContribuyente().getNombreContribuyente() + " " + licenciaRenovada.getTitularLicencia().getContribuyente().getApellidoContribuyente() + "\nDe la(s) clase(s) : " + licenciaRenovada.getClaseLicencias().toString();
+                Comprobante comprobante = new Comprobante(licenciaRenovada.getFechaAltaLicencia(), costoLicencia,  observaciones);
+                licenciaDTO.setComprobante(comprobante);
                 // termina bien
                 return ;
             } else {

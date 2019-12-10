@@ -227,6 +227,10 @@ public class MainFrame extends JFrame {
     }
 
     public void cambiarPanelComprobante(CarnetDTO carnetDTO){
+        setSize(800,600);
+        setLocationRelativeTo(null);
+        this.setResizable(true);
+
         previousPane=this.getContentPane();
         this.setContentPane(new Interfaz_Ver_Comprobante(this,carnetDTO).getPane());
         this.getContentPane().setVisible(false);
@@ -239,7 +243,9 @@ public class MainFrame extends JFrame {
 
     public void backPreviousPane() {
         getContentPane().setVisible(false);
+
         this.setContentPane(previousPane);
+
         getContentPane().setVisible(true);
     }
 
