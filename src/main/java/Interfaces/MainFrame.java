@@ -177,6 +177,11 @@ public class MainFrame extends JFrame {
     public void cambiarPanel(int pane){
         previousPane=this.getContentPane();
 
+
+        setSize(800,600);
+        setLocationRelativeTo(null);
+        this.setResizable(true);
+
         switch (pane){
             case PANE_EMITIR_LICENCIA:{
                 this.setContentPane(new Interfaz_Emitir_Licencia2(this).getPane());

@@ -54,8 +54,7 @@ public class LicenciaDeConducir {
     public LicenciaDeConducir(final MainFrame frame, ArrayList<CarnetDTO> carnetDTOS)   {
 
         frame.setSize(1200,400);
-        frame.setLocation(frame.getLocation().x-200,frame.getLocation().y);
-        frame.setResizable(false);
+        frame.setLocationRelativeTo(null);
 
         this.carnetDTOS =carnetDTOS;
         for(CarnetDTO l : this.carnetDTOS){
@@ -120,9 +119,6 @@ public class LicenciaDeConducir {
             public void actionPerformed(ActionEvent actionEvent) {
                 JDialogCancelar c = new JDialogCancelar(frame);
                 if(c.fueCancelado()) {
-                    frame.setSize(800,600);
-                    frame.setLocation(frame.getLocation().x+200,frame.getLocation().y);
-                    frame.setResizable(true);
                     frame.cambiarPanel(MainFrame.PANE_MENU_OPERADOR);
                 }
             }
