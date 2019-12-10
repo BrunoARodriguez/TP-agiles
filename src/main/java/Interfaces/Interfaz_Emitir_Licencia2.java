@@ -63,7 +63,6 @@ public class Interfaz_Emitir_Licencia2 extends JPanel {
         txt_observaciones.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, null);
         txt_observaciones.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, null);
 
-
         DDMMAATextField.setText(dateTimeFormatter.format(LocalDateTime.now()));
 
         cargar();
@@ -93,7 +92,6 @@ public class Interfaz_Emitir_Licencia2 extends JPanel {
                 }
             }
         });
-
 
         buttonAceptar.addActionListener(actionEvent -> {
             LicenciaDTO licenciaDTO = new LicenciaDTO();
@@ -125,7 +123,6 @@ public class Interfaz_Emitir_Licencia2 extends JPanel {
                 licenciaDTO.setFechaVencimientoLicencia(LocalDateTime.parse((DDMMAATextField1.getText()), dateTimeFormatter));
                 licenciaDTO.setDNI(Long.parseLong(txt_dni.getText()));
 
-
                 try {
 
                     GestorTitular.crearTitular(GestorTitular.titularAux);
@@ -140,15 +137,10 @@ public class Interfaz_Emitir_Licencia2 extends JPanel {
                     GestorTitular.titularAux = null;
 
                 } catch (ExcepcionCrearLicencia e) {
-
                     JOptionPane.showMessageDialog(frame, e.getMessage(), "Error al crear licencia", JOptionPane.ERROR_MESSAGE);
-
                 } catch (ExcepcionCrearTitular e) {
-
                     JOptionPane.showMessageDialog(frame, e.getMessage(), "Error al crear Titular", JOptionPane.ERROR_MESSAGE);
-
                 }
-
 
             } else {
                 JOptionPane.showMessageDialog(frame, "Complete los campos requeridos.", "Campos vacios.", JOptionPane.ERROR_MESSAGE);
@@ -156,16 +148,16 @@ public class Interfaz_Emitir_Licencia2 extends JPanel {
         });
 
         buttonCancelar.addActionListener(new ActionListener() {
-                 @Override
-                 public void actionPerformed(ActionEvent actionEvent) {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
 
-                     JDialogCancelar c = new JDialogCancelar(frame);
-                     if (c.fueCancelado()) {
-                         GestorTitular.titularAux = null;
-                         frame.cambiarPanel(MainFrame.PANE_MENU_OPERADOR);
-                     }
-                 }
-             });
+                JDialogCancelar c = new JDialogCancelar(frame);
+                if (c.fueCancelado()) {
+                    GestorTitular.titularAux = null;
+                    frame.cambiarPanel(MainFrame.PANE_MENU_OPERADOR);
+                }
+            }
+        });
     }
 
     public void cargar() {

@@ -1,8 +1,10 @@
 package Interfaces;
 
+import LogicaDeNegocios.DTOs.CarnetDTO;
 import LogicaDeNegocios.DTOs.CriteriosDTO;
 import LogicaDeNegocios.DTOs.DatosTablaDTO;
 import LogicaDeNegocios.Enumerations.ClaseLicencia;
+import LogicaDeNegocios.Exceptions.ExcepcionRenovarLicencia;
 import com.toedter.calendar.JDateChooser;
 import gestores.GestorLicencia;
 
@@ -11,10 +13,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.text.AbstractDocument;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.time.LocalDateTime;
@@ -44,6 +43,7 @@ public class Interfaz_Licencias_Expiradas {
     private JDateChooser tf_desde;
     private JDateChooser tf_hasta;
     private JLabel labelFecha;
+    private JButton buttonImprimir;
 
     private Long dni;
     private String nombre;
@@ -141,6 +141,9 @@ public class Interfaz_Licencias_Expiradas {
 
         AbstractDocument doc_2 = (AbstractDocument) tf_apellido.getDocument();
         doc_2.setDocumentFilter(new LimiteTexto(30));
+
+        renovarButton.setEnabled(false);
+        buttonImprimir.setEnabled(false);
 
         buscarButton.addActionListener(new ActionListener() {
             @Override
@@ -241,6 +244,65 @@ public class Interfaz_Licencias_Expiradas {
                 modeloLicencias.setDatosTablaDTOS(datosTablaDTOS);
                 table_resultados.updateUI();
 
+            }
+        });
+
+        table_resultados.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent focusEvent) {
+                renovarButton.setEnabled(true);
+                buttonImprimir.setEnabled(true);
+            }
+
+            @Override
+            public void focusLost(FocusEvent focusEvent) {
+
+            }
+        });
+
+        renovarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                try {
+                    GestorLicencia.renovarLicencia(modeloLicencias.getIdLicencia(table_resultados.getSelectedRow()));
+                    JOptionPane.showMessageDialog(frame, "Licencia reovada con exito.", "Exito al renovar la licencia", JOptionPane.INFORMATION_MESSAGE);
+
+                } catch (ExcepcionRenovarLicencia e) {
+                    JOptionPane.showMessageDialog(frame, e.getMessage(), "Error al renovar licencia", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+        buttonImprimir.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+
+                int[] indicesLicencias =table_resultados.getSelectedRows();
+                List<Integer> indiceLicenciaList = new ArrayList<Integer>();
+                List<Long> idLicenciasSeleccionadas = new ArrayList<>();
+
+                for (int value : indicesLicencias) {
+                    indiceLicenciaList.add(value);
+                }
+
+                //Integer indiceLicencia = table_resultados.getSelectedRow();
+                if(indiceLicenciaList.isEmpty()) {
+                    JOptionPane.showMessageDialog(frame, "Debe seleccionar al menos una licencia", "Imprimir Licencia", JOptionPane.ERROR_MESSAGE);
+                }else {
+                    for(Integer indice : indiceLicenciaList){
+                        System.out.println(" indice : " + indice);
+                        idLicenciasSeleccionadas.add(datosTablaDTOS.get(indice).getIdLicencia());
+                    }
+                    ArrayList listaCarnetImprimir = new ArrayList<CarnetDTO>();
+                    for(Long idLicencia : idLicenciasSeleccionadas){
+                        System.out.println("id licencia : " + idLicencia);
+                        CarnetDTO carnetDTO = GestorLicencia.buscarCarnetDTO(idLicencia);
+                        listaCarnetImprimir.add(carnetDTO);
+                    }
+                    frame.cambiarPanelConLicencias(MainFrame.PANE_VER_FORMATO_LICENCIA, listaCarnetImprimir);
+                }
+                //this.setContentPane(new LicenciaDeConducir().getPane());
             }
         });
 
